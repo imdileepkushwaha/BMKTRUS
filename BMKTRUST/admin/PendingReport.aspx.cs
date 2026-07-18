@@ -1,4 +1,4 @@
-﻿using BusinessLogicTier;
+using BusinessLogicTier;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -229,7 +229,7 @@ public partial class PendingReport : System.Web.UI.Page
         Response.End();
 
     }
-    protected void imgExcel_Click(object sender, ImageClickEventArgs e)
+    protected void imgExcel_Click(object sender, EventArgs e)
     {
         ExportGridToExcel();
     }

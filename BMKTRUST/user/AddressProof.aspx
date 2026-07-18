@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="AddressProof.aspx.cs" Inherits="user_AddressProof" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
 
     <style type="text/css">
         .Approved {
@@ -38,25 +39,23 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-    <section class="content-header">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-            <h6 class="fw-semibold mb-0">Address Proof/Aadhar</h6>
-            <ul class="d-flex align-items-center gap-2">
-                <li class="fw-medium">
-                    <a href="Dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                        Dashboard
-                    </a>
-                </li>
-                <li>/</li>
-                <li class="fw-medium">KYC</li>
-                <li>/</li>
-                <li class="fw-medium">Address Proof/Aadhar</li>
-            </ul>
+    <div class="bmk-panel">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">KYC</span>
+                <h1>Address Proof / Aadhar</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; KYC &nbsp;/&nbsp; Address Proof</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="PanCardImage.aspx">PAN</a>
+                <a class="btn-ghost" href="CancelCheckForm.aspx">Cheque</a>
+                <a class="btn-ghost" href="AddressProof.aspx">Aadhar</a>
+            </div>
         </div>
-    </section>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-panel">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
         <ProgressTemplate>
@@ -70,9 +69,12 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <asp:HiddenField ID="hdstatus" runat="server" />
-            <div class="row" style="color: white">
+            <div class="row" >
                 <div class="col-md-12">
                     <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Address Proof / Aadhar</h3>
+                        </div>
 
                         <div class="box-body">
                             <div class="row">
@@ -93,39 +95,59 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Address Proof/Aadhar Front Side :</label>
-                                        <asp:FileUpload ID="ImageUpload" runat="server" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Address Proof/Aadhar Back Side:</label>
-                                        <asp:FileUpload ID="ImageUpload2" runat="server" />
+                                        <label>Aadhar Number</label>
+                                        <asp:TextBox ID="txtAdharnumber" runat="server" CssClass="form-control" placeholder="Enter Aadhar number"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-6" id="divStatus" runat="server" visible="false">
                                     <div class="form-group">
-                                        <label>Approval Status : </label>
+                                        <label>Approval Status</label>
                                         <asp:Label ID="lblApprovalStatus" runat="server"></asp:Label>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Aadhar Number :</label>
-                                        <asp:TextBox ID="txtAdharnumber" runat="server" CssClass="form-control"></asp:TextBox>
+
+                            <div class="bmk-kyc-dual">
+                                <div class="bmk-photo-upload">
+                                    <span class="bmk-photo-label">Front Side</span>
+                                    <div class="bmk-kyc-doc" style="margin-bottom:12px;">
+                                        <div class="bmk-kyc-frame">
+                                            <asp:ImageButton ID="ImageShow" runat="server" Width="168px" Height="108px" OnClick="ImageShow_Click" />
+                                        </div>
+                                    </div>
+                                    <label class="bmk-dropzone bmk-kyc-dropzone">
+                                        <span class="bmk-dropzone-icon">
+                                            <iconify-icon icon="solar:document-add-bold-duotone"></iconify-icon>
+                                        </span>
+                                        <span class="bmk-dropzone-title">Front side image</span>
+                                        <span class="bmk-dropzone-sub">JPG, PNG</span>
+                                        <span class="bmk-dropzone-btn">Browse File</span>
+                                        <span id="bmkFileNameFront" class="bmk-dropzone-file">No file selected</span>
+                                        <asp:FileUpload ID="ImageUpload" runat="server" CssClass="bmk-file-input" accept="image/*" onchange="bmkKycPicked(this,'bmkFileNameFront','bmkLocalPreviewFront','bmkLocalWrapFront')" />
+                                    </label>
+                                    <div class="bmk-photo-local-preview" id="bmkLocalWrapFront" style="display:none;">
+                                        <img id="bmkLocalPreviewFront" alt="Front preview" />
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <asp:ImageButton ID="ImageShow" runat="server" Width="100px" Height="100px" OnClick="ImageShow_Click" />
+                                <div class="bmk-photo-upload">
+                                    <span class="bmk-photo-label">Back Side</span>
+                                    <div class="bmk-kyc-doc" style="margin-bottom:12px;">
+                                        <div class="bmk-kyc-frame">
+                                            <asp:ImageButton ID="ImageShow2" runat="server" Width="168px" Height="108px" OnClick="ImageShow2_Click" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <asp:ImageButton ID="ImageShow2" runat="server" Width="100px" Height="100px" OnClick="ImageShow2_Click" />
+                                    <label class="bmk-dropzone bmk-kyc-dropzone">
+                                        <span class="bmk-dropzone-icon">
+                                            <iconify-icon icon="solar:document-bold-duotone"></iconify-icon>
+                                        </span>
+                                        <span class="bmk-dropzone-title">Back side image</span>
+                                        <span class="bmk-dropzone-sub">JPG, PNG</span>
+                                        <span class="bmk-dropzone-btn">Browse File</span>
+                                        <span id="bmkFileNameBack" class="bmk-dropzone-file">No file selected</span>
+                                        <asp:FileUpload ID="ImageUpload2" runat="server" CssClass="bmk-file-input" accept="image/*" onchange="bmkKycPicked(this,'bmkFileNameBack','bmkLocalPreviewBack','bmkLocalWrapBack')" />
+                                    </label>
+                                    <div class="bmk-photo-local-preview" id="bmkLocalWrapBack" style="display:none;">
+                                        <img id="bmkLocalPreviewBack" alt="Back preview" />
                                     </div>
                                 </div>
                             </div>
@@ -184,11 +206,13 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <div id="div_update" runat="server" visible="false">
+                                        <div class="bmk-photo-actions" id="div_update" runat="server" visible="false">
                                             <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
                                             <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
                                         </div>
-                                        <div id="div_noupdate" runat="server" visible="false"><span style="float: right; font-size: 20px; color: red;"><i>You cannot upload  Address details.Please contact admin.</i></span></div>
+                                        <div class="bmk-photo-actions" id="div_noupdate" runat="server" visible="false">
+                                            <span>You cannot upload Address details. Please contact admin.</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -221,6 +245,7 @@
             <asp:PostBackTrigger ControlID="btnSubmit" />
         </Triggers>
     </asp:UpdatePanel>
+    </div>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
     <script type="text/javascript">
@@ -232,6 +257,26 @@
             $('body').removeClass('modal-open');
             $('body').css('padding-right', '0');
             $('.modal-backdrop').remove();
+        }
+        function bmkKycPicked(input, nameId, imgId, wrapId) {
+            var nameEl = document.getElementById(nameId);
+            var wrap = document.getElementById(wrapId);
+            var img = document.getElementById(imgId);
+            if (!input || !input.files || !input.files[0]) {
+                if (nameEl) nameEl.textContent = 'No file selected';
+                if (wrap) wrap.style.display = 'none';
+                return;
+            }
+            var file = input.files[0];
+            if (nameEl) nameEl.textContent = file.name;
+            if (img && wrap && file.type.indexOf('image/') === 0) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    wrap.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 </asp:Content>

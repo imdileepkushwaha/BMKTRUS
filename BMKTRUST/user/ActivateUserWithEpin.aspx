@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Transfer E-Pin" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="ActivateUserWithEpin.aspx.cs" Inherits="ActivateUserWithEpin" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
     <script type="text/javascript">
         function validate() {
             if (document.getElementById("<%=txtuserid.ClientID%>").value == "") {
@@ -19,31 +20,31 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-    <section class="content-header">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-            <h6 class="fw-semibold mb-0">Activate User With E-Pin</h6>
-            <ul class="d-flex align-items-center gap-2">
-                <li class="fw-medium">
-                    <a href="Dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                        Dashboard
-                    </a>
-                </li>
-                <li>/</li>
-                <li class="fw-medium">E-Pin Management </li>
-                <li>/</li>
-                <li class="fw-medium">User Activation</li>
-            </ul>
+    <div class="bmk-panel">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">E-Pin Management</span>
+                <h1>User Activation</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; E-Pin &nbsp;/&nbsp; Activation</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="PinRequestAdd.aspx">Request</a>
+                <a class="btn-ghost" href="EPinReport.aspx">Report</a>
+                <a class="btn-ghost" href="EPinTransfer.aspx">Transfer</a>
+            </div>
         </div>
-    </section>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-panel">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             
                     <div class="box box-primary">
-
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Activate User</h3>
+                        </div>
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -109,6 +110,7 @@
                 
         </ContentTemplate>
     </asp:UpdatePanel>
+    </div>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
 </asp:Content>

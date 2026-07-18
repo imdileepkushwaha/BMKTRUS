@@ -2,32 +2,46 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
     <script type="text/javascript">
         function validate() {
-            if (document.getElementById("<%=ddbankaccountno.ClientID%>").value == "0") {
+            var plan = document.getElementById("<%=ddplan.ClientID%>");
+            var epin = document.getElementById("<%=txtnoofepin.ClientID%>");
+            var bank = document.getElementById("<%=ddbankaccountno.ClientID%>");
+            var amount = document.getElementById("<%=txtamount.ClientID%>");
+            var txn = document.getElementById("<%=TxtTransactionId.ClientID%>");
+            var file = document.getElementById("<%=ImageUpload.ClientID%>");
+
+            if (!plan || plan.value == "0") {
+                alert('Select Plan');
+                if (plan) plan.focus();
+                return false;
+            }
+            if (!epin || epin.value == "" || parseInt(epin.value, 10) < 1) {
+                alert('Enter No of E-Pin (minimum 1)');
+                if (epin) epin.focus();
+                return false;
+            }
+            if (!bank || bank.value == "0") {
                 alert('Select Bank Account');
-                document.getElementById("<%=ddbankaccountno.ClientID%>").focus();
+                if (bank) bank.focus();
                 return false;
             }
-            if (document.getElementById("<%=txtamount.ClientID%>").value == "") {
-
+            if (!amount || amount.value == "") {
                 alert('Enter Amount');
-                document.getElementById("<%=txtamount.ClientID%>").focus();
+                if (amount) amount.focus();
                 return false;
             }
-            if (document.getElementById("<%=TxtTransactionId.ClientID%>").value == "") {
-
+            if (!txn || txn.value == "") {
                 alert('Enter TransactionID');
-                document.getElementById("<%=TxtTransactionId.ClientID%>").focus();
+                if (txn) txn.focus();
                 return false;
             }
-          //   if (document.getElementById("<%=ddmode.ClientID%>").value == "Select") {
-
-            //   alert('Select Paymentmode');
-               //  document.getElementById("<%=ddmode.ClientID%>").focus();
-            // return false;
-            //}
-
+            if (!file || !file.value) {
+                alert('Please upload payment receipt');
+                return false;
+            }
+            return true;
         }
 
         function gettotal() {
@@ -45,26 +59,23 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-    <section class="content-header">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-            <h6 class="fw-semibold mb-0">E-Pin Request</h6>
-            <ul class="d-flex align-items-center gap-2">
-                <li class="fw-medium">
-                    <a href="Dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                        Dashboard
-                    </a>
-                </li>
-                <li>/</li>
-                <li class="fw-medium">E-Pin Management </li>
-                <li>/</li>
-                <li class="fw-medium">E-Pin Request</li>
-            </ul>
+    <div class="bmk-panel">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">E-Pin Management</span>
+                <h1>E-Pin Request</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; E-Pin &nbsp;/&nbsp; Request</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="PinRequestAdd.aspx">Request</a>
+                <a class="btn-ghost" href="EPinReport.aspx">Report</a>
+                <a class="btn-ghost" href="EPinTransfer.aspx">Transfer</a>
+            </div>
         </div>
-    </section>
-
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-panel">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
         <ProgressTemplate>
@@ -75,14 +86,12 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
-
-
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Deposit Request</h3>
+                    <h3 class="box-title">E-Pin Request</h3>
                 </div>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
                 <div class="box-body">
 
                     <div class="row" style="display: none">
@@ -283,32 +292,57 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
+                    </div>
+                </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
-                                <label>Upload Receipt :</label>
-                                <asp:FileUpload ID="ImageUpload" runat="server" />
-                            </div>
+                <div class="box-body" style="padding-top:0;">
+                    <div class="form-group">
+                        <span class="bmk-photo-label">Upload Receipt</span>
+                        <label class="bmk-dropzone">
+                            <span class="bmk-dropzone-icon">
+                                <iconify-icon icon="solar:gallery-add-bold-duotone"></iconify-icon>
+                            </span>
+                            <span class="bmk-dropzone-title">Drop payment receipt or browse</span>
+                            <span class="bmk-dropzone-sub">JPG, PNG &mdash; clear payment screenshot / slip</span>
+                            <span class="bmk-dropzone-btn">Browse File</span>
+                            <span id="bmkFileNamePin" class="bmk-dropzone-file">No file selected</span>
+                            <asp:FileUpload ID="ImageUpload" runat="server" CssClass="bmk-file-input" accept="image/*" onchange="bmkKycPicked(this,'bmkFileNamePin','bmkLocalPreviewPin','bmkLocalWrapPin')" />
+                        </label>
+                        <div class="bmk-photo-local-preview" id="bmkLocalWrapPin" style="display:none;">
+                            <img id="bmkLocalPreviewPin" alt="Receipt preview" />
                         </div>
                     </div>
                 </div>
-                <div class="box-footer">
-
-                    <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
-                    <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
-
+                <div class="box-footer bmk-photo-actions">
+                    <asp:Button ID="btnSubmit" OnClientClick="return validate();" UseSubmitBehavior="true" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
+                    <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" CausesValidation="false" />
                 </div>
             </div>
-
-
-        </ContentTemplate>
-        <Triggers>
-
-            <asp:PostBackTrigger ControlID="btnSubmit" />
-        </Triggers>
-    </asp:UpdatePanel>
-</asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
+    </div>
+    <script type="text/javascript">
+        function bmkKycPicked(input, nameId, imgId, wrapId) {
+            var nameEl = document.getElementById(nameId);
+            var wrap = document.getElementById(wrapId);
+            var img = document.getElementById(imgId);
+            if (!input || !input.files || !input.files[0]) {
+                if (nameEl) nameEl.textContent = 'No file selected';
+                if (wrap) wrap.style.display = 'none';
+                return;
+            }
+            var file = input.files[0];
+            if (nameEl) nameEl.textContent = file.name;
+            if (img && wrap && file.type.indexOf('image/') === 0) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    wrap.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </asp:Content>
 
 

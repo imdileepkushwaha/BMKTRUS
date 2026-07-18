@@ -168,7 +168,7 @@
                     <ul class="sidebar-submenu">
 					
 					<li>
-                            <a href="https://thesmarteducation.co.in//Register.aspx?UserId=SE000001&standingposition=1"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Add User</a>
+                            <a id="lnkAddUser" runat="server" href="#"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Add User</a>
                         </li>
                         <li>
                             <a href="UserDirectAssociates.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>My Direct</a>

@@ -37,6 +37,28 @@
 		<%--<link href="../sarah/assets/css/layout.css" rel="stylesheet" type="text/css" />--%>
 
 
+    <style type="text/css">
+        .bmk-excel-btn {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin-left: 8px;
+            color: #217346 !important;
+            text-decoration: none !important;
+            line-height: 1;
+            vertical-align: middle;
+            border-radius: 4px;
+        }
+        .bmk-excel-btn:hover,
+        .bmk-excel-btn:focus {
+            color: #1a5c38 !important;
+            background: rgba(33, 115, 70, 0.1);
+            text-decoration: none !important;
+        }
+        .bmk-excel-btn svg { display: block; pointer-events: none; }
+    </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>

@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Edit User Details" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="UserEdit.aspx.cs" Inherits="admin_UserEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
     <script type="text/javascript">
         function validate() {
             if (document.getElementById("<%=hdstatus.ClientID%>").value == "1") {
@@ -59,25 +60,21 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-    <section class="content-header">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-            <h6 class="fw-semibold mb-0">User Edit</h6>
-            <ul class="d-flex align-items-center gap-2">
-                <li class="fw-medium">
-                    <a href="Dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                        Dashboard
-                    </a>
-                </li>
-                <li>/</li>
-                <li class="fw-medium">My Profile</li>
-                <li>/</li>
-                <li class="fw-medium">Edit Profile</li>
-            </ul>
+    <div class="bmk-profile">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">My Profile</span>
+                <h1>Edit Profile</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; My Profile &nbsp;/&nbsp; Edit Profile</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="UserProfile.aspx">View Profile</a>
+            </div>
         </div>
-    </section>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-profile">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
         <ProgressTemplate>
@@ -312,6 +309,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    </div>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
     <script type="text/javascript">

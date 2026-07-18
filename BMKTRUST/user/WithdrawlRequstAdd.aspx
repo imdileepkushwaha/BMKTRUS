@@ -2,6 +2,7 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
      <script type="text/javascript">
          function validate() {
         <%--    if (document.getElementById("<%=txtoldpassword.ClientID%>").value == "") {
@@ -27,21 +28,23 @@
     </script>
       <link href="../css/radio/style.css" rel="stylesheet" />
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" Runat="Server">
-       <section class="content-header">
-      <h1 style="color:white;">
-     Withdrawl Request  
-      </h1>
-      <ol class="breadcrumb">
-     <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home > </a></li>
-            <li><a href="#">Withdrawl > </a></li>
-        <li class="active">Withdrawl Fund </li>
-      
-      </ol>
-    </section>   
-   
+<asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
+    <div class="bmk-panel">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">Withdrawal</span>
+                <h1>Withdrawal Fund</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; Withdrawal &nbsp;/&nbsp; Fund</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="WithdrawlRequstAdd.aspx">Withdraw</a>
+                <a class="btn-ghost" href="WithdrawlRequestReport.aspx">Report</a>
+            </div>
+        </div>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-panel">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
      <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
         <ProgressTemplate>
@@ -59,7 +62,7 @@
           <div class="col-md-12">
               <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Withdrawl Request</h3>
+              <h3 class="box-title">Withdrawal Request</h3>
             </div>
                    <div class="box-body">
                     <%--<h4> Request Type</h4>
@@ -202,6 +205,7 @@
         <asp:PostBackTrigger ControlID = "btnSubmit" />
     </Triggers>
     </asp:UpdatePanel>
+    </div>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">   
  

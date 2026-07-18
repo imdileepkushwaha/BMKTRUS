@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -214,7 +214,7 @@ public partial class user_UserDirectAssociates : System.Web.UI.Page
     {
         Response.Redirect("Dashboard.aspx");
     }
-    protected void imgExcel_Click(object sender, ImageClickEventArgs e)
+    protected void imgExcel_Click(object sender, EventArgs e)
     {
         ExportToExcel();
     }

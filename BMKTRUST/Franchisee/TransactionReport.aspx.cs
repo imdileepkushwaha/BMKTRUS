@@ -1,4 +1,4 @@
-﻿using BusinessLogicTier;
+using BusinessLogicTier;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -116,7 +116,7 @@ public partial class admin_UserReport : System.Web.UI.Page
 
     }
 
-    protected void imgExcel_Click(object sender, ImageClickEventArgs e)
+    protected void imgExcel_Click(object sender, EventArgs e)
     {
         ExportGridToExcel();
     }

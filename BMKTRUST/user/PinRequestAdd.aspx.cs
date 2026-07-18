@@ -173,8 +173,13 @@ public partial class user_PinRequestAdd : System.Web.UI.Page
                   
                     //if (Convert.ToDecimal(txtbalance.Text) >= Convert.ToDecimal(txtamount.Text))
                     //{
-                    if (Convert.ToDecimal(txtnoofepin.Text) >= 1)
+                    if (!string.IsNullOrWhiteSpace(txtnoofepin.Text) && Convert.ToDecimal(txtnoofepin.Text) >= 1)
                         {
+                            if (!ImageUpload.HasFile)
+                            {
+                                Message.Show("Please upload payment receipt...!!!");
+                                return;
+                            }
                             objaccount.img = UploadImage();
                             objaccount.WithdrawlAmount = Convert.ToDecimal(txtamount.Text);
                             objaccount.MentionBy = Session["userid"].ToString();

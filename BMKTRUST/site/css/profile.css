@@ -1,0 +1,889 @@
+﻿/* Bharat Manav Kalyan Trust — My Profile pages */
+.bmk-profile,
+.bmk-panel {
+    --navy: #002B5C;
+    --navy-dark: #001A3A;
+    --navy-light: #003D7A;
+    --gold: #C9A227;
+    --gold-light: #E8C547;
+    --cream: #FAF8F3;
+    --text: #1A2B3C;
+    --muted: #5A6B7C;
+    --danger: #B42318;
+}
+
+/* Page hero */
+.bmk-profile-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy) 55%, var(--navy-light));
+    color: #fff;
+    box-shadow: 0 12px 28px rgba(0, 26, 58, 0.16);
+    position: relative;
+    overflow: hidden;
+}
+
+.bmk-profile-hero::after {
+    content: '';
+    position: absolute;
+    right: -36px;
+    top: -36px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(201, 162, 39, 0.16);
+}
+
+.bmk-profile-hero-text {
+    position: relative;
+    z-index: 1;
+}
+
+.bmk-profile-hero-text .eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+}
+
+.bmk-profile-hero-text h1 {
+    margin: 0 0 4px;
+    font-size: 1.4rem !important;
+    font-weight: 700;
+    color: #fff !important;
+    line-height: 1.25;
+}
+
+.bmk-profile-hero-text p,
+.bmk-profile-hero-text .bmk-crumb {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.9rem;
+}
+
+.bmk-profile-hero-text .bmk-crumb a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.bmk-profile-hero-text .bmk-crumb a:hover {
+    text-decoration: underline;
+}
+
+.bmk-profile-hero-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.bmk-profile-hero-actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.88rem;
+}
+
+.bmk-profile-hero-actions .btn-gold {
+    background: var(--gold);
+    color: var(--navy-dark);
+}
+
+.bmk-profile-hero-actions .btn-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #fff;
+}
+
+/* Cards (AdminLTE box → BMK card) */
+.bmk-profile .box.box-primary, .bmk-panel .box.box-primary,
+.bmk-profile .box, .bmk-panel .box{
+    position: relative;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 43, 92, 0.1) !important;
+    border-radius: 18px !important;
+    background: linear-gradient(180deg, #fff 0%, #FBF9F4 100%) !important;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 10px 28px rgba(0, 43, 92, 0.07) !important;
+    overflow: hidden;
+}
+
+.bmk-profile .box.box-primary::before, .bmk-panel .box.box-primary::before,
+.bmk-profile .box::before, .bmk-panel .box::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 4px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 52%, #FF9933 100%);
+    z-index: 1;
+}
+
+.bmk-profile .box-header, .bmk-panel .box-header{
+    padding: 18px 22px 0 !important;
+    background: transparent !important;
+    border-bottom: 0 !important;
+    color: var(--navy) !important;
+}
+
+.bmk-profile .box-header .box-title, .bmk-panel .box-header .box-title,
+.bmk-profile .box-title, .bmk-panel .box-title{
+    margin: 0 0 14px !important;
+    padding-bottom: 12px !important;
+    font-size: 1.08rem !important;
+    font-weight: 700 !important;
+    color: var(--navy) !important;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(0, 43, 92, 0.08) !important;
+    float: none !important;
+    width: 100%;
+}
+
+.bmk-profile .box-header .box-title::before, .bmk-panel .box-header .box-title::before,
+.bmk-profile .box-title::before, .bmk-panel .box-title::before{
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, var(--gold), #FF9933);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+    flex-shrink: 0;
+}
+
+.bmk-profile .box-body, .bmk-panel .box-body{
+    padding: 8px 22px 20px !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+}
+
+.bmk-profile .box-footer, .bmk-panel .box-footer{
+    padding: 0 22px 20px !important;
+    background: transparent !important;
+    border-top: 0 !important;
+}
+
+/* Forms */
+.bmk-profile .form-group, .bmk-panel .form-group{
+    margin-bottom: 16px;
+}
+
+.bmk-profile .form-group > label:not(.bmk-dropzone),
+.bmk-panel .form-group > label:not(.bmk-dropzone),
+.bmk-profile label:not(.bmk-dropzone),
+.bmk-panel label:not(.bmk-dropzone){
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted) !important;
+}
+
+.bmk-profile .form-control, .bmk-panel .form-control,
+.bmk-profile select.form-control, .bmk-panel select.form-control,
+.bmk-profile textarea.form-control, .bmk-panel textarea.form-control{
+    height: 46px !important;
+    border-radius: 12px !important;
+    border: 1.5px solid #dde3ea !important;
+    background: #fff !important;
+    color: var(--navy) !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: none !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bmk-profile textarea.form-control, .bmk-panel textarea.form-control{
+    height: auto !important;
+    min-height: 96px;
+    padding-top: 12px;
+}
+
+.bmk-profile .form-control:focus, .bmk-panel .form-control:focus{
+    border-color: rgba(201, 162, 39, 0.65) !important;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15) !important;
+}
+
+.bmk-profile .form-control:disabled, .bmk-panel .form-control:disabled,
+.bmk-profile .form-control[disabled], .bmk-panel .form-control[disabled],
+.bmk-profile .form-control[readonly], .bmk-panel .form-control[readonly]{
+    background: rgba(0, 43, 92, 0.04) !important;
+    color: var(--navy) !important;
+    opacity: 1;
+}
+
+/* Buttons */
+.bmk-profile .btn-primary, .bmk-panel .btn-primary,
+.bmk-profile .btn.btn-primary, .bmk-panel .btn.btn-primary{
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-light)) !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    min-height: 42px;
+    padding: 0 18px !important;
+    color: #fff !important;
+}
+
+.bmk-profile .btn-primary:hover, .bmk-panel .btn-primary:hover{
+    filter: brightness(1.08);
+}
+
+.bmk-profile .btn-danger, .bmk-panel .btn-danger,
+.bmk-profile .btn.btn-danger, .bmk-panel .btn.btn-danger{
+    background: #fff !important;
+    border: 1.5px solid rgba(180, 35, 24, 0.35) !important;
+    color: var(--danger) !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    min-height: 42px;
+    padding: 0 18px !important;
+}
+
+.bmk-profile .btn-success, .bmk-panel .btn-success,
+.bmk-profile .btn.btn-success, .bmk-panel .btn.btn-success{
+    background: linear-gradient(135deg, #0f6a08, #138808) !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    min-height: 42px;
+    color: #fff !important;
+}
+
+.bmk-profile .box-footer .btn, .bmk-panel .box-footer .btn{
+    margin-right: 8px;
+    margin-top: 4px;
+}
+
+/* Photo upload */
+.bmk-profile .bmk-photo-layout, .bmk-panel .bmk-photo-layout{
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 22px;
+    align-items: start;
+    margin-top: 8px;
+}
+
+.bmk-profile .bmk-photo-label, .bmk-panel .bmk-photo-label{
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.bmk-profile .bmk-photo-current, .bmk-panel .bmk-photo-current{
+    text-align: center;
+}
+
+.bmk-profile .bmk-photo-avatar, .bmk-panel .bmk-photo-avatar{
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    padding: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 43, 92, 0.08), rgba(201, 162, 39, 0.2));
+    box-shadow: 0 12px 28px rgba(0, 43, 92, 0.12);
+}
+
+.bmk-profile .bmk-photo-avatar .bmk-photo-img, .bmk-panel .bmk-photo-avatar .bmk-photo-img,
+.bmk-profile .bmk-photo-avatar input[type="image"], .bmk-panel .bmk-photo-avatar input[type="image"],
+.bmk-profile .bmk-photo-avatar img, .bmk-panel .bmk-photo-avatar img{
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    background: #f3f5f8;
+    cursor: pointer;
+}
+
+.bmk-profile .bmk-photo-hint, .bmk-panel .bmk-photo-hint{
+    margin: 10px 0 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+.bmk-profile .bmk-dropzone, .bmk-panel .bmk-dropzone,
+.bmk-profile .form-group > label.bmk-dropzone,
+.bmk-panel .form-group > label.bmk-dropzone{
+    position: relative;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 210px;
+    margin-bottom: 0;
+    padding: 24px 18px;
+    border-radius: 16px;
+    border: 1.5px dashed rgba(0, 43, 92, 0.22);
+    background:
+        radial-gradient(circle at 100% 0%, rgba(201, 162, 39, 0.12), transparent 45%),
+        linear-gradient(180deg, #fff, #FBF9F4);
+    text-align: center;
+    text-transform: none !important;
+    letter-spacing: normal;
+    font-weight: 400;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.bmk-profile .bmk-dropzone:hover, .bmk-panel .bmk-dropzone:hover{
+    border-color: rgba(201, 162, 39, 0.7);
+    box-shadow: 0 10px 24px rgba(0, 43, 92, 0.08);
+    transform: translateY(-1px);
+}
+
+.bmk-profile .bmk-dropzone-icon, .bmk-panel .bmk-dropzone-icon{
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: var(--gold-light);
+    font-size: 1.7rem;
+    margin-bottom: 4px;
+}
+
+.bmk-profile .bmk-dropzone-title, .bmk-panel .bmk-dropzone-title{
+    display: block;
+    font-size: 1.02rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--navy) !important;
+}
+
+.bmk-profile .bmk-dropzone-sub, .bmk-panel .bmk-dropzone-sub{
+    display: block;
+    font-size: 0.86rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--muted) !important;
+    margin-bottom: 6px;
+}
+
+.bmk-profile .bmk-dropzone-btn, .bmk-panel .bmk-dropzone-btn{
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-top: 4px;
+}
+
+.bmk-profile .bmk-dropzone-file, .bmk-panel .bmk-dropzone-file{
+    margin-top: 8px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--navy);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bmk-profile .bmk-file-input, .bmk-panel .bmk-file-input,
+.bmk-profile .bmk-dropzone input[type="file"], .bmk-panel .bmk-dropzone input[type="file"]{
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    z-index: 2;
+}
+
+.bmk-profile .bmk-photo-local-preview, .bmk-panel .bmk-photo-local-preview{
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 43, 92, 0.1);
+    background: #fff;
+    text-align: center;
+}
+
+.bmk-profile .bmk-photo-local-preview img, .bmk-panel .bmk-photo-local-preview img{
+    max-width: 160px;
+    max-height: 160px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.bmk-profile .bmk-excel-btn,
+.bmk-panel .bmk-excel-btn{
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: 8px;
+    color: #217346 !important;
+    text-decoration: none !important;
+    line-height: 1;
+    vertical-align: middle;
+    border-radius: 10px;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.bmk-profile .bmk-excel-btn:hover,
+.bmk-panel .bmk-excel-btn:hover,
+.bmk-profile .bmk-excel-btn:focus,
+.bmk-panel .bmk-excel-btn:focus{
+    color: #1a5c38 !important;
+    background: rgba(33, 115, 70, 0.1);
+    text-decoration: none !important;
+    transform: translateY(-1px);
+}
+.bmk-profile .bmk-excel-btn svg,
+.bmk-panel .bmk-excel-btn svg{
+    display: block;
+    pointer-events: none;
+}
+
+.bmk-profile .bmk-photo-actions, .bmk-panel .bmk-photo-actions{
+    margin-top: 16px;
+    padding: 0 !important;
+}
+
+.bmk-profile .bmk-photo-actions .btn, .bmk-panel .bmk-photo-actions .btn{
+    margin-right: 8px;
+}
+
+@media (max-width: 767px) {
+    .bmk-profile .bmk-photo-layout, .bmk-panel .bmk-photo-layout{
+        grid-template-columns: 1fr;
+    }
+}
+
+.bmk-profile .bmk-note, .bmk-panel .bmk-note,
+.bmk-profile #div_noupdate span, .bmk-panel #div_noupdate span,
+.bmk-profile [id$="div_noupdate"] span, .bmk-panel [id$="div_noupdate"] span{
+    float: none !important;
+    display: block;
+    margin-top: 8px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(180, 35, 24, 0.08);
+    border: 1px solid rgba(180, 35, 24, 0.18);
+    color: var(--danger) !important;
+    font-size: 0.95rem !important;
+    font-style: normal !important;
+}
+
+/* Password page: kill forced white text */
+.bmk-profile, .bmk-panel,
+.bmk-profile .row, .bmk-panel .row{
+    color: var(--text) !important;
+}
+
+.bmk-profile-narrow {
+    max-width: 920px;
+}
+
+/* Change Password form */
+.bmk-profile .bmk-pass-card .box-body, .bmk-panel .bmk-pass-card .box-body{
+    padding-bottom: 24px !important;
+}
+
+.bmk-profile .bmk-pass-intro, .bmk-panel .bmk-pass-intro{
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(0, 43, 92, 0.04);
+    border: 1px solid rgba(0, 43, 92, 0.08);
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.bmk-profile .bmk-pass-field, .bmk-panel .bmk-pass-field{
+    margin-bottom: 16px;
+}
+
+.bmk-profile .bmk-pass-field > label, .bmk-panel .bmk-pass-field > label{
+    margin-bottom: 8px;
+}
+
+.bmk-profile .bmk-pass-wrap, .bmk-panel .bmk-pass-wrap{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.bmk-profile .bmk-pass-icon, .bmk-panel .bmk-pass-icon{
+    position: absolute;
+    left: 14px;
+    z-index: 2;
+    color: var(--navy);
+    opacity: 0.55;
+    font-size: 1.2rem;
+    display: inline-flex;
+    pointer-events: none;
+}
+
+.bmk-profile .bmk-pass-wrap .form-control, .bmk-panel .bmk-pass-wrap .form-control{
+    height: 50px !important;
+    padding-left: 46px !important;
+    padding-right: 48px !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+}
+
+.bmk-profile .bmk-pass-toggle, .bmk-panel .bmk-pass-toggle{
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.bmk-profile .bmk-pass-toggle svg, .bmk-panel .bmk-pass-toggle svg{
+    width: 22px;
+    height: 22px;
+}
+
+.bmk-profile .bmk-pass-toggle .eye-closed, .bmk-panel .bmk-pass-toggle .eye-closed{
+    display: none;
+}
+
+.bmk-profile .bmk-pass-toggle.is-visible .eye-open, .bmk-panel .bmk-pass-toggle.is-visible .eye-open{
+    display: none;
+}
+
+.bmk-profile .bmk-pass-toggle.is-visible .eye-closed, .bmk-panel .bmk-pass-toggle.is-visible .eye-closed{
+    display: block;
+}
+
+.bmk-profile .bmk-pass-toggle:hover, .bmk-panel .bmk-pass-toggle:hover{
+    color: var(--navy);
+    background: rgba(0, 43, 92, 0.06);
+}
+
+.bmk-profile .bmk-pass-actions, .bmk-panel .bmk-pass-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.bmk-profile .bmk-pass-actions .btn-primary, .bmk-panel .bmk-pass-actions .btn-primary{
+    min-width: 160px;
+}
+
+.bmk-profile .bmk-otp-box, .bmk-panel .bmk-otp-box{
+    margin-top: 4px;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(0, 43, 92, 0.08) !important;
+}
+
+.bmk-profile .bmk-otp-head, .bmk-panel .bmk-otp-head{
+    margin-bottom: 12px;
+}
+
+.bmk-profile .bmk-otp-head h4, .bmk-panel .bmk-otp-head h4{
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.bmk-profile .bmk-otp-head span, .bmk-panel .bmk-otp-head span{
+    display: block;
+    color: var(--danger);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+@media (max-width: 767px) {
+    .bmk-profile-hero-text h1 {
+        font-size: 1.2rem !important;
+    }
+
+    .bmk-profile .bmk-pass-actions .btn, .bmk-panel .bmk-pass-actions .btn{
+        width: 100%;
+    }
+}
+
+/* Tables / reports (My Team) */
+.bmk-profile .table,
+.bmk-panel .table,
+.bmk-profile .dataTable,
+.bmk-panel .dataTable {
+    color: var(--text) !important;
+    margin-bottom: 0;
+}
+
+.bmk-profile .table thead th,
+.bmk-panel .table thead th,
+.bmk-profile .dataTable thead th,
+.bmk-panel .dataTable thead th {
+    background: linear-gradient(180deg, #F7F1E3, #EFE6D0) !important;
+    color: var(--navy) !important;
+    font-weight: 700 !important;
+    border-color: rgba(0, 43, 92, 0.1) !important;
+    white-space: nowrap;
+    font-size: 0.88rem;
+}
+
+.bmk-profile .table tbody td,
+.bmk-panel .table tbody td {
+    color: var(--text) !important;
+    vertical-align: middle !important;
+    border-color: rgba(0, 43, 92, 0.08) !important;
+    font-weight: 500;
+    font-size: 0.92rem;
+}
+
+.bmk-profile .table-hover tbody tr:hover,
+.bmk-panel .table-hover tbody tr:hover {
+    background: rgba(201, 162, 39, 0.08) !important;
+}
+
+.bmk-profile .table-responsive,
+.bmk-panel .table-responsive {
+    border-radius: 12px;
+    border: 1px solid rgba(0, 43, 92, 0.08);
+    background: #fff;
+}
+
+.bmk-profile .bmk-stat-pill,
+.bmk-panel .bmk-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(0, 43, 92, 0.04);
+    border: 1px solid rgba(0, 43, 92, 0.08);
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.bmk-profile .bmk-stat-pill label,
+.bmk-panel .bmk-stat-pill label {
+    margin: 0 !important;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.9rem;
+    color: var(--muted) !important;
+}
+
+.bmk-profile iframe,
+.bmk-panel iframe {
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 43, 92, 0.1) !important;
+    background: #fff;
+}
+
+.bmk-profile .Approved,
+.bmk-panel .Approved,
+.bmk-profile .Paid,
+.bmk-panel .Paid {
+    background: rgba(19, 136, 8, 0.14) !important;
+    color: #0f6a08 !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.bmk-profile .Pending,
+.bmk-panel .Pending {
+    background: rgba(0, 43, 92, 0.1) !important;
+    color: var(--navy) !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.bmk-profile .Rejected,
+.bmk-panel .Rejected,
+.bmk-profile .Unpaid,
+.bmk-panel .Unpaid {
+    background: rgba(180, 35, 24, 0.1) !important;
+    color: var(--danger) !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.bmk-profile .row[style*="color: white"],
+.bmk-panel .row[style*="color: white"],
+.bmk-profile .row[style*="color:white"],
+.bmk-panel .row[style*="color:white"] {
+    color: var(--text) !important;
+}
+
+.bmk-profile .text-white,
+.bmk-panel .text-white {
+    color: var(--text) !important;
+}
+
+.bmk-profile input[type="file"]:not(.bmk-file-input),
+.bmk-panel input[type="file"]:not(.bmk-file-input) {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px dashed rgba(0, 43, 92, 0.22);
+    background: rgba(0, 43, 92, 0.03);
+    color: var(--navy);
+}
+
+/* KYC document upload (PAN / Cheque / Aadhar) */
+.bmk-profile .bmk-kyc-layout,
+.bmk-panel .bmk-kyc-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-top: 6px;
+}
+
+.bmk-profile .bmk-kyc-dual,
+.bmk-panel .bmk-kyc-dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 6px;
+}
+
+.bmk-profile .bmk-kyc-doc,
+.bmk-panel .bmk-kyc-doc {
+    text-align: center;
+}
+
+.bmk-profile .bmk-kyc-frame,
+.bmk-panel .bmk-kyc-frame {
+    width: 180px;
+    height: 120px;
+    margin: 0 auto;
+    padding: 6px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(0, 43, 92, 0.08), rgba(201, 162, 39, 0.18));
+    box-shadow: 0 10px 22px rgba(0, 43, 92, 0.1);
+}
+
+.bmk-profile .bmk-kyc-frame input[type="image"],
+.bmk-panel .bmk-kyc-frame input[type="image"],
+.bmk-profile .bmk-kyc-frame img,
+.bmk-panel .bmk-kyc-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #fff;
+    background: #f3f5f8;
+    cursor: pointer;
+}
+
+.bmk-profile .bmk-kyc-dropzone,
+.bmk-panel .bmk-kyc-dropzone {
+    min-height: 180px;
+}
+
+@media (max-width: 767px) {
+    .bmk-profile .bmk-kyc-layout,
+    .bmk-panel .bmk-kyc-layout,
+    .bmk-profile .bmk-kyc-dual,
+    .bmk-panel .bmk-kyc-dual {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* GridView pagination */
+.bmk-profile .bmk-pager,
+.bmk-panel .bmk-pager,
+.bmk-profile .bmk-pager td,
+.bmk-panel .bmk-pager td {
+    padding: 14px 4px 4px !important;
+    border: 0 !important;
+    background: transparent !important;
+    text-align: center !important;
+}
+
+.bmk-profile .bmk-pager table,
+.bmk-panel .bmk-pager table {
+    margin: 0 auto !important;
+}
+
+.bmk-profile .bmk-pager a,
+.bmk-panel .bmk-pager a,
+.bmk-profile .bmk-pager span,
+.bmk-panel .bmk-pager span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    margin: 0 3px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 43, 92, 0.14);
+    background: #fff;
+    color: var(--navy) !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.bmk-profile .bmk-pager a:hover,
+.bmk-panel .bmk-pager a:hover {
+    border-color: rgba(201, 162, 39, 0.7);
+    background: #FAF8F3;
+}
+
+.bmk-profile .bmk-pager span,
+.bmk-panel .bmk-pager span {
+    background: linear-gradient(135deg, #002B5C, #0a3d73);
+    border-color: #002B5C;
+    color: #fff !important;
+}

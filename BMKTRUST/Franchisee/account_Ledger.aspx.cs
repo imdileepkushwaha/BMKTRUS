@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -163,7 +163,7 @@ public partial class Franchisee_account_Ledger : System.Web.UI.Page
         Response.End();
 
     }
-    protected void imgExcel_Click(object sender, ImageClickEventArgs e)
+    protected void imgExcel_Click(object sender, EventArgs e)
     {
         ExportGridToExcel();
     }

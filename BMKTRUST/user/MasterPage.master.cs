@@ -31,11 +31,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 lbluseridDrop.Text = string.IsNullOrEmpty(userId) ? "Member Account" : userId;
             }
 
-            if (Session["status"] != null && Session["status"].ToString() == "1")
+            if (lnkAddUser != null && !string.IsNullOrEmpty(userId))
             {
-            }
-            else
-            {
+                // Same referral URL pattern as Dashboard affiliate link
+                lnkAddUser.HRef = ResolveUrl("~/RegistrationNew.aspx")
+                    + "?UserId=" + HttpUtility.UrlEncode(userId)
+                    + "&standingposition=1";
             }
         }
         else

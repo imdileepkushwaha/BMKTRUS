@@ -575,3 +575,30 @@ footer.main-footer {
     border-top: 1px solid rgba(0, 43, 92, 0.08) !important;
     color: var(--bmk-muted) !important;
 }
+
+/* Download Excel icon button */
+.bmk-excel-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: 8px;
+    color: #217346 !important;
+    text-decoration: none !important;
+    line-height: 1;
+    vertical-align: middle;
+    border-radius: 10px;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.bmk-excel-btn:hover,
+.bmk-excel-btn:focus {
+    color: #1a5c38 !important;
+    background: rgba(33, 115, 70, 0.1);
+    text-decoration: none !important;
+    transform: translateY(-1px);
+}
+.bmk-excel-btn svg {
+    display: block;
+    pointer-events: none;
+}

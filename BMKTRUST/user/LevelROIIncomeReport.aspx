@@ -1,27 +1,24 @@
 ﻿<%@ Page Title="Level ROI Income Report" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="LevelROIIncomeReport.aspx.cs" Inherits="LevelROIIncomeReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-  <section class="content-header">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-            <h6 class="fw-semibold mb-0">My Income</h6>
-            <ul class="d-flex align-items-center gap-2">
-                <li class="fw-medium">
-                    <a href="Dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                        Home
-                    </a>
-                </li>
-                <li>/</li>
-                <li class="fw-medium">Income</li>
-                <li>/</li>
-                <li class="fw-medium">Level Income</li>
-            </ul>
+    <div class="bmk-panel">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">My Income</span>
+                <h1>Level Income</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; My Income &nbsp;/&nbsp; Level Income</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="LevelROIIncomeReport.aspx">Level Income</a>
+            </div>
         </div>
-    </section>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-panel">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -73,7 +70,7 @@
 
               <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Details</h3>
+              <h3 class="box-title">Income Details</h3>
             </div>
                    <div class="box-body">
                   
@@ -178,6 +175,7 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 
+    </div>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
       <script type="text/javascript">

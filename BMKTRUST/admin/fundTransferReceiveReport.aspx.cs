@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -94,7 +94,7 @@ public partial class admin_fundTransferReceiveReport : System.Web.UI.Page
 
     }
 
-    protected void imgExcel_Click(object sender, ImageClickEventArgs e)
+    protected void imgExcel_Click(object sender, EventArgs e)
     {
         ExportGridToExcel();
     }

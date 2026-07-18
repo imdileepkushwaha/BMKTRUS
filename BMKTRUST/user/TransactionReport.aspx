@@ -1,28 +1,24 @@
-﻿<%@ Page Title="Transaction Report" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="TransactionReport.aspx.cs" Inherits="admin_UserReport" %>
+<%@ Page Title="Transaction Report" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="TransactionReport.aspx.cs" Inherits="admin_UserReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../site/css/profile.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-    <section class="content-header">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-            <h6 class="fw-semibold mb-0">Transaction Report</h6>
-            <ul class="d-flex align-items-center gap-2">
-                <li class="fw-medium">
-                    <a href="Dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                        Dashboard
-                    </a>
-                </li>
-                <li>/</li>
-                <li class="fw-medium">Reports </li>
-                <li>/</li>
-                <li class="fw-medium">Transaction Report</li>
-            </ul>
+    <div class="bmk-panel">
+        <div class="bmk-profile-hero">
+            <div class="bmk-profile-hero-text">
+                <span class="eyebrow">Reports</span>
+                <h1>Transaction Report</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; Reports &nbsp;/&nbsp; Transactions</p>
+            </div>
+            <div class="bmk-profile-hero-actions">
+                <a class="btn-ghost" href="TransactionReport.aspx">Transactions</a>
+            </div>
         </div>
-    </section>
-
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-panel">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -65,7 +61,7 @@
                             <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
 
 
-                            <asp:ImageButton ID="imgExcel" runat="server" ImageUrl="~/img/excel-img.png" ToolTip="Download Excel" CssClass="pull-right" Width="40px" OnClick="imgExcel_Click" />
+                            <asp:LinkButton ID="imgExcel" runat="server" ToolTip="Download Excel" CssClass="bmk-excel-btn pull-right" OnClick="imgExcel_Click" aria-label="Download Excel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8.89 17h1.61l.95-1.92L12.4 17h1.61l-1.72-3.05L14.1 11h-1.66l-.88 1.86L10.7 11H9.08l1.72 2.95L8.89 17z"/></svg></asp:LinkButton>
 
                         </div>
 
@@ -76,7 +72,7 @@
 
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Details</h3>
+                            <h3 class="box-title">Transaction Details</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
@@ -106,16 +102,16 @@
                                 <div class="col-md-6">
                                 </div>
                                 <div class="col-md-2">
-
-                                    <asp:DropDownList ID="ddlRecordFilter" runat="server" CssClass="form-control pull-right margin-left-10" AutoPostBack="true"
-                                        OnSelectedIndexChanged="ddlRecordFilter_SelectedIndexChanged" Width="80px">
-                                        <asp:ListItem>All</asp:ListItem>
-                                        <asp:ListItem>25</asp:ListItem>
-                                        <asp:ListItem>50</asp:ListItem>
-                                        <asp:ListItem>100</asp:ListItem>
-                                        <asp:ListItem>500</asp:ListItem>
-                                    </asp:DropDownList>
-
+                                    <div class="form-group">
+                                        <label>Page Size</label>
+                                        <asp:DropDownList ID="ddlRecordFilter" runat="server" CssClass="form-control" AutoPostBack="true"
+                                            OnSelectedIndexChanged="ddlRecordFilter_SelectedIndexChanged">
+                                            <asp:ListItem Value="10">10</asp:ListItem>
+                                            <asp:ListItem Value="25" Selected="True">25</asp:ListItem>
+                                            <asp:ListItem Value="50">50</asp:ListItem>
+                                            <asp:ListItem Value="100">100</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
                                 </div>
                             </div>
 
@@ -124,11 +120,17 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group table-responsive">
-                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand">
+                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%"
+                                            AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand"
+                                            AllowPaging="true" PageSize="25" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                            PagerStyle-CssClass="bmk-pager" PagerSettings-Mode="NumericFirstLast"
+                                            PagerSettings-Position="Bottom" PagerSettings-PageButtonCount="5"
+                                            PagerSettings-FirstPageText="«" PagerSettings-LastPageText="»"
+                                            PagerSettings-PreviousPageText="‹" PagerSettings-NextPageText="›">
                                             <Columns>
                                                 <asp:TemplateField HeaderText="#">
                                                     <ItemTemplate>
-                                                        <%#Container.DataItemIndex+1 %>
+                                                        <%# (GridView1.PageIndex * GridView1.PageSize) + Container.DataItemIndex + 1 %>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Date">
@@ -195,6 +197,7 @@
         </Triggers>
     </asp:UpdatePanel>
 
+    </div>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
     <script type="text/javascript">

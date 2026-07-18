@@ -1,4 +1,4 @@
-﻿using BusinessLogicTier;
+using BusinessLogicTier;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -49,11 +49,11 @@ public partial class admin_UserReport : System.Web.UI.Page
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        GridView1.PageIndex = 0;
         loaduser();
     }
     void loaduser()
     {
-
         if (txtfromdate.Text != "")
         {
             objaccount.FromDate = Message.GetIndianDate(txtfromdate.Text);
@@ -70,31 +70,24 @@ public partial class admin_UserReport : System.Web.UI.Page
         {
             objaccount.ToDate = DateTime.MinValue;
         }
-        string noOfRows = "";
-        if (ddlRecordFilter.SelectedItem.Text == "All")
-            noOfRows = "";
 
-            //else if (ddlRecordFilter.SelectedItem.Text == "5")
-        //    noOfRows = "top 5";
+        int pageSize;
+        if (!int.TryParse(ddlRecordFilter.SelectedValue, out pageSize) || pageSize <= 0)
+            pageSize = 25;
+        GridView1.PageSize = pageSize;
 
-        else if (ddlRecordFilter.SelectedItem.Text == "25")
-            noOfRows = "top 25";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "50")
-            noOfRows = "top 50";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "100")
-            noOfRows = "top 100";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "500")
-            noOfRows = "top 500";
-
-        objaccount.NoOfRow = noOfRows;
+        objaccount.NoOfRow = "";
         objaccount.UserId = txtuserid.Text;
         DataTable dt = new DataTable();
         dt = objaccount.getTransactionReport(objaccount);
         GridView1.DataSource = dt;
         GridView1.DataBind();
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+        loaduser();
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)
@@ -110,6 +103,9 @@ public partial class admin_UserReport : System.Web.UI.Page
 
     protected void ExportGridToExcel()
     {
+        GridView1.AllowPaging = false;
+        loaduser();
+
         Response.Clear();
         Response.Buffer = true;
         Response.ClearContent();
@@ -127,15 +123,15 @@ public partial class admin_UserReport : System.Web.UI.Page
         GridView1.RenderControl(htmltextwrtter);
         Response.Write(strwritter.ToString());
         Response.End();
-
     }
 
-    protected void imgExcel_Click(object sender, ImageClickEventArgs e)
+    protected void imgExcel_Click(object sender, EventArgs e)
     {
         ExportGridToExcel();
     }
     protected void ddlRecordFilter_SelectedIndexChanged(object sender, EventArgs e)
     {
+        GridView1.PageIndex = 0;
         loaduser();
     }
 }
