@@ -1,9 +1,6 @@
 ﻿using BusinessLogicTier;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -18,6 +15,7 @@ public partial class admin_StateAdd : System.Web.UI.Page
             {
                 loadcountry();
                 loadstate();
+                SetAddMode();
             }
             else
             {
@@ -28,62 +26,70 @@ public partial class admin_StateAdd : System.Web.UI.Page
     void loadcountry()
     {
         ddcountry.Items.Clear();
-        DataTable dt = new DataTable();
-        dt = objState.getCountry();
+        DataTable dt = objState.getCountry();
         ddcountry.DataSource = dt;
         ddcountry.DataTextField = "CountryName";
         ddcountry.DataValueField = "CountryID";
         ddcountry.DataBind();
-        ListItem li = new ListItem("Select Country", "0");
-        ddcountry.Items.Insert(0, li);
+        ddcountry.Items.Insert(0, new ListItem("Select Country", "0"));
     }
     void loadstate()
     {
-        DataTable dt = new DataTable();
-        dt = objState.getStateAll();
-        GridView1.DataSource = dt;
+        GridView1.DataSource = objState.getStateAll();
         GridView1.DataBind();
     }
-   
-    protected void btnUpdate_Click(object sender, EventArgs e)
+    void SetAddMode()
     {
-        objState.StateName = txtstatenameedit.Text;
-        objState.StateId = lblstateid.Text;
-        string res = objState.Update_State(objState);
-        if (res == "t")
-        {
-            string popupScript = "alert('State Edited Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            string popupScript2 = "Closepopup();";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript2, true);
-            loadstate();
-        }
+        lblstateid.Text = "";
+        litFormTitle.Text = "Add State";
+        btnSubmit.Text = "Submit";
+        btnSubmit.OnClientClick = "return validate();";
+        ddcountry.Enabled = true;
+    }
+    void ClearForm()
+    {
+        txtstatename.Text = "";
+        ddcountry.SelectedValue = "0";
+        SetAddMode();
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        objState.CountryId = ddcountry.SelectedValue.ToString();
-        objState.StateName  = txtstatename.Text;
-        objState.MentionBy = Session["useradmin"].ToString();
-        string res = objState.Insert_State(objState);
-        if (res == "t")
+        if (!string.IsNullOrEmpty(lblstateid.Text))
         {
-            string popupScript = "alert('State Added Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            txtstatename.Text = ""; ddcountry.SelectedValue = "0";
+            objState.StateName = txtstatename.Text;
+            objState.StateId = lblstateid.Text;
+            string res = objState.Update_State(objState);
+            if (res == "t")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('State Edited Successfully');", true);
+                ClearForm();
+                loadstate();
+            }
+            return;
+        }
+
+        objState.CountryId = ddcountry.SelectedValue.ToString();
+        objState.StateName = txtstatename.Text;
+        objState.MentionBy = Session["useradmin"].ToString();
+        string addRes = objState.Insert_State(objState);
+        if (addRes == "t")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('State Added Successfully');", true);
+            ClearForm();
             loadstate();
         }
+        else if (addRes == "f")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('State Already Exists');", true);
+        }
         else
-            if (res == "f")
-            {
-                string popupScript = "alert('State Already Exists');";
-                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            }
-            else
-            {
-                string popupScript = "alert('Unknow error occurred');";
-                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            }
-
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('Unknow error occurred');", true);
+        }
+    }
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        ClearForm();
     }
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -92,9 +98,16 @@ public partial class admin_StateAdd : System.Web.UI.Page
             int index = Convert.ToInt32(e.CommandArgument.ToString());
             Label lblid = (Label)GridView1.Rows[index].FindControl("lblid");
             Label lblstatename = (Label)GridView1.Rows[index].FindControl("lblstatename");
+            Label lblCountryname = (Label)GridView1.Rows[index].FindControl("lblCountryname");
             lblstateid.Text = lblid.Text;
-            txtstatenameedit.Text = lblstatename.Text;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
+            txtstatename.Text = lblstatename.Text;
+            ListItem countryItem = ddcountry.Items.FindByText(lblCountryname.Text);
+            if (countryItem != null)
+                ddcountry.SelectedValue = countryItem.Value;
+            litFormTitle.Text = "Edit State Details";
+            btnSubmit.Text = "Update";
+            btnSubmit.OnClientClick = "return validateEdit();";
+            ddcountry.Enabled = false;
         }
     }
 }

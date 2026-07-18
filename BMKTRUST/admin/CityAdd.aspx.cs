@@ -1,9 +1,6 @@
 ﻿using BusinessLogicTier;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -18,6 +15,7 @@ public partial class admin_CityAdd : System.Web.UI.Page
             {
                 loadcountry();
                 loadcity();
+                SetAddMode();
             }
             else
             {
@@ -28,75 +26,92 @@ public partial class admin_CityAdd : System.Web.UI.Page
     void loadcountry()
     {
         ddcountry.Items.Clear();
-        DataTable dt = new DataTable();
-        dt = objState.getCountry();
+        DataTable dt = objState.getCountry();
         ddcountry.DataSource = dt;
         ddcountry.DataTextField = "CountryName";
         ddcountry.DataValueField = "CountryID";
         ddcountry.DataBind();
-        ListItem li = new ListItem("Select Country", "0");
-        ddcountry.Items.Insert(0, li);
+        ddcountry.Items.Insert(0, new ListItem("Select Country", "0"));
     }
     void loadstate()
     {
         ddstate.Items.Clear();
-        DataTable dt = new DataTable();
         objState.CountryId = ddcountry.SelectedValue.ToString();
-        dt = objState.getState(objState);
-        
+        DataTable dt = objState.getState(objState);
         ddstate.DataSource = dt;
         ddstate.DataTextField = "StateName";
         ddstate.DataValueField = "StateID";
         ddstate.DataBind();
-        ListItem li = new ListItem("Select State", "0");
-        ddstate.Items.Insert(0, li);
+        ddstate.Items.Insert(0, new ListItem("Select State", "0"));
     }
     void loadcity()
     {
-        DataTable dt = new DataTable();
-        dt = objState.getCityAll();
-        GridView1.DataSource = dt;
+        GridView1.DataSource = objState.getCityAll();
         GridView1.DataBind();
     }
-    protected void btnUpdate_Click(object sender, EventArgs e)
+    void SetAddMode()
     {
-        objState.CityName = txtcitynameedit.Text;
-        objState.CityId = lblcityid.Text;
-        string res = objState.Update_City(objState);
-        if (res == "t")
-        {
-            string popupScript = "alert('City Edited Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            string popupScript2 = "Closepopup();";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript2, true);
-            loadcity();
-        }
+        lblcityid.Text = "";
+        litFormTitle.Text = "Add City";
+        btnSubmit.Text = "Submit";
+        btnSubmit.OnClientClick = "return validate();";
+        ddcountry.Enabled = true;
+        ddstate.Enabled = true;
+    }
+    void SetEditMode()
+    {
+        litFormTitle.Text = "Edit City Details";
+        btnSubmit.Text = "Update";
+        btnSubmit.OnClientClick = "return validateEdit();";
+        ddcountry.Enabled = false;
+        ddstate.Enabled = false;
+    }
+    void ClearForm()
+    {
+        txtcityname.Text = "";
+        ddcountry.SelectedValue = "0";
+        ddstate.Items.Clear();
+        ddstate.Items.Insert(0, new ListItem("Select State", "0"));
+        SetAddMode();
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        if (!string.IsNullOrEmpty(lblcityid.Text))
+        {
+            objState.CityName = txtcityname.Text;
+            objState.CityId = lblcityid.Text;
+            string res = objState.Update_City(objState);
+            if (res == "t")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('City Edited Successfully');", true);
+                ClearForm();
+                loadcity();
+            }
+            return;
+        }
+
         objState.StateId = ddstate.SelectedValue.ToString();
         objState.CityName = txtcityname.Text;
         objState.MentionBy = Session["useradmin"].ToString();
-        string res = objState.Insert_City(objState);
-        if (res == "t")
+        string addRes = objState.Insert_City(objState);
+        if (addRes == "t")
         {
-            string popupScript = "alert('City Added Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            txtcityname.Text = ""; ddcountry.SelectedValue = "0"; ddstate.SelectedValue = "0";
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('City Added Successfully');", true);
+            ClearForm();
             loadcity();
         }
+        else if (addRes == "f")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('City Already Exists');", true);
+        }
         else
-            if (res == "f")
-            {
-                string popupScript = "alert('City Already Exists');";
-                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            }
-            else
-            {
-                string popupScript = "alert('Unknow error occurred');";
-                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            }
-
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('Unknow error occurred');", true);
+        }
+    }
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        ClearForm();
     }
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -104,10 +119,23 @@ public partial class admin_CityAdd : System.Web.UI.Page
         {
             int index = Convert.ToInt32(e.CommandArgument.ToString());
             Label lblid = (Label)GridView1.Rows[index].FindControl("lblid");
-            Label lblstatename = (Label)GridView1.Rows[index].FindControl("lblcityname");
+            Label lblcityname = (Label)GridView1.Rows[index].FindControl("lblcityname");
+            Label lblCountryname = (Label)GridView1.Rows[index].FindControl("lblCountryname");
+            Label lblstatename = (Label)GridView1.Rows[index].FindControl("lblstatename");
+
             lblcityid.Text = lblid.Text;
-            txtcitynameedit.Text = lblstatename.Text;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
+            txtcityname.Text = lblcityname.Text;
+
+            ListItem countryItem = ddcountry.Items.FindByText(lblCountryname.Text);
+            if (countryItem != null)
+            {
+                ddcountry.SelectedValue = countryItem.Value;
+                loadstate();
+                ListItem stateItem = ddstate.Items.FindByText(lblstatename.Text);
+                if (stateItem != null)
+                    ddstate.SelectedValue = stateItem.Value;
+            }
+            SetEditMode();
         }
     }
     protected void ddcountry_SelectedIndexChanged(object sender, EventArgs e)

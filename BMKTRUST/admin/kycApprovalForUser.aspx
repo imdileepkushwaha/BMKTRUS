@@ -29,17 +29,26 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" Runat="Server">
+    <section class="content-header">
+        <h1>KYC Approval</h1>
+        <ol class="breadcrumb">
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">My Network</a></li>
+            <li class="active">KYC Approval</li>
+        </ol>
+    </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" Runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <div class="adm-util-page">
                 <div class="row">
                     <div class="col-md-12">
 
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Search Crteria</h3>
+                            <h3 class="box-title">Search Criteria</h3>
                         </div>
 
                         <div class="box-body">
@@ -310,7 +319,7 @@
                     </div>
                 </div>
             </div>
-
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>

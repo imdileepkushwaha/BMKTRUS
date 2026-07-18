@@ -127,16 +127,14 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" Runat="Server">
     
-        <section class="content-header">
-      <h1>
-     Franchisee Purchase Entry
-      </h1>
-      <ol class="breadcrumb">
-     <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Franchisee management</a></li>
-        <li class="active"> Franchisee Purchase Entry </li>
-      </ol>
-    </section>    
+    <section class="content-header">
+        <h1>Franchisee Purchase Entry</h1>
+        <ol class="breadcrumb">
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Franchisee Management</a></li>
+            <li class="active">Franchisee Purchase Entry</li>
+        </ol>
+    </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" Runat="Server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
@@ -149,6 +147,7 @@
     </asp:UpdateProgress>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <div class="adm-util-page">
                 <div class="row">
             <div class="col-md-12">
 
@@ -333,7 +332,10 @@
                                             </asp:TemplateField>
                                           <asp:TemplateField HeaderText="">
                                         <ItemTemplate>
-                                           <asp:LinkButton ID="lbEdit" CommandName="edt"  CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"  runat="server"><i class="icon fa fa-pencil-square-o" aria-hidden="true"></i></asp:LinkButton>
+                                           <asp:LinkButton ID="lbEdit" CommandName="edt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                                               runat="server" CssClass="adm-action-btn" ToolTip="Edit item">
+                                               <i class="fa fa-pencil" aria-hidden="true"></i>
+                                           </asp:LinkButton>
                                             
                                         </ItemTemplate>
                                        
@@ -632,7 +634,7 @@
           </div>
                                  </div>
           </div>
-          
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>

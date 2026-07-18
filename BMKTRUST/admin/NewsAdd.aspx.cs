@@ -1,9 +1,6 @@
 ﻿using BusinessLogicTier;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -17,6 +14,7 @@ public partial class admin_NewsAdd : System.Web.UI.Page
             if (Session["useradmin"] != null)
             {
                 loaddata();
+                SetAddMode();
             }
             else
             {
@@ -26,50 +24,53 @@ public partial class admin_NewsAdd : System.Web.UI.Page
     }
     void loaddata()
     {
-        DataTable dt = new DataTable();
-        dt = objnews.getNews();
-        GridView1.DataSource = dt;
+        GridView1.DataSource = objnews.getNews();
         GridView1.DataBind();
     }
-
-    protected void btnUpdate_Click(object sender, EventArgs e)
+    void SetAddMode()
     {
-        objnews.NewsDetail = txtnewsedit.Text;
-        objnews.NewsId = lblnewsid.Text;
-        string res = objnews.Update_News(objnews);
-        if (res == "t")
-        {
-            string popupScript = "alert('News Edited Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            string popupScript2 = "Closepopup();";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript2, true);
-            loaddata();
-        }
+        lblnewsid.Text = "";
+        litFormTitle.Text = "Add News";
+        btnSubmit.Text = "Submit";
+    }
+    void ClearForm()
+    {
+        txtnews.Text = "";
+        SetAddMode();
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        if (!string.IsNullOrEmpty(lblnewsid.Text))
+        {
+            objnews.NewsDetail = txtnews.Text;
+            objnews.NewsId = lblnewsid.Text;
+            string res = objnews.Update_News(objnews);
+            if (res == "t")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('News Edited Successfully');", true);
+                ClearForm();
+                loaddata();
+            }
+            return;
+        }
+
         objnews.NewsDetail = txtnews.Text;
         objnews.MentionBy = Session["useradmin"].ToString();
-        string res = objnews.Insert_News(objnews);
-        if (res == "t")
+        string addRes = objnews.Insert_News(objnews);
+        if (addRes == "t")
         {
-            string popupScript = "alert('News Added Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            txtnews.Text = "";
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('News Added Successfully');", true);
+            ClearForm();
             loaddata();
         }
+        else if (addRes == "f")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('News already exists.');", true);
+        }
         else
-            if (res == "f")
-            {
-                string popupScript = "alert('News already exists.');";
-                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            }
-            else
-            {
-                string popupScript = "alert('Unknow error occurred');";
-                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            }
-
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('Unknow error occurred');", true);
+        }
     }
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -77,10 +78,11 @@ public partial class admin_NewsAdd : System.Web.UI.Page
         {
             int index = Convert.ToInt32(e.CommandArgument.ToString());
             Label lblid = (Label)GridView1.Rows[index].FindControl("lblid");
-            Label lblbankname = (Label)GridView1.Rows[index].FindControl("lblnews");
+            Label lblnews = (Label)GridView1.Rows[index].FindControl("lblnews");
             lblnewsid.Text = lblid.Text;
-            txtnewsedit.Text = lblbankname.Text;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
+            txtnews.Text = lblnews.Text;
+            litFormTitle.Text = "Edit News Details";
+            btnSubmit.Text = "Update";
         }
         if (e.CommandName == "mydel")
         {
@@ -89,13 +91,12 @@ public partial class admin_NewsAdd : System.Web.UI.Page
             objnews.NewsId = lblid.Text;
             objnews.Delete_News(objnews);
             loaddata();
-            string popupScript = "alert('News Deleted Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-           
+            ClearForm();
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('News Deleted Successfully');", true);
         }
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {
-        Response.Redirect("Dashboard.aspx");
+        ClearForm();
     }
 }

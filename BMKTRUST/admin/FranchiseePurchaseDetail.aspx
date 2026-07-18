@@ -5,16 +5,14 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" Runat="Server">
      
-      <section class="content-header">
-      <h1>
-     Franchisee Purchase Detail
-      </h1>
-      <ol class="breadcrumb">
-     <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Franchisee management</a></li>
-        <li class="active"> Franchisee Purchase Detail </li>
-      </ol>
-    </section>    
+    <section class="content-header">
+        <h1>Franchisee Purchase Detail</h1>
+        <ol class="breadcrumb">
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Franchisee Management</a></li>
+            <li class="active">Franchisee Purchase Detail</li>
+        </ol>
+    </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" Runat="Server">
      <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
@@ -27,12 +25,13 @@
     </asp:UpdateProgress>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <div class="adm-util-page">
                   <div class="row">
             <div class="col-md-12">
 
              <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Franchisee Purchase Master</h3>
+              <h3 class="box-title">Search Criteria</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -224,12 +223,7 @@
 
 
                </div>
-
-
-
-           
-
-            
+            </div>
              </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>

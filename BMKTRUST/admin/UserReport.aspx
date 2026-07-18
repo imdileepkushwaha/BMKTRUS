@@ -71,27 +71,26 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
- <section class="content-header">
-      <h1>
-       User Report     
-      </h1>
-      <ol class="breadcrumb">
-     <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Retailer</a></li>
-        <li class="active">User Report</li>
-      </ol>
-    </section>  
+    <section class="content-header">
+        <h1>User Report</h1>
+        <ol class="breadcrumb">
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">My Network</a></li>
+            <li class="active">User Report</li>
+        </ol>
+    </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <div class="adm-util-page">
                 <div class="row">
                     <div class="col-md-12">
 
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Search Crteria</h3>
+                            <h3 class="box-title">Search Criteria</h3>
                         </div>
 
                         <div class="box-body">
@@ -372,7 +371,10 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Action">
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lbEdit" CommandName="edt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" runat="server"><i class="icon fa fa-pencil-square-o" aria-hidden="true"></i></asp:LinkButton>
+                                            <asp:LinkButton ID="lbEdit" CommandName="edt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                                                runat="server" CssClass="adm-action-btn" ToolTip="Edit user">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="BankDetails">
@@ -520,14 +522,8 @@
                         </div>
                     </div>
                 </div>
-           
                     </div>
-
-
-
-            
-
-            
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
 

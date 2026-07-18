@@ -1,193 +1,167 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="CountryAdd.aspx.cs" Inherits="admin_CountryAdd" %>
+﻿<%@ Page Title="Add Country" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="CountryAdd.aspx.cs" Inherits="admin_CountryAdd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <style type="text/css">
+        .adm-page-country .adm-field-hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #9CA3AF;
+            font-weight: 500;
+        }
+        .adm-page-country .adm-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(227, 28, 35, 0.08);
+            color: #E31C23 !important;
+            text-decoration: none !important;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .adm-page-country .adm-action-btn:hover {
+            background: rgba(227, 28, 35, 0.16);
+            transform: translateY(-1px);
+        }
+        .adm-page-country .adm-code-pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            background: #F3F4F8;
+            color: #4B5563;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+        }
+    </style>
     <script type="text/javascript">
-
         function validate() {
-            // alert('sd');
-            if (document.getElementById("<%=txtcountryname.ClientID%>").value == "") {
-
+            if (document.getElementById("<%=txtcountryname.ClientID%>").value.replace(/^\s+|\s+$/g, "") === "") {
                 alert('Enter Country Name');
-                // alert("Enter Rank No"); 
                 document.getElementById("<%=txtcountryname.ClientID%>").focus();
                 return false;
             }
-
-            if (document.getElementById("<%=txtcountrycode.ClientID%>").value == "") {
-
+            if (document.getElementById("<%=txtcountrycode.ClientID%>").value.replace(/^\s+|\s+$/g, "") === "") {
                 alert('Enter Country Code');
-                // alert("Enter Rank No"); 
                 document.getElementById("<%=txtcountrycode.ClientID%>").focus();
                 return false;
             }
+            return true;
         }
-
-           function validate2() {
-               // alert('sd');
-               if (document.getElementById("<%=txtcountrynameedit.ClientID%>").value == "") {
-
-                   alert('Enter Country Name');
-                   // alert("Enter Rank No"); 
-                   document.getElementById("<%=txtcountrynameedit.ClientID%>").focus();
-                   return false;
-               }
-               if (document.getElementById("<%=txtcountrycodeedit.ClientID%>").value == "") {
-
-                   alert('Enter Country Code');
-                   // alert("Enter Rank No"); 
-                   document.getElementById("<%=txtcountrycodeedit.ClientID%>").focus();
-                   return false;
-               }
-           }
     </script>
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
     <section class="content-header">
-        <h1>Add Country     
-      </h1>
+        <h1>Country Master</h1>
         <ol class="breadcrumb">
-            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i>Home</a></li>
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Utility management</a></li>
             <li class="active">Add Country</li>
         </ol>
     </section>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
 
+<asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
-            <div class="row">
-                <!-- left column -->
-                <div class="col-md-12">
-
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Add Country</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>Country Name</label>
-                                <asp:TextBox ID="txtcountryname" CssClass="form-control" runat="server"></asp:TextBox>
+            <div class="adm-page-country">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <asp:Literal ID="litFormTitle" runat="server" Text="Add Country"></asp:Literal>
+                                </h3>
                             </div>
-                        </div>
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>Country Code</label>
-                                <asp:TextBox ID="txtcountrycode" CssClass="form-control" runat="server"></asp:TextBox>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
-                            <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" />
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-md-12">
-
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Details</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-
-                        <div class="box-body">
-                            <div class="form-group">
-                                <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand">
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="#">
-                                            <ItemTemplate>
-                                                <%#Container.DataItemIndex+1 %>
-                                                <asp:Label ID="lblid" runat="server" Visible="false" Text='<%#Eval("Countryid") %>'></asp:Label>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Country Name">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblCountryname" runat="server" Text='<%#Eval("CountryName") %>'></asp:Label>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Country Code">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblCountrycode" runat="server" Text='<%#Eval("CountryCode") %>'></asp:Label>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Action">
-                                            <ItemTemplate>
-
-                                                <asp:LinkButton ID="lbEdit" CommandName="edt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" runat="server"><i class="icon fa fa-pencil-square-o" aria-hidden="true"></i></asp:LinkButton>
-                                            </ItemTemplate>
-
-                                        </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
-                            </div>
-
-                        </div>
-                        <!-- /.box-body -->
-
-
-
-                    </div>
-                </div>
-                <div id="myModal" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Edit Country</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    Country Name
-                          <asp:Label ID="lblcountryid" Visible="false" runat="server" Text=""></asp:Label>
-                                    <asp:TextBox runat="server" class="form-control" ID="txtcountrynameedit"></asp:TextBox>
+                            <div class="box-body">
+                                <asp:Label ID="lblcountryid" Visible="false" runat="server" Text=""></asp:Label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="<%= txtcountryname.ClientID %>">Country Name</label>
+                                            <asp:TextBox ID="txtcountryname" CssClass="form-control" runat="server" placeholder="e.g. India" MaxLength="100"></asp:TextBox>
+                                            <span class="adm-field-hint">Full official country name</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="<%= txtcountrycode.ClientID %>">Country Code</label>
+                                            <asp:TextBox ID="txtcountrycode" CssClass="form-control" runat="server" placeholder="e.g. IN / +91" MaxLength="20"></asp:TextBox>
+                                            <span class="adm-field-hint">Short code used in forms and reports</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    Country code
-                          <asp:Label ID="Label1" Visible="false" runat="server" Text=""></asp:Label>
-                                    <asp:TextBox runat="server" class="form-control" ID="txtcountrycodeedit"></asp:TextBox>
-                                </div>
+                            <div class="box-footer">
+                                <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
+                                <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
                             </div>
-                            <div class="modal-footer">
-                                <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClientClick="return validate2();" CssClass="btn btn-primary" OnClick="btnUpdate_Click" />
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Country List</h3>
+                                <span class="adm-code-pill">
+                                    <asp:Literal ID="litCount" runat="server" Text="0 countries"></asp:Literal>
+                                </span>
+                            </div>
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable"
+                                        Width="100%" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand"
+                                        EmptyDataText="No countries found. Add your first country using the form." GridLines="None">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="#">
+                                                <ItemTemplate>
+                                                    <%# Container.DataItemIndex + 1 %>
+                                                    <asp:Label ID="lblid" runat="server" Visible="false" Text='<%# Eval("Countryid") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <HeaderStyle Width="60px" />
+                                                <ItemStyle Width="60px" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Country Name">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblCountryname" runat="server" Text='<%# Eval("CountryName") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Code">
+                                                <ItemTemplate>
+                                                    <span class="adm-code-pill">
+                                                        <asp:Label ID="lblCountrycode" runat="server" Text='<%# Eval("CountryCode") %>'></asp:Label>
+                                                    </span>
+                                                </ItemTemplate>
+                                                <HeaderStyle Width="120px" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Action">
+                                                <ItemTemplate>
+                                                    <asp:LinkButton ID="lbEdit" CommandName="edt"
+                                                        CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                        runat="server" CssClass="adm-action-btn" ToolTip="Edit country">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </asp:LinkButton>
+                                                </ItemTemplate>
+                                                <HeaderStyle Width="80px" />
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
-
         </ContentTemplate>
     </asp:UpdatePanel>
-
 </asp:Content>
+
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
-
-
-
-
-    <script type="text/javascript">
-
-
-        function showModal() {
-            $('#myModal').modal({ backdrop: 'static', keyboard: false })
-        }
-        function Closepopup() {
-            $('#myModal').modal('hide');
-            $('body').removeClass('modal-open');
-            $('body').css('padding-right', '0');
-            $('.modal-backdrop').remove();
-
-        }
-    </script>
 </asp:Content>
-

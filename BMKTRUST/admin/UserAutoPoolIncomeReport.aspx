@@ -1,9 +1,7 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/admin/adminmaster.master" AutoEventWireup="true" CodeFile="UserAutoPoolIncomeReport.aspx.cs" Inherits="admin_UserAutoPoolIncomeReport" %>
+<%@ Page Title="AutoPool Income Report" Language="C#" MasterPageFile="~/admin/adminmaster.master" AutoEventWireup="true" CodeFile="UserAutoPoolIncomeReport.aspx.cs" Inherits="admin_UserAutoPoolIncomeReport" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style type="text/css">
-
         .Approved {
             background-color: #127113;
             color: #fff;
@@ -24,153 +22,147 @@
             padding: 3px;
             border-radius: 3px;
         }
-
     </style>
+</asp:Content>
 
+<asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
+    <section class="content-header">
+        <h1>AutoPool Income Report</h1>
+        <ol class="breadcrumb">
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Income Reports</a></li>
+            <li class="active">AutoPool Income Report</li>
+        </ol>
+    </section>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" Runat="Server">
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" Runat="Server">
+
+<asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <div class="adm-util-page">
                 <div class="row">
                     <div class="col-md-12">
-
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Search Crteria</h3>
-                        </div>
-
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>User ID</label>
-                                       <asp:TextBox ID="txtname" CssClass="form-control" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" style="display:none;">
-                                    <div class="form-group">
-                                        <label>Mobile No</label>
-                                      <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" style="display:none;">
-                                    <div class="form-group">
-                                        <label>Email Id</label>
-                                        <asp:TextBox ID="txtemail" CssClass="form-control" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Search Criteria</h3>
                             </div>
-                            <div class="row">
-
-                                <div class="col-md-4" style="display:none;">
-                                    <div class="form-group">
-                                        <label>From date</label>
-                                       <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" style="display:none;">
-                                        <label>To date</label>
-                                         <asp:TextBox ID="txttodate"  CssClass="form-control form_date" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" style="display:none;">
-                                    <div class="form-group">
-                                          <label>Country</label>
-                                         <asp:DropDownList ID="ddcountry" AutoPostBack="true" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddcountry_SelectedIndexChanged">
-                                            <asp:ListItem Value="0"> Select Country</asp:ListItem>
-                                        </asp:DropDownList>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>User ID</label>
+                                            <asp:TextBox ID="txtname" CssClass="form-control" runat="server" placeholder="Enter member user ID"></asp:TextBox>
+                                            <span class="adm-field-hint">Leave blank to search all members</span>
                                         </div>
                                     </div>
-                            </div>
-
-                             <div class="row">
-
-                                <div class="col-md-4" style="display:none;">
-                                    <div class="form-group">
-                                        <label>State</label>
-                                         <asp:DropDownList ID="ddstate" AutoPostBack="true" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddstate_SelectedIndexChanged">
-                                            <asp:ListItem Value="0"> Select State</asp:ListItem>
-                                        </asp:DropDownList>
-                                      
-                                    </div>
-                                </div>
-                                <div class="col-md-4" style="display:none;">
-                                    <div class="form-group">
-                                        <label>City</label>
-                                           <asp:DropDownList ID="ddcity"  AutoPostBack="true" OnSelectedIndexChanged="ddcity_SelectedIndexChanged"   CssClass="form-control" runat="server">
-                                            <asp:ListItem Value="0"> Select City</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group" style="display:none;">
-                                          <label>Area</label>
-                                         <asp:DropDownList ID="ddarea" CssClass="form-control" runat="server">
-                                            <asp:ListItem Value="0"> Select Area</asp:ListItem>
-                                        </asp:DropDownList>
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>Mobile No</label>
+                                            <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server"></asp:TextBox>
                                         </div>
                                     </div>
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>Email Id</label>
+                                            <asp:TextBox ID="txtemail" CssClass="form-control" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>From date</label>
+                                            <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>To date</label>
+                                            <asp:TextBox ID="txttodate" CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>Country</label>
+                                            <asp:DropDownList ID="ddcountry" AutoPostBack="true" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddcountry_SelectedIndexChanged">
+                                                <asp:ListItem Value="0"> Select Country</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>State</label>
+                                            <asp:DropDownList ID="ddstate" AutoPostBack="true" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddstate_SelectedIndexChanged">
+                                                <asp:ListItem Value="0"> Select State</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <asp:DropDownList ID="ddcity" AutoPostBack="true" OnSelectedIndexChanged="ddcity_SelectedIndexChanged" CssClass="form-control" runat="server">
+                                                <asp:ListItem Value="0"> Select City</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <label>Area</label>
+                                            <asp:DropDownList ID="ddarea" CssClass="form-control" runat="server">
+                                                <asp:ListItem Value="0"> Select Area</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
+                            <div class="box-footer">
+                                <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Search" OnClick="btnSubmit_Click" />
+                                <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
+                            </div>
                         </div>
-                        <div class="box-footer">
-                                <asp:Button ID="btnSubmit"  CssClass="btn btn-primary" runat="server" Text="Search" OnClick="btnSubmit_Click" />
-                                        <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
-                           
-
-
-
-                        </div>
-
                     </div>
-                </div>
+
                     <div class="col-md-12">
-
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Details</h3>
-                        </div>
-
-                        <div class="box-body">
-                       
-                               
-                                    <div class="form-group table-responsive">
-                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%" 
-                                            OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False">
-                                <Columns>
-                                    <asp:TemplateField HeaderText="#">
-                                        <ItemTemplate>
-                                            <%#Container.DataItemIndex + 1 %>
-                                          
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                     <asp:TemplateField HeaderText="User Id">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lbluserid" runat="server" Text='<%#Eval("userid") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Achievement Date">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblusername" runat="server" Text='<%#Eval("achievedate") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Reward">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblmobile" runat="server" Text='<%#Eval("awardamount") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                     <asp:TemplateField HeaderText="Rank">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblmobile" runat="server" Text='<%#Eval("awardname") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                   <%--  <asp:TemplateField HeaderText="User ID">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">AutoPool Income List</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable"
+                                        Width="100%" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" GridLines="None"
+                                        EmptyDataText="No AutoPool income records found.">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="#">
+                                                <ItemTemplate>
+                                                    <%#Container.DataItemIndex + 1 %>
+                                                </ItemTemplate>
+                                                <HeaderStyle Width="60px" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="User Id">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lbluserid" runat="server" Text='<%#Eval("userid") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Achievement Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblusername" runat="server" Text='<%#Eval("achievedate") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Reward">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblmobile" runat="server" Text='<%#Eval("awardamount") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Rank">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblmobile" runat="server" Text='<%#Eval("awardname") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <%--  <asp:TemplateField HeaderText="User ID">
                                         <ItemTemplate>
                                             <asp:Label ID="lbluserid" runat="server" Text='<%#Eval("userid") %>'></asp:Label>
                                         </ItemTemplate>
@@ -288,58 +280,35 @@
                                             <asp:LinkButton ID="lnkedit" runat="server"  Text="Edit"  CommandArgument='<%#Eval("userid") %>' OnClick="lnkedit_click"></asp:LinkButton>
                                                </ItemTemplate>
                                     </asp:TemplateField>--%>
-
-                                </Columns>
-                            </asp:GridView>
-                                    </div>
-                              
-                             
-                             
-                            
-                            
-
-                        </div>
-                        <div class="box-footer">
-                        
-
-
-
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-
-
-            <div id="DivPhotolarge" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                  
-                        <div class="modal-body">
-                       
-                            <div class="form-group">
-                                          
-                              <asp:Image ID="ImageLarge" runat="server" Width="100%" Height="100%" />
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
                             </div>
-                        
                         </div>
-                        <div class="modal-footer">
-                       
-                              <button type="button"  class="btn btn-danger"  data-dismiss="modal">Close</button>                  
+                    </div>
+
+                    <div id="DivPhotolarge" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <asp:Image ID="ImageLarge" runat="server" Width="100%" Height="100%" />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="contentScript" Runat="Server">
 
+<asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
     <script type="text/javascript">
-
         function showModal1() {
             $('#DivPhotolarge').modal({ backdrop: 'static', keyboard: false })
         }
@@ -348,10 +317,7 @@
             $('body').removeClass('modal-open');
             $('body').css('padding-right', '0');
             $('.modal-backdrop').remove();
-
         }
     </script>
-
-
 </asp:Content>
 

@@ -164,8 +164,8 @@
     <section class="content-header">
         <h1>Add User</h1>
         <ol class="breadcrumb">
-            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i>Home</a></li>
-            <li><a href="#">User</a></li>
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">My Network</a></li>
             <li class="active">Add User</li>
         </ol>
     </section>
@@ -181,6 +181,7 @@
     </asp:UpdateProgress>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <div class="adm-util-page">
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-primary">
@@ -492,6 +493,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </ContentTemplate>
         <Triggers>

@@ -1,9 +1,6 @@
 ﻿using BusinessLogicTier;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -17,6 +14,7 @@ public partial class admin_CountryAdd : System.Web.UI.Page
             if (Session["useradmin"] != null)
             {
                 loaddata();
+                SetAddMode();
             }
             else
             {
@@ -26,46 +24,64 @@ public partial class admin_CountryAdd : System.Web.UI.Page
     }
     void loaddata()
     {
-        DataTable dt = new DataTable();
-        dt = objState.getCountry();
+        DataTable dt = objState.getCountry();
         GridView1.DataSource = dt;
         GridView1.DataBind();
+        int count = dt != null ? dt.Rows.Count : 0;
+        litCount.Text = count + (count == 1 ? " country" : " countries");
     }
-
-    protected void btnUpdate_Click(object sender, EventArgs e)
+    void SetAddMode()
     {
-        objState.CountryName = txtcountrynameedit.Text;
-        objState.CountryCode = txtcountrycodeedit.Text;
-        objState.CountryId = lblcountryid.Text;
-        string res = objState.Update_Country(objState);
-        if (res == "t")
-        {
-            string popupScript = "alert('Country Edited Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            string popupScript2 = "Closepopup();";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript2, true);
-            loaddata();
-        }
+        lblcountryid.Text = "";
+        litFormTitle.Text = "Add Country";
+        btnSubmit.Text = "Submit";
+    }
+    void SetEditMode()
+    {
+        litFormTitle.Text = "Edit Country";
+        btnSubmit.Text = "Update";
+    }
+    void ClearForm()
+    {
+        txtcountryname.Text = "";
+        txtcountrycode.Text = "";
+        SetAddMode();
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        objState.CountryName = txtcountryname.Text;
-        objState.CountryCode = txtcountrycode.Text;
-        objState.MentionBy = Session["useradmin"].ToString();
-        string res = objState.Insert_Country(objState);
-        if (res == "t")
+        if (!string.IsNullOrEmpty(lblcountryid.Text))
         {
-            string popupScript = "alert('Country Added Successfully');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
-            txtcountryname.Text = "";
+            objState.CountryName = txtcountryname.Text.Trim();
+            objState.CountryCode = txtcountrycode.Text.Trim();
+            objState.CountryId = lblcountryid.Text;
+            string res = objState.Update_Country(objState);
+            if (res == "t")
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('Country Edited Successfully');", true);
+                ClearForm();
+                loaddata();
+            }
+            return;
+        }
+
+        objState.CountryName = txtcountryname.Text.Trim();
+        objState.CountryCode = txtcountrycode.Text.Trim();
+        objState.MentionBy = Session["useradmin"].ToString();
+        string addRes = objState.Insert_Country(objState);
+        if (addRes == "t")
+        {
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('Country Added Successfully');", true);
+            ClearForm();
             loaddata();
         }
         else
         {
-            string popupScript = "alert('Unknow error occurred');";
-            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
+            ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), "alert('Unknow error occurred');", true);
         }
-
+    }
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        ClearForm();
     }
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -76,9 +92,9 @@ public partial class admin_CountryAdd : System.Web.UI.Page
             Label lblCountryname = (Label)GridView1.Rows[index].FindControl("lblCountryname");
             Label lblCountrycode = (Label)GridView1.Rows[index].FindControl("lblCountrycode");
             lblcountryid.Text = lblid.Text;
-            txtcountrynameedit.Text = lblCountryname.Text;
-            txtcountrycodeedit.Text = lblCountrycode.Text;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
+            txtcountryname.Text = lblCountryname.Text;
+            txtcountrycode.Text = lblCountrycode.Text;
+            SetEditMode();
         }
     }
 }
