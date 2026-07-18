@@ -203,23 +203,24 @@
 
     <!--(Ends)-->
     <link href="../dist/css/user-profile.css" rel="stylesheet" />
+    <link href="../site/css/dashboard.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-        <h6 class="fw-semibold mb-0">Dashboard</h6>
-        <ul class="d-flex align-items-center gap-2">
-            <li class="fw-medium">
-                <a href="dashboard.aspx" class="d-flex align-items-center gap-1 hover-text-primary">
-                    <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                    Dashboard
-                </a>
-            </li>
-
-        </ul>
+    <div class="bmk-dashboard">
+        <div class="bmk-dash-hero">
+            <div class="bmk-dash-hero-text">
+                <span class="eyebrow">Member Panel</span>
+                <h1>Welcome back</h1>
+                <p>Bharat Manav Kalyan Trust &mdash; your account overview</p>
+            </div>
+            <div class="bmk-dash-hero-actions">
+                <a class="btn-gold" href="UserProfile.aspx">My Profile</a>
+                <a class="btn-ghost" href="WithdrawlRequstAdd.aspx">Withdrawal</a>
+            </div>
+        </div>
     </div>
-    <section class="content-header">
+    <section class="content-header" style="display:none;">
         <div class="ibox-title pull-left">
-
             <div style="display: none">
                 <h5>Other Income Wallet:
                 <asp:Label ID="lblwalletbalance123" runat="server" Text="Label" CssClass="label-success"></asp:Label>&nbsp;&nbsp;&nbsp;
@@ -233,65 +234,59 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <div class="bmk-dashboard">
     <div class="row gy-4">
+        <!-- Personal Info -->
         <div class="col-lg-6">
-            <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
-                <div class="pt-24 ms-16 mb-24 me-16">
-
-                    <h6 class="text-xl mb-16">Personal Info</h6>
-                    <ul>
-                        <li class="d-flex align-items-center gap-1 mb-12">
-                            <span class="w-30 text-md fw-semibold text-primary-light">Welcome</span>
-                            <span class="w-70 text-secondary-light fw-medium">:
-            <asp:Label ID="lblusername" runat="server" Text="Label"></asp:Label></span>
+            <div class="bmk-card">
+                <div class="bmk-card-body">
+                    <h6 class="bmk-card-title">Personal Info</h6>
+                    <ul class="bmk-info-list">
+                        <li>
+                            <span class="label">Welcome</span>
+                            <span class="value"><asp:Label ID="lblusername" runat="server" Text="Label"></asp:Label></span>
                         </li>
-                        <li class="d-flex align-items-center gap-1 mb-12">
-                            <span class="w-30 text-md fw-semibold text-primary-light">User ID</span>
-                            <span class="w-70 text-secondary-light fw-medium">:
-            <asp:Label ID="lbluserid" runat="server" Text="Label"></asp:Label></span>
+                        <li>
+                            <span class="label">User ID</span>
+                            <span class="value"><asp:Label ID="lbluserid" runat="server" Text="Label"></asp:Label></span>
                         </li>
-                        <li class="d-flex align-items-center gap-1 mb-12">
-                            <span class="w-30 text-md fw-semibold text-primary-light">Mobile</span>
-                            <span class="w-70 text-secondary-light fw-medium">:
-            <asp:Label ID="lblmobile" runat="server" Text=""></asp:Label></span>
+                        <li>
+                            <span class="label">Mobile</span>
+                            <span class="value"><asp:Label ID="lblmobile" runat="server" Text=""></asp:Label></span>
                         </li>
-                        <li class="d-flex align-items-center gap-1 mb-12">
-                            <span class="w-30 text-md fw-semibold text-primary-light">Rank</span>
-                            <span class="w-70 text-secondary-light fw-medium">:
-            <asp:Label ID="lblrank" runat="server" Text=""></asp:Label></span>
+                        <li>
+                            <span class="label">Rank</span>
+                            <span class="value"><asp:Label ID="lblrank" runat="server" Text=""></asp:Label></span>
                         </li>
-
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="card h-100">
-                <div class="card-body p-24">
 
-                    <div id="dvlink" runat="server" visible="True">
-                        <asp:Label class="form-label" ID="Label1" runat="server" Text="Affiliate Link "></asp:Label>
-                        <div class="input-group mb-24 ">
+        <!-- Affiliate Link -->
+        <div class="col-lg-6">
+            <div class="bmk-card">
+                <div class="bmk-card-body">
+                    <h6 class="bmk-card-title">Affiliate Link</h6>
+                    <div id="dvlink" runat="server" visible="True" class="bmk-affiliate">
+                        <asp:Label class="form-label" ID="Label1" runat="server" Text="Share your referral link"></asp:Label>
+                        <div class="input-group mb-0">
                             <asp:TextBox ID="TxtLeftLinkLink" runat="server" CssClass="form-control" />
                             <asp:Button ID="Button1" runat="server" Text="Copy" CssClass="btn btn-primary" OnClientClick="CopyToClipboard()" />
-
-
                         </div>
-
                     </div>
                     <div style="display:none">
                         <asp:Label class="form-label" ID="Label2" runat="server" Text="Affiliate Link (RIGHT)"></asp:Label>
                         <div class="input-group mb-0">
                             <asp:TextBox ID="TxtRightLink" runat="server" CssClass="form-control" />
                             <asp:Button ID="Button2" runat="server" Text="Copy" CssClass="btn btn-primary" OnClientClick="CopyToClipboard2()" />
-
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- News / bank alert (kept hidden as before) -->
         <div class="col-12 d-none">
             <div class="card h-100">
                 <div class="card-body p-24">
@@ -300,570 +295,271 @@
                             <marquee direction="left" onmouseover="stop();" onmouseout="start();">
                                 <asp:Literal ID="ltnews" runat="server"></asp:Literal></marquee>
                         </h6>
-
                     </div>
-
                     <div class="mt-32">
                         <asp:Panel ID="pnlnotification" runat="server">
-
                             <div class="alert alert-danger">
-                                <strong>Error!</strong> Please Update your bank details  <a href="UserEdit.aspx">click here</a> to update. 
+                                <strong>Error!</strong> Please Update your bank details  <a href="UserEdit.aspx">click here</a> to update.
                             </div>
-
                         </asp:Panel>
                     </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Account status | Team -->
+        <div class="col-xxl-6">
+            <div class="bmk-card">
+                <div class="bmk-card-body">
+                    <h6 class="bmk-card-title">Account Status</h6>
+                    <div class="bmk-status-row">
+                        <div>
+                            <h3>Rank</h3>
+                        </div>
+                        <div class="value">
+                            <asp:Label ID="lblrank1" runat="server" Text="0.00"></asp:Label>
+                            <asp:Label ID="lblrankreward" runat="server" Text="0.00" Visible="false"></asp:Label>
+                        </div>
+                    </div>
+                    <div class="bmk-status-row">
+                        <div>
+                            <h3>Plan Amount</h3>
+                        </div>
+                        <div class="value">
+                            <asp:Label ID="LblCurrentpackage" runat="server" Text="Category Name"></asp:Label>
+                        </div>
+                    </div>
+                    <div class="bmk-status-row">
+                        <div>
+                            <h3>Status</h3>
+                            <small><asp:Label ID="Lblactivatedate2" runat="server" Text="01/07/2024"></asp:Label></small>
+                        </div>
+                        <a href="javascript:void(0)" class="bmk-status-badge">
+                            <asp:Label ID="lblstatus" runat="server" Text="Label"></asp:Label>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-xxl-6">
-            <div class="row gy-0">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="d-flex justify-content-between mt-3 mb-3">
-                                <div class="card-rank">
-                                    <h3 class="mb-0">Rank</h3>
-
-                                </div>
-                                <div class="card-rank text-end">
-                                    <h3 class="mb-0">
-                                        <span class="text-muted me-1">
-                                            <asp:Label ID="lblrank1" runat="server" Text="0.00"></asp:Label>
-                                        </span>
-                                        <asp:Label ID="lblrankreward" runat="server" Text="0.00" Visible="false"></asp:Label>
-                                    </h3>
+            <div class="bmk-section-card" style="margin-top:0;">
+                <div class="bmk-section-head">
+                    <h6>Team Overview</h6>
+                </div>
+                <div class="bmk-section-body">
+                    <div class="row gy-3">
+                        <div class="col-12">
+                            <div class="bmk-team-tile">
+                                <div class="t-icon"><a href="UserDirectAssociates.aspx"><i class="ri-group-3-fill"></i></a></div>
+                                <span class="t-label">Total Direct</span>
+                                <p class="t-value"><asp:Label ID="LblDirect" runat="server" Text="Label"></asp:Label></p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="bmk-team-tile green">
+                                <div class="t-icon"><a href="UserDirectAssociates.aspx"><i class="ri-user-follow-fill"></i></a></div>
+                                <span class="t-label">Active Direct</span>
+                                <p class="t-value"><asp:Label ID="LblActiveDirect" runat="server" Text="Label"></asp:Label></p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="bmk-team-tile gold">
+                                <div class="t-icon"><a href="DownlineReport.aspx"><i class="ri-organization-chart"></i></a></div>
+                                <span class="t-label">Total Team</span>
+                                <p class="t-value"><asp:Label ID="LblTotalLeft" runat="server" Text="Label"></asp:Label></p>
+                                <div class="t-meta">
+                                    <a class="ok" href="DownlineReport.aspx"><asp:Label ID="Lblactiveleft" runat="server" Text="Label"></asp:Label> Active</a>
+                                    <a class="bad" href="DownlineReport.aspx"><asp:Label ID="LblInactiveleft" runat="server" Text="Label"></asp:Label> Inactive</a>
                                 </div>
                             </div>
-
-                            <hr />
-
-                            <div class="d-flex justify-content-between mt-3 mb-3">
-                                <div class="card-rank">
-                                    <h3 class="mb-0">Plan Amount</h3>
-
-                                </div>
-                                <div class="card-rank text-end">
-                                    <h3 class="mb-0">
-                                        <asp:Label ID="LblCurrentpackage" runat="server" Text="Category Name"></asp:Label>
-                                    </h3>
+                        </div>
+                        <div class="col-12" style="display:none">
+                            <div class="bmk-team-tile saffron">
+                                <div class="t-icon"><i class="ri-group-3-fill"></i></div>
+                                <span class="t-label">Total Right Team</span>
+                                <p class="t-value"><asp:Label ID="LblTotalright" runat="server" Text="Label"></asp:Label></p>
+                                <div class="t-meta">
+                                    <span class="ok"><asp:Label ID="LblActiveRight" runat="server" Text="Label"></asp:Label> Active</span>
+                                    <span class="bad"><asp:Label ID="LblInActiveRight" runat="server" Text="Label"></asp:Label> Inactive</span>
                                 </div>
                             </div>
-
-                            <hr />
-
-                            <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
-
-                                <div class="card-rank">
-                                    <h3 class="mb-0">Status</h3>
-                                    <small>
-                                        <asp:Label ID="Lblactivatedate2" runat="server" Text="01/07/2024"></asp:Label></small>
-                                </div>
-                                <a href="javascript:void(0)" class="btn btn-success btn-sm">
-                                    <asp:Label ID="lblstatus" runat="server" Text="Label"></asp:Label></a>
-                            </div>
-
-                            
                         </div>
                     </div>
                 </div>
-
             </div>
-			
-			<div class="card mt-24">
-                <div class="card-header">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Wallet</h6>
-
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="row gy-4">
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-1">
-                                <div class="card-body p-0">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                          <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Credited</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="LblCredited" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                                
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Debited</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="LblDebited" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-purple text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Balance</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="LblCurrentWallet" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        
-                    </div>
-                </div>
-
-            </div>
-
-			<div class="card mt-24">
-                <div class="card-header">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Income</h6>
-
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="row gy-4">
-                        <div class="col-xxl-6 col-sm-6" style="display:none">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-1">
-                                <div class="card-body p-0">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-primary-600 flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Direct Income</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblDirectincome" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                            <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Left Team</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblleftteam" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                            <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Middle Income</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblmiddleteam" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                            <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Right Income</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblrightteam" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Level Income</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lbllevelincome" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xxl-6 col-sm-6" style="display:none">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-purple text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Single Leg Income</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblsingleleg" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-<div class="col-xxl-6 col-sm-6" style="display:none">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-2">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-success-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Franchise Income</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblfranchise" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-6 col-sm-6" style="display:none">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-2">
-                                <div class="card-body p-0" >
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-success-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Reward</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblreward" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="card mt-24">
-                <div class="card-header">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Performance</h6>
-
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="row gy-4">
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-1">
-                                <div class="card-body p-0" data-bs-toggle="modal" data-bs-target="#modal-today">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-primary-600 flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Today Performance</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblTodayPerformance" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" data-bs-toggle="modal" data-bs-target="#modal-week">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Week Performance</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblCurrentWeek" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-3">
-                                <div class="card-body p-0" data-bs-toggle="modal" data-bs-target="#modal-month">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-purple text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Month Performance</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblCurrentMonth" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xxl-6 col-sm-6">
-                            <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-end-2">
-                                <div class="card-body p-0" data-bs-toggle="modal" data-bs-target="#modal-total">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="mb-0 w-48-px h-48-px bg-success-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6">
-                                                <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-                                            </span>
-                                            <div>
-                                                <span class="mb-2 fw-medium text-secondary-light text-sm">Total</span>
-                                                <h6 class="fw-semibold">
-                                                    <asp:Label ID="lblTotal" CssClass="heading" runat="server" Text="0"></asp:Label></h6>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-			
-			
-			
-			
         </div>
 
-
-        <div class="col-xxl-6">
-
-            <div class="card radius-12">
-                <div class="card-body p-16">
-                    <div class="row gy-4">
-                        <div class="col-xxl-12">
-                            <div class="px-20 py-16 shadow-none radius-8 h-100 bg-info-focus left-line line-bg-primary position-relative overflow-hidden">
-                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-                                    <div>
-                                        <span class="mb-2 fw-medium text-secondary-light text-md">Total Direct</span>
-                                        <h6 class="fw-semibold mb-1">
-                                            <asp:Label ID="LblDirect" runat="server" Text="Label"></asp:Label></h6>
-                                    </div>
-                                    <span class="w-44-px h-44-px radius-8 d-inline-flex justify-content-center align-items-center text-2xl mb-12 bg-primary-100 text-primary-600">
-                                    <a href="UserDirectAssociates.aspx">     <i class="ri-group-3-fill"></i> </a>
-                                    </span>
+        <!-- Wallet / Income / Performance: full-width rows (footer ke upar hi) -->
+        <div class="col-12">
+            <div class="bmk-section-card" style="margin-top:0;">
+                <div class="bmk-section-head">
+                    <h6>Wallet</h6>
+                </div>
+                <div class="bmk-section-body">
+                    <div class="row gy-3">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon gold"><iconify-icon icon="solar:wallet-money-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Credited</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="LblCredited" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="col-xxl-12">
-                            <div class="px-20 py-16 shadow-none radius-8 h-100 bg-purple-light left-line line-bg-lilac position-relative overflow-hidden">
-                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-                                    <div>
-                                        <span class="mb-2 fw-medium text-secondary-light text-md">Active Direct</span>
-                                        <h6 class="fw-semibold mb-1">
-                                            <asp:Label ID="LblActiveDirect" runat="server" Text="Label"></asp:Label></h6>
-                                    </div>
-                                    <span class="w-44-px h-44-px radius-8 d-inline-flex justify-content-center align-items-center text-2xl mb-12 bg-lilac-200 text-lilac-600">
-                                        <a href="UserDirectAssociates.aspx">  <i class="ri-group-3-fill"></i></a>
-                                    </span>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:card-send-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Debited</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="LblDebited" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="col-xxl-12">
-                            <div class="px-20 py-16 shadow-none radius-8 h-100 bg-success-100 left-line line-bg-success position-relative overflow-hidden">
-                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-                                    <div>
-                                        <span class="mb-2 fw-medium text-secondary-light text-md">Total Team</span>
-                                        <h6 class="fw-semibold mb-1">
-                                            <asp:Label ID="LblTotalLeft" runat="server" Text="Label"></asp:Label></h6>
-                                    </div>
-                                    <span class="w-44-px h-44-px radius-8 d-inline-flex justify-content-center align-items-center text-2xl mb-12 bg-success-200 text-success-600">
-                                    <a href="DownlineReport.aspx">    <i class="ri-group-3-fill"></i> </a>
-                                    </span>
-                                </div>
-
-                                <div class="d-flex justify-content-between">
-                                    <p class="text-sm mb-0">
-                                        <span class="bg-success-focus px-1 rounded-2 fw-medium text-success-main text-sm">
-                                            <i class="ri-arrow-up-line"></i>
-                                          <a href="DownlineReport.aspx">  <asp:Label ID="Lblactiveleft" runat="server" Text="Label"></asp:Label></span> Active</a>
-                                    </p>
-
-                                    <p class="text-sm mb-0">
-                                        <span class="bg-danger-focus px-1 rounded-2 fw-medium text-danger-main text-sm">
-                                            <i class="ri-arrow-down-line"></i>
-                                         <a href="DownlineReport.aspx">   <asp:Label ID="LblInactiveleft" runat="server" Text="Label"></asp:Label></span> Inactive</a>
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-xxl-12" style="display:none">
-                            <div class="px-20 py-16 shadow-none radius-8 h-100 bg-yellow-light left-line line-bg-warning position-relative overflow-hidden">
-                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-                                    <div>
-                                        <span class="mb-2 fw-medium text-secondary-light text-md">Total Right Team</span>
-                                        <h6 class="fw-semibold mb-1">
-                                            <asp:Label ID="LblTotalright" runat="server" Text="Label"></asp:Label></h6>
-                                    </div>
-                                    <span class="w-44-px h-44-px radius-8 d-inline-flex justify-content-center align-items-center text-2xl mb-12 bg-warning-focus text-warning-600">
-                                        <i class="ri-group-3-fill"></i>
-                                    </span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <p class="text-sm mb-0">
-                                        <span class="bg-success-focus px-1 rounded-2 fw-medium text-success-main text-sm">
-                                            <i class="ri-arrow-up-line"></i>
-                                            <asp:Label ID="LblActiveRight" runat="server" Text="Label"></asp:Label></span> Active
-                                    </p>
-
-                                    <p class="text-sm mb-0">
-                                        <span class="bg-danger-focus px-1 rounded-2 fw-medium text-danger-main text-sm">
-                                            <i class="ri-arrow-down-line"></i>
-                                            <asp:Label ID="LblInActiveRight" runat="server" Text="Label"></asp:Label></span> Inactive
-                                    </p>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="solar:safe-square-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Balance</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="LblCurrentWallet" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="col-12">
+            <div class="bmk-section-card">
+                <div class="bmk-section-head">
+                    <h6>Income</h6>
+                </div>
+                <div class="bmk-section-body">
+                    <div class="row gy-3">
+                        <div class="col-md-3 col-sm-6" style="display:none">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Direct Income</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblDirectincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon gold"><iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Left Team</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblleftteam" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:chart-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Middle Income</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblmiddleteam" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon green"><iconify-icon icon="solar:graph-up-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Right Income</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblrightteam" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Level Income</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lbllevelincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6" style="display:none">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Single Leg Income</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblsingleleg" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6" style="display:none">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon green"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Franchise Income</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblfranchise" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6" style="display:none">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon green"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Reward</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblreward" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
+        <div class="col-12">
+            <div class="bmk-section-card">
+                <div class="bmk-section-head">
+                    <h6>Performance</h6>
+                </div>
+                <div class="bmk-section-body">
+                    <div class="row gy-3">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat bmk-stat-click" data-bs-toggle="modal" data-bs-target="#modal-today" role="button">
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="solar:calendar-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Today</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblTodayPerformance" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat bmk-stat-click" data-bs-toggle="modal" data-bs-target="#modal-week" role="button">
+                                <span class="bmk-stat-icon gold"><iconify-icon icon="solar:calendar-mark-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Week</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblCurrentWeek" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat bmk-stat-click" data-bs-toggle="modal" data-bs-target="#modal-month" role="button">
+                                <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:calendar-minimalistic-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Month</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblCurrentMonth" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat bmk-stat-click" data-bs-toggle="modal" data-bs-target="#modal-total" role="button">
+                                <span class="bmk-stat-icon green"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Total</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblTotal" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-xxl-12 d-none">
@@ -907,6 +603,8 @@
             </div>
         </div>
     </div>
+    </div><!-- /.bmk-dashboard -->
+    <div class="bmk-dash-legacy" style="display:none !important" aria-hidden="true">
 
     <div class="row">
         <div class="col-sm-12 col-lg-6 col-xl-4" style="display: none;">
@@ -3492,6 +3190,18 @@ Profit Share Budget</p>
         }
     </style>
     <!-- /.box-body -->
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div><!-- /.bmk-dash-legacy -->
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">

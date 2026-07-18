@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
 
 <!DOCTYPE html>
 
@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Title -->
-    <title> <%= clsUtility.ProjectName %>|| Login</title>
+    <title>Member Panel | Bharat Manav Kalyan Trust</title>
 
     <!--New Theme end CSS -->
     <link rel="stylesheet" href="../web-assets/css/remixicon.css">
@@ -41,12 +41,15 @@
     <link rel="stylesheet" href="../web-assets/css/lib/audioplayer.css">
     <!-- main css -->
     <link rel="stylesheet" href="../web-assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../site/css/user-panel.css" />
 
     <!--New Theme end CSS -->
 
     <!-- Favicon -->
-    <link rel="icon" href="img/logo.png" type="image/x-icon" />
-
+    <link rel="icon" href="../site/assets/images/logo.png" type="image/png" />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -65,9 +68,14 @@
         </button>
         <div>
             <a href="Dashboard.aspx" class="sidebar-logo">
-                <img src="../user/img/logo1.png" alt="site logo" class="light-logo" style="width:350px">
-                <img src="../user/img/logo-white.png" alt="site logo" class="dark-logo">
-                <img src="../user/img/logo-circle.png" alt="site logo" class="logo-icon">
+                <img src="<%= ResolveUrl("~/site/assets/images/logo.png") %>" alt="Bharat Manav Kalyan Trust" class="bmk-panel-logo" />
+                <span class="bmk-logo-text">
+                    <span class="hi">भारत मानव कल्याण ट्रस्ट</span>
+                    <span class="en">Bharat Manav Kalyan Trust</span>
+                </span>
+                <img src="../user/img/logo1.png" alt="site logo" class="light-logo" style="width:350px" />
+                <img src="../user/img/logo-white.png" alt="site logo" class="dark-logo" />
+                <img src="../user/img/logo-circle.png" alt="site logo" class="logo-icon" />
             </a>
         </div>
         <div class="sidebar-menu-area">
@@ -347,66 +355,58 @@
                         <button type="button" class="sidebar-mobile-toggle">
                             <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
                         </button>
-                        <form class="navbar-search">
-                            <input type="text" name="search" placeholder="Search">
+                        <a href="Dashboard.aspx" class="bmk-topbar-brand">
+                            <img src="<%= ResolveUrl("~/site/assets/images/logo.png") %>" alt="BMKT" />
+                            <span>Member Panel</span>
+                        </a>
+                        <form class="navbar-search" onsubmit="return false;">
+                            <input type="text" name="search" placeholder="Search menu..." />
                             <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
                         </form>
                     </div>
                 </div>
                 <div class="col-auto">
-                    <div class="d-flex flex-wrap align-items-center gap-3" >
-                      <%--<button type="button" data-theme-toggle class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>--%> 
-
-                        <button class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center" type="button" onclick="javascript:toggleFullScreen()" >
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <button class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center" type="button" onclick="javascript:toggleFullScreen()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                         </button>
 
-
-                      
-
-                        <div class="dropdown">
-                            <button class="d-flex justify-content-center align-items-center rounded-circle" type="button" data-bs-toggle="dropdown">
-                                <img id="dvUserImage3" runat="server" src="~/user/img/default.png" class="w-40-px h-40-px object-fit-cover rounded-circle" alt="" />
-
+                        <div class="dropdown bmk-user-dropdown">
+                            <button class="bmk-user-chip" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
+                                <img id="dvUserImage3" runat="server" src="../site/assets/images/default-user.svg" class="bmk-user-avatar" alt="User" />
                             </button>
-                            <div class="dropdown-menu to-top dropdown-menu-sm">
-                                <div class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
-                                   <div>
-                                        <h6 class="text-lg text-primary-light fw-semibold mb-2">    <asp:Label ID="lblusername" runat="server" Text="Label"></asp:Label></h6>
-                                       
+                            <div class="dropdown-menu dropdown-menu-end bmk-account-menu">
+                                <div class="bmk-account-head">
+                                    <img id="dvUserImageDrop" runat="server" src="../site/assets/images/default-user.svg" class="bmk-account-avatar" alt="User" />
+                                    <div class="bmk-account-info">
+                                        <asp:Label ID="lblusernameDrop" runat="server" CssClass="bmk-account-name" Text="Member"></asp:Label>
+                                        <asp:Label ID="lbluseridDrop" runat="server" CssClass="bmk-account-id" Text=""></asp:Label>
                                     </div>
-                                    <button type="button" class="hover-text-danger">
-                                        <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
-                                    </button>
                                 </div>
-                                <ul class="to-top-list">
-                                    <li>
-                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="UserProfile.aspx">
-                                            <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon>
-                                            My Profile</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="Dashboard.aspx">
-                                            <iconify-icon icon="tabler:message-check" class="icon text-xl"></iconify-icon>
-                                            Home</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="CHangePassword.aspx">
-                                            <iconify-icon icon="icon-park-outline:setting-two" class="icon text-xl"></iconify-icon>
-                                            Change Password</a>
-                                    </li>
-									
-									 <li>
-                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="CHangeTransactionPassword.aspx">
-                                            <iconify-icon icon="icon-park-outline:setting-two" class="icon text-xl"></iconify-icon>
-                                            Change transaction</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3" href="index.aspx">
-                                            <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>
-                                            Log Out</a>
-                                    </li>
-                                </ul>
+                                <div class="bmk-account-links">
+                                    <a class="bmk-account-link" href="UserProfile.aspx">
+                                        <span class="bmk-link-icon"><iconify-icon icon="solar:user-linear"></iconify-icon></span>
+                                        <span>My Profile</span>
+                                    </a>
+                                    <a class="bmk-account-link" href="Dashboard.aspx">
+                                        <span class="bmk-link-icon"><iconify-icon icon="solar:home-smile-angle-outline"></iconify-icon></span>
+                                        <span>Dashboard</span>
+                                    </a>
+                                    <a class="bmk-account-link" href="CHangePassword.aspx">
+                                        <span class="bmk-link-icon"><iconify-icon icon="solar:lock-password-outline"></iconify-icon></span>
+                                        <span>Change Password</span>
+                                    </a>
+                                    <a class="bmk-account-link" href="CHangeTransactionPassword.aspx">
+                                        <span class="bmk-link-icon"><iconify-icon icon="solar:key-outline"></iconify-icon></span>
+                                        <span>Change Transaction</span>
+                                    </a>
+                                </div>
+                                <div class="bmk-account-foot">
+                                    <a class="bmk-account-logout" href="logout.aspx">
+                                        <iconify-icon icon="lucide:power"></iconify-icon>
+                                        Log Out
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <!-- Profile dropdown end -->
@@ -414,27 +414,26 @@
                 </div>
             </div>
         </div>
-        <form id="form1" runat="server">
+        <form id="form1" runat="server" class="bmk-page-form">
             <div class="dashboard-main-body">
-
                 <asp:ContentPlaceHolder ID="contentPageHeading" runat="server">
-                </asp:ContentPlaceHolder> 
-
-                <asp:ContentPlaceHolder ID="contentpageData" runat="server"></asp:ContentPlaceHolder>
-
-                <asp:ContentPlaceHolder ID="contentScript" runat="server">
                 </asp:ContentPlaceHolder>
-
+                <asp:ContentPlaceHolder ID="contentpageData" runat="server"></asp:ContentPlaceHolder>
             </div>
         </form>
+
         <footer class="d-footer">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-auto">
-                    <p class="mb-0">&copy; 2025-2026  <%= clsUtility.ProjectName %>, All Rights Reserved.</p>
+            <div class="bmk-footer-inner">
+                <div>
+                    <div class="bmk-tricolor"><span></span><span></span><span></span></div>
+                    <p class="mb-0" style="margin-top:8px;">&copy; <%= DateTime.Now.Year %> Bharat Manav Kalyan Trust. All Rights Reserved.</p>
                 </div>
-                
+                <p class="bmk-footer-tag mb-0">सेवा &bull; समर्पण &bull; सशक्तिकरण</p>
             </div>
         </footer>
+
+        <asp:ContentPlaceHolder ID="contentScript" runat="server">
+        </asp:ContentPlaceHolder>
     </main>
     <script>
         // fullscreen
