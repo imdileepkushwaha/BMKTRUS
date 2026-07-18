@@ -1,0 +1,4 @@
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\DataTier\bin\Release\DataTier.dll
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\DataTier\bin\Release\DataTier.pdb
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\DataTier\obj\Release\DataTier.dll
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\DataTier\obj\Release\DataTier.pdb

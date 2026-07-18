@@ -1,0 +1,7 @@
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\bin\Release\BusinessLogicTier.dll
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\bin\Release\BusinessLogicTier.pdb
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\bin\Release\DataTier.dll
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\bin\Release\DataTier.pdb
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\obj\Release\BusinessLogicTier.csprojResolveAssemblyReference.cache
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\obj\Release\BusinessLogicTier.dll
+D:\personal\MentorsForIndia\MentorsForIndiaSoft\BusinessLogicTier\obj\Release\BusinessLogicTier.pdb
