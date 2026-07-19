@@ -125,6 +125,18 @@
 
                         <li class="treeview">
                             <a href="#">
+                                <i class="fa fa-globe"></i> <span>Website Management</span>
+                                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="WebsiteLogo.aspx"><i class="fa fa-angle-right"></i> Add Logo</a></li>
+                                <li><a href="WebsiteContact.aspx"><i class="fa fa-angle-right"></i> Contact Details</a></li>
+                                <li><a href="WebsiteGallery.aspx"><i class="fa fa-angle-right"></i> Add Gallery</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="#">
                                 <i class="fa fa-building"></i> <span>Franchisee Master</span>
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                             </a>
@@ -295,7 +307,19 @@
                             $wrap.find('.adm-file__hint').text('PNG, JPG or PDF — click or drag to upload');
                         }
                     }
-                    $input.on('change.admFile', syncName);
+                    $input.on('change.admFile', function () {
+                        syncName();
+                        var previewSel = $input.attr('data-preview');
+                        if (previewSel && $input[0].files && $input[0].files[0] && window.FileReader) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                $(previewSel).each(function () {
+                                    $(this).attr('src', e.target.result).css({ display: 'block', visibility: 'visible' });
+                                });
+                            };
+                            reader.readAsDataURL($input[0].files[0]);
+                        }
+                    });
                     $input.on('dragenter.admFile dragover.admFile', function (e) {
                         e.preventDefault();
                         e.stopPropagation();

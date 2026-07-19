@@ -737,3 +737,4 @@ C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debu
 C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debug\Business.2FDD14DE.Up2Date
 C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.dll
 C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.pdb
+c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\bin\Debug\Newtonsoft.Json.dll

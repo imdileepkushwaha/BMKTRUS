@@ -38,8 +38,11 @@ public partial class admin_DownlineReport : System.Web.UI.Page
         foreach (DataRow dr in dt.Rows)
         {
             TreeNode t1 = new TreeNode();
-            t1.Text = dr["username"].ToString() + " / " + dr["userid"].ToString();
-            t1.Value = dr["userid"].ToString();
+            string userName = Convert.ToString(dr["username"]).Trim();
+            string userId = Convert.ToString(dr["userid"]).Trim();
+            t1.Text = userName + "  ·  " + userId;
+            t1.Value = userId;
+            t1.ToolTip = "User ID: " + userId + (string.IsNullOrEmpty(userName) ? "" : " | " + userName);
             node_First.Add(t1);
             t1.PopulateOnDemand = ((int)(dr["Subnode"]) > 0);
         }
@@ -59,6 +62,18 @@ public partial class admin_DownlineReport : System.Web.UI.Page
             dattab = objuser.Find_UserDetail2(objuser).Tables[0];
             Open_Heads(dattab, Account_Chart.Nodes);
             pnllist.Visible = true;
+            pnlEmpty.Visible = false;
+
+            if (dattab != null && dattab.Rows.Count > 0)
+            {
+                string name = Convert.ToString(dattab.Rows[0]["username"]).Trim();
+                string id = Convert.ToString(dattab.Rows[0]["userid"]).Trim();
+                lblRootUser.Text = string.IsNullOrEmpty(name) ? id : (name + "  ·  " + id);
+            }
+            else
+            {
+                lblRootUser.Text = txtuserid.Text.Trim();
+            }
         }
         else
         {

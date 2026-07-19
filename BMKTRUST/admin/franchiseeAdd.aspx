@@ -74,6 +74,18 @@
                 return false;
             }
         }
+        function toggleAdmPassword(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (!input || !btn) return;
+            var icon = btn.querySelector('i');
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            if (icon) {
+                icon.className = show ? 'fa fa-eye-slash' : 'fa fa-eye';
+            }
+            btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+            btn.setAttribute('title', show ? 'Hide password' : 'Show password');
+        }
     </script>
     <link href="../css/radio/style.css" rel="stylesheet" />
 </asp:Content>
@@ -100,7 +112,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Personal Information</h3>
+                                <h3 class="box-title"> Personal Information</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -192,7 +204,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-file-text-o"></i> Documents</h3>
+                                <h3 class="box-title"> Documents</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -203,7 +215,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>PAN Upload</label>
-                                            <asp:FileUpload ID="filePAN" runat="server" />
+                                            <asp:FileUpload ID="filePAN" runat="server" ClientIDMode="Static" data-preview="#imgPAN" />
                                             <div style="margin-top: 10px;">
                                                 <asp:Button ID="btnPANUPload" runat="server" Text="Upload PAN" OnClick="btnPANUPload_Click" CssClass="btn btn-warning" />
                                             </div>
@@ -213,7 +225,7 @@
                                         <div class="form-group">
                                             <label>View PAN</label>
                                             <div class="adm-qr-preview">
-                                                <asp:ImageButton ID="imgPAN" runat="server" Width="100px" Height="100px" OnClick="imgPAN_Click" />
+                                                <asp:ImageButton ID="imgPAN" runat="server" ClientIDMode="Static" Width="100px" Height="100px" OnClick="imgPAN_Click" Style="object-fit: contain; display: none;" />
                                             </div>
                                         </div>
                                     </div>
@@ -226,7 +238,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>GST Upload</label>
-                                            <asp:FileUpload ID="fileGST" runat="server" />
+                                            <asp:FileUpload ID="fileGST" runat="server" ClientIDMode="Static" data-preview="#imgGST" />
                                             <div style="margin-top: 10px;">
                                                 <asp:Button ID="btnGSTUpload" runat="server" Text="Upload GST" OnClick="btnGSTUpload_Click" CssClass="btn btn-warning" />
                                             </div>
@@ -236,7 +248,7 @@
                                         <div class="form-group">
                                             <label>View GST</label>
                                             <div class="adm-qr-preview">
-                                                <asp:ImageButton ID="imgGST" runat="server" Width="100px" Height="100px" OnClick="imgGST_Click" />
+                                                <asp:ImageButton ID="imgGST" runat="server" ClientIDMode="Static" Width="100px" Height="100px" OnClick="imgGST_Click" Style="object-fit: contain; display: none;" />
                                             </div>
                                         </div>
                                     </div>
@@ -249,7 +261,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-map-marker"></i> Communication Information</h3>
+                                <h3 class="box-title"> Communication Information</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -337,20 +349,30 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-lock"></i> Password Information</h3>
+                                <h3 class="box-title"> Password Information</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <asp:TextBox ID="txtuserpassword" TextMode="Password" CssClass="form-control" runat="server" placeholder="Login password"></asp:TextBox>
+                                            <div class="adm-pass-field">
+                                                <asp:TextBox ID="txtuserpassword" TextMode="Password" CssClass="form-control" runat="server" ClientIDMode="Static" placeholder="Login password" autocomplete="new-password"></asp:TextBox>
+                                                <button type="button" class="adm-pass-toggle" onclick="toggleAdmPassword('txtuserpassword', this)" aria-label="Show password" title="Show password">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Confirm Password</label>
-                                            <asp:TextBox ID="txtconfirmpassword" TextMode="Password" CssClass="form-control" runat="server" placeholder="Re-enter password"></asp:TextBox>
+                                            <div class="adm-pass-field">
+                                                <asp:TextBox ID="txtconfirmpassword" TextMode="Password" CssClass="form-control" runat="server" ClientIDMode="Static" placeholder="Re-enter password" autocomplete="new-password"></asp:TextBox>
+                                                <button type="button" class="adm-pass-toggle" onclick="toggleAdmPassword('txtconfirmpassword', this)" aria-label="Show password" title="Show password">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +384,7 @@
 
                 <div class="adm-sticky-actions">
                     <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" />
-                    <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
+                    <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-success" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
                 </div>
 
                 <div id="DivPANlarge" class="modal fade">
@@ -405,6 +427,45 @@
 
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
     <script type="text/javascript">
+        function setFranchiseeDocPreview(imgSelector, dataUrl) {
+            var $img = $(imgSelector);
+            if (!$img.length) return;
+            $img.attr('src', dataUrl).css({ display: 'block', visibility: 'visible' });
+        }
+
+        function bindFranchiseeDocPreview() {
+            $(document).off('change.franPan', '#filePAN').on('change.franPan', '#filePAN', function () {
+                var input = this;
+                if (!input.files || !input.files[0]) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    setFranchiseeDocPreview('#imgPAN', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            });
+
+            $(document).off('change.franGst', '#fileGST').on('change.franGst', '#fileGST', function () {
+                var input = this;
+                if (!input.files || !input.files[0]) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    setFranchiseeDocPreview('#imgGST', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            });
+        }
+
+        $(function () {
+            bindFranchiseeDocPreview();
+        });
+
+        if (window.Sys && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                bindFranchiseeDocPreview();
+            });
+        }
+    </script>
+    <script type="text/javascript">
         $('.form_date').datepicker({
             format: 'dd/mmm/yyyy',
         }).on('changeDate', function (ev) {
@@ -420,6 +481,7 @@
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
+            bindFranchiseeDocPreview();
         }
     </script>
     <script type="text/javascript">

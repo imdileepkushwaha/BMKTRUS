@@ -28,8 +28,9 @@ public partial class admin_UserReport : System.Web.UI.Page
                 bindPlans();
                 bindSponsorList();
 
-                txtfromdate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-                txttodate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                // Leave dates empty on load so report shows users (not only today's registrations)
+                txtfromdate.Text = "";
+                txttodate.Text = "";
 
                 loaduser();
             }
@@ -338,26 +339,23 @@ public partial class admin_UserReport : System.Web.UI.Page
         objUser.Email = "";
 
         string noOfRows = "";
-        if (ddlRecordFilter.SelectedItem.Text == "All")
+        if (ddlRecordFilter.SelectedItem != null && ddlRecordFilter.SelectedItem.Text == "All")
             noOfRows = "";
-
-       //else if (ddlRecordFilter.SelectedItem.Text == "5")
-        //    noOfRows = "top 5";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "25")
-            noOfRows = "top 25";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "50")
-            noOfRows = "top 50";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "100")
-            noOfRows = "top 100";
-
-        else if (ddlRecordFilter.SelectedItem.Text == "500")
-            noOfRows = "top 500";
+        else if (ddlRecordFilter.SelectedItem != null && ddlRecordFilter.SelectedItem.Text == "25")
+            noOfRows = "TOP 25";
+        else if (ddlRecordFilter.SelectedItem != null && ddlRecordFilter.SelectedItem.Text == "50")
+            noOfRows = "TOP 50";
+        else if (ddlRecordFilter.SelectedItem != null && ddlRecordFilter.SelectedItem.Text == "100")
+            noOfRows = "TOP 100";
+        else if (ddlRecordFilter.SelectedItem != null && ddlRecordFilter.SelectedItem.Text == "500")
+            noOfRows = "TOP 500";
+        else
+            noOfRows = "TOP 25";
 
         DataTable dt = new DataTable();
         dt = getUserReportPage(objUser, noOfRows);
+        if (dt == null)
+            dt = new DataTable();
         GridView1.DataSource = dt;
         GridView1.DataBind();
     }
@@ -365,8 +363,8 @@ public partial class admin_UserReport : System.Web.UI.Page
 
     public DataTable getUserReportPage(clsUser objUser, string noofrows)
     {
-        //string str_query = "SELECT ud.userid, ud.username,ud.Mobile,ud.Email,ud.Gender,ud.Address,cm.CityName,ud.MentionDate,ld.password,isnull(ud.balanceamount,0) as balanceamount FROM userdetail ud LEFT JOIN citymaster cm ON ud.Cityid=cm.CityId left join Logindetail ld on ud.userid=ld.username where 1=1 ";
-        string str_query = @"SELECT " + noofrows + @"ud.status,ud.userid,ud.coursename,ud.telegramnumber,ud.telegramname, ud.username,ud.Mobile,ud.Email,ud.Gender,ud.Address,cm.CityName,ud.MentionDate,ld.password, 
+        string topClause = string.IsNullOrWhiteSpace(noofrows) ? "" : (noofrows.Trim() + " ");
+        string str_query = @"SELECT " + topClause + @"ud.status,isnull(ud.status,0) as TopUpStatus,ud.userid,ud.coursename,ud.telegramnumber,ud.telegramname, ud.username,ud.Mobile,ud.Email,ud.Gender,ud.Address,cm.CityName,ud.MentionDate,ld.password, 
                                 isnull(ud.balanceamount,0) as balanceamount,isnull(ud.utilityBalance,0) as utilityBalance,ld.status as activeStatus, 
                                 (case when ud.SignUpImgStatus is not null then ud.SignUpFormImage else null end)SignUpFormImage, 
                                 (case when ud.SignUpImgStatus=0 then 'Pending' when ud.SignUpImgStatus=1 then 'Approved' when ud.SignUpImgStatus=2 then 'Rejected' end)SignUpImgStatuss, 
@@ -379,14 +377,15 @@ public partial class admin_UserReport : System.Web.UI.Page
                                 (case when ud.AadharImgStatus=0 then 'Pending' when ud.AadharImgStatus=1 then 'Approved' when ud.AadharImgStatus=2 then 'Rejected' end)AadharImgStatuss,  
                                 epin.planId,plm.PlanName as packageName,ud.SponserId,isnull(ud1.userName,'Company')sponserName,ud.PanNumber,sm.stateName,ud.Pincode,ud.epinGenerationStatus,CASE WHEN isnull(ud.GSTimage,'')='' THEN 'img/default.png' ELSE '../ProductImage/'+ud.GSTimage END AS GSTimage,ud.gstnumber,isnull(ud.IsGSTDeductedOfUnverified,0) as IsGSTDeductedOfUnverifie,
 (case when ud.IsGstApplicable=0 then 'Pending' when ud.IsGstApplicable=1 then 'Approved' when ud.IsGstApplicable=2 then 'Rejected' end)IsGstApplicable 
-                                FROM userdetail ud LEFT JOIN citymaster cm ON ud.Cityid=cm.CityId inner join statemaster sm on sm.stateId=cm.stateId 
+                                FROM userdetail ud LEFT JOIN citymaster cm ON ud.Cityid=cm.CityId 
+                                LEFT JOIN statemaster sm on sm.stateId=cm.stateId 
                                 left join Logindetail ld on ud.userid=ld.username left join EPinMaster epin on epin.UsedUserId=ud.userID 
                                 left join PlanMaster plm on plm.id=epin.planId left join userdetail ud1 on ud.sponserId=ud1.userId 
                                 where 1=1 ";
 
         if (objUser.FromDate != DateTime.MinValue && objUser.ToDate != DateTime.MinValue)
         {
-            str_query += "  and ud.MentionDate  > '" + objUser.FromDate + "'   and ud.MentionDate   < '" + objUser.ToDate + "' ";
+            str_query += "  and ud.MentionDate  >= '" + objUser.FromDate.ToString("yyyy-MM-dd") + "'   and ud.MentionDate   < '" + objUser.ToDate.ToString("yyyy-MM-dd") + "' ";
         }
         //if (objUser.UserName != "")
         if (!string.IsNullOrEmpty(objUser.UserName))

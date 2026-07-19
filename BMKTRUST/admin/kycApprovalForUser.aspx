@@ -142,19 +142,31 @@
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">Details</h3>
+                            <div class="adm-toolbar" style="margin:0;">
+                                <asp:DropDownList ID="ddlPageSize" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlPageSize_SelectedIndexChanged" style="width:auto; min-width:110px;">
+                                    <asp:ListItem Text="10 / page" Value="10"></asp:ListItem>
+                                    <asp:ListItem Text="25 / page" Value="25" Selected="True"></asp:ListItem>
+                                    <asp:ListItem Text="50 / page" Value="50"></asp:ListItem>
+                                    <asp:ListItem Text="100 / page" Value="100"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
                         </div>
 
                         <div class="box-body">
-                       
-                               
                                     <div class="form-group table-responsive">
-                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%" 
-                                            OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False">
+                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%"
+                                            OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False"
+                                            AllowPaging="true" PageSize="25" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                            PagerStyle-CssClass="adm-pager" PagerStyle-HorizontalAlign="Center"
+                                            PagerSettings-Mode="NumericFirstLast" PagerSettings-Position="Bottom"
+                                            PagerSettings-PageButtonCount="5"
+                                            PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last"
+                                            PagerSettings-PreviousPageText="Prev" PagerSettings-NextPageText="Next"
+                                            EmptyDataText="No KYC records found. Adjust search and try again." GridLines="None">
                                 <Columns>
                                     <asp:TemplateField HeaderText="#">
                                         <ItemTemplate>
-                                            <%#Container.DataItemIndex + 1 %>
-                                          
+                                            <%# (GridView1.PageIndex * GridView1.PageSize) + Container.DataItemIndex + 1 %>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                      <asp:TemplateField HeaderText="User ID">

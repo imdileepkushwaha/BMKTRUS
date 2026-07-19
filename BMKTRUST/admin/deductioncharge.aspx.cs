@@ -48,6 +48,7 @@ public partial class deductioncharge : System.Web.UI.Page
 
             objaccount.Updatedeductioncommission(lbllevel.Text, TxtAdminCharge.Text, TxtTdswithpam.Text, TxtTdswithoutpan.Text, TxtcashWallet.Text, TxtcashWalletPercent.Text, TxtCappingAmount.Text, TxtMinAmt.Text, TxtMaxAmt.Text);
         }
+        loaddata();
         string popupScript = "alert('Data Updated Successfully');";
         ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
            

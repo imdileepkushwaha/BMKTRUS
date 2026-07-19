@@ -18,7 +18,7 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
-            <div class="adm-util-page">
+            <div class="adm-util-page has-sticky-actions adm-deduction-page adm-ftype-page">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-primary">
@@ -26,42 +26,56 @@
                                 <h3 class="box-title">Franchisee Types</h3>
                                 <span class="adm-code-pill">Editable values</span>
                             </div>
-                            <div class="box-body adm-charge-grid">
-                                <p class="adm-field-hint" style="margin-top: 0; margin-bottom: 16px;">
-                                    Update franchisee type name and profit below, then click Save Changes.
-                                </p>
-                                <div class="table-responsive">
-                                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable"
-                                        Width="100%" AutoGenerateColumns="False" GridLines="None"
-                                        EmptyDataText="No franchisee types found.">
-                                        <Columns>
-                                            <asp:TemplateField HeaderText="#">
-                                                <ItemTemplate>
-                                                    <%# Container.DataItemIndex + 1 %>
-                                                    <asp:Label ID="lblid" runat="server" Visible="false" Text='<%# Eval("id") %>'></asp:Label>
-                                                </ItemTemplate>
-                                                <HeaderStyle Width="50px" />
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Type">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="TxtAdminCharge" runat="server" Text='<%# Eval("type") %>' CssClass="form-control"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Profit">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="TxtTdswithpam" runat="server" Text='<%# Eval("profit") %>' CssClass="form-control"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                    </asp:GridView>
-                                </div>
-                            </div>
-                            <div class="box-footer">
-                                <asp:LinkButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="btnUpdate_Click" runat="server">
-                                    <i class="fa fa-save"></i> Save Changes
-                                </asp:LinkButton>
+                            <div class="box-body">
+                                <asp:GridView ID="GridView1" runat="server" CssClass="adm-deduction-grid adm-ftype-grid"
+                                    Width="100%" AutoGenerateColumns="False" GridLines="None" ShowHeader="false"
+                                    EmptyDataText="No franchisee types found.">
+                                    <Columns>
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                                <div class="adm-deduction-card adm-ftype-card">
+                                                    <div class="adm-deduction-card__meta">
+                                                        <span class="adm-deduction-card__badge">Type #<%# Container.DataItemIndex + 1 %></span>
+                                                        <asp:Label ID="lblid" runat="server" Visible="false" Text='<%# Eval("id") %>'></asp:Label>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-7">
+                                                            <div class="form-group adm-deduction-field">
+                                                                <label>Franchisee Type</label>
+                                                                <div class="adm-deduction-input">
+                                                                    <asp:TextBox ID="TxtAdminCharge" runat="server" Text='<%# Eval("type") %>' CssClass="form-control" placeholder="e.g. Gold / Silver / Diamond"></asp:TextBox>
+                                                                </div>
+                                                                <span class="adm-field-hint">Display name used across franchisee modules</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-5">
+                                                            <div class="form-group adm-deduction-field">
+                                                                <label>Profit (%)</label>
+                                                                <div class="adm-deduction-input adm-deduction-input--pct">
+                                                                    <asp:TextBox ID="TxtTdswithpam" runat="server" Text='<%# Eval("profit") %>' CssClass="form-control" onkeypress="return isNumberKey(event)" placeholder="0"></asp:TextBox>
+                                                                    <span class="adm-deduction-suffix">%</span>
+                                                                </div>
+                                                                <span class="adm-field-hint">Profit percentage for this type</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="adm-sticky-actions">
+                    <div class="adm-sticky-actions__inner">
+                        <span class="adm-sticky-actions__hint"><i class="fa fa-info-circle"></i> Review type names and profit before saving</span>
+                        <asp:LinkButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="btnUpdate_Click" runat="server">
+                            <i class="fa fa-save"></i> Save Changes
+                        </asp:LinkButton>
                     </div>
                 </div>
             </div>
@@ -70,4 +84,12 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
+    <script type="text/javascript">
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode === 46 || charCode === 8 || charCode === 9) return true;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+            return true;
+        }
+    </script>
 </asp:Content>

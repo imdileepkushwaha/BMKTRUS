@@ -39,6 +39,20 @@
             }
             return true;
         }
+
+        function previewQrImage(input, imgClientId) {
+            var img = document.getElementById(imgClientId);
+            if (!img) return;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    img.style.visibility = 'visible';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 </asp:Content>
 
@@ -98,19 +112,22 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label >Upload QR Code</label>
+                                            <asp:FileUpload ID="ProductImageUpload" runat="server" ClientIDMode="Static" CssClass="form-control" data-preview="#bankQrPreview" />
+                                            <span class="adm-field-hint">PNG / JPG payment QR image — preview appears instantly</span>
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>QR Preview</label>
-                                            <div class="adm-qr-preview">
-                                                <asp:Image ID="ImageShow" runat="server" Width="100px" Height="100px" />
+                                            <div class="adm-qr-preview" id="bankQrPreviewBox">
+                                                <img id="bankQrPreview" alt="QR Preview" width="100" height="100"
+                                                    style="display: none; object-fit: contain; max-width: 100px; max-height: 100px;" />
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="<%= ProductImageUpload.ClientID %>">Upload QR Code</label>
-                                            <asp:FileUpload ID="ProductImageUpload" runat="server" CssClass="form-control" />
-                                            <span class="adm-field-hint">PNG / JPG payment QR image</span>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +249,7 @@
                                         <div class="form-group">
                                             <label>Current QR</label>
                                             <div class="adm-qr-preview">
-                                                <asp:Image ID="ImageButton1" runat="server" Width="50px" Height="50px" />
+                                                <asp:Image ID="ImageButton1" runat="server" ClientIDMode="Static" Width="100px" Height="100px" Style="object-fit: contain;" />
                                             </div>
                                         </div>
                                     </div>
@@ -241,7 +258,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Upload New QR</label>
-                                            <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control" />
+                                            <asp:FileUpload ID="FileUpload1" runat="server" ClientIDMode="Static" CssClass="form-control" data-preview="#ImageButton1" />
                                         </div>
                                     </div>
                                 </div>
@@ -272,6 +289,44 @@
             $('body').removeClass('modal-open');
             $('body').css('padding-right', '0');
             $('.modal-backdrop').remove();
+        }
+
+        function setQrPreview(imgSelector, dataUrl) {
+            var $img = $(imgSelector);
+            if (!$img.length) return;
+            $img.attr('src', dataUrl).css({ display: 'block', visibility: 'visible' });
+        }
+
+        function bindBankQrPreview() {
+            $(document).off('change.bankQr', '#ProductImageUpload').on('change.bankQr', '#ProductImageUpload', function () {
+                var input = this;
+                if (!input.files || !input.files[0]) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    setQrPreview('#bankQrPreview', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            });
+
+            $(document).off('change.bankQrEdit', '#FileUpload1').on('change.bankQrEdit', '#FileUpload1', function () {
+                var input = this;
+                if (!input.files || !input.files[0]) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    setQrPreview('#ImageButton1', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            });
+        }
+
+        $(function () {
+            bindBankQrPreview();
+        });
+
+        if (window.Sys && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                bindBankQrPreview();
+            });
         }
     </script>
 </asp:Content>

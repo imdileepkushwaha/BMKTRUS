@@ -1,0 +1,21 @@
+---
+description: Exclude unused folders when publishing BMKTRUST for server upload
+alwaysApply: true
+---
+
+# Publish exclusions
+
+When publishing or packaging this site for server upload, **do not include**:
+
+| Folder | Reason |
+|---|---|
+| `node_modules` | npm build tooling; no page references |
+| `build` | AdminLTE grunt/less sources only |
+| `HomeCss` | unused; no page references |
+| `new_assets` (top-level) | duplicate of `user/new_assets` |
+| `App_Data` | VS PublishProfiles only |
+| `.git`, `.vs`, `obj` | IDE / VCS noise |
+
+Prefer running `publish.ps1` from the repo root — it strips these after precompile.
+
+**Keep** runtime folders: `bower_components`, `dist`, `plugins`, `sarah`, `web-assets`, `site`, `admin`, `user`, `Franchisee`, `Bin`, `assets`, `css`, `js`, `img`, `MyJs`, `content`, `Operatorimage`, `Webservices`, `App_Code`.

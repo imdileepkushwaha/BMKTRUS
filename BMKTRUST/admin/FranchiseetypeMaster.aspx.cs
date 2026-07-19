@@ -43,6 +43,7 @@ public partial class FranchiseetypeMaster : System.Web.UI.Page
            
             objUser.Updatefranchiseecommission(lbllevel.Text, TxtAdminCharge.Text, TxtTdswithpam.Text);
         }
+        loaddata();
         string popupScript = "alert('Data Updated Successfully');";
         ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
            

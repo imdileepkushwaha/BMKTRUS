@@ -99,19 +99,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Name</label>
-                                       <asp:TextBox ID="txtname" CssClass="form-control" runat="server"></asp:TextBox>
+                                       <asp:TextBox ID="txtname" CssClass="form-control" runat="server" placeholder="Enter franchisee name"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Mobile No</label>
-                                      <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server"></asp:TextBox>
+                                      <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server" placeholder="Enter mobile number" MaxLength="10"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Email Id</label>
-                                        <asp:TextBox ID="txtemail" CssClass="form-control" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtemail" CssClass="form-control" runat="server" placeholder="Enter email address"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
@@ -120,13 +120,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>From date</label>
-                                       <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                       <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server" placeholder="Select from date"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>To date</label>
-                                         <asp:TextBox ID="txttodate"  CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                         <asp:TextBox ID="txttodate"  CssClass="form-control form_date" runat="server" placeholder="Select to date"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

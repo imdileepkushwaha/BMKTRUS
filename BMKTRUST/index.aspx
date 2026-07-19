@@ -18,11 +18,11 @@
                     Serving Humanity Since 2010
                 </div>
                 <h1 class="hero-title animate-fade-up" data-delay="100">
-                    <span class="title-hindi">भारत मानव कल्याण ट्रस्ट</span>
-                    <span class="title-en">Bharat Manav Kalyan Trust</span>
+                    <span class="title-hindi"><asp:Literal ID="litHeroHi" runat="server" Text="भारत मानव कल्याण ट्रस्ट"></asp:Literal></span>
+                    <span class="title-en"><asp:Literal ID="litHeroEn" runat="server" Text="Bharat Manav Kalyan Trust"></asp:Literal></span>
                 </h1>
                 <p class="hero-tagline animate-fade-up" data-delay="200">
-                    सेवा &bull; समर्पण &bull; सशक्तिकरण
+                    <asp:Literal ID="litHeroTagline" runat="server" Text="सेवा • समर्पण • सशक्तिकरण"></asp:Literal>
                 </p>
                 <p class="hero-desc animate-fade-up" data-delay="300">
                     Rooted in the strength of the Banyan tree and guided by the light of knowledge,
@@ -43,7 +43,7 @@
                         <div class="showcase-frame-outer"></div>
                         <div class="showcase-frame-inner">
                             <div class="showcase-logo-wrap">
-                                <img src="<%= ResolveUrl("~/site/assets/images/logo.png") %>" alt="Bharat Manav Kalyan Trust Logo" class="hero-logo" />
+                                <asp:Image ID="imgHeroLogo" runat="server" CssClass="hero-logo" AlternateText="Bharat Manav Kalyan Trust Logo" ImageUrl="~/site/assets/images/logo.png" />
                             </div>
                         </div>
                     </div>
@@ -308,45 +308,27 @@
             </div>
 
             <div class="gallery-grid">
-                <article class="gallery-item animate-on-scroll" data-delay="0" data-gallery-index="0">
-                    <button type="button" class="gallery-card" data-src="<%= ResolveUrl("~/site/assets/images/gallery/gallery_1783531400_9332b93b.jpg") %>" data-title="Faq" aria-label="View Faq">
-                        <div class="gallery-card-media">
-                            <img src="<%= ResolveUrl("~/site/assets/images/gallery/gallery_1783531400_9332b93b.jpg") %>" alt="Faq" loading="lazy" />
-                            <div class="gallery-card-shade"></div>
-                        </div>
-                        <div class="gallery-card-body">
-                            <span class="gallery-card-index">01</span>
-                            <h4 class="gallery-item-title">Faq</h4>
-                            <span class="gallery-card-action"><span class="gallery-action-icon">+</span> View</span>
-                        </div>
-                    </button>
-                </article>
-                <article class="gallery-item animate-on-scroll" data-delay="90" data-gallery-index="1">
-                    <button type="button" class="gallery-card" data-src="<%= ResolveUrl("~/site/assets/images/gallery/gallery_1783531389_e9e31f3d.jpg") %>" data-title="About" aria-label="View About">
-                        <div class="gallery-card-media">
-                            <img src="<%= ResolveUrl("~/site/assets/images/gallery/gallery_1783531389_e9e31f3d.jpg") %>" alt="About" loading="lazy" />
-                            <div class="gallery-card-shade"></div>
-                        </div>
-                        <div class="gallery-card-body">
-                            <span class="gallery-card-index">02</span>
-                            <h4 class="gallery-item-title">About</h4>
-                            <span class="gallery-card-action"><span class="gallery-action-icon">+</span> View</span>
-                        </div>
-                    </button>
-                </article>
-                <article class="gallery-item animate-on-scroll" data-delay="180" data-gallery-index="2">
-                    <button type="button" class="gallery-card" data-src="<%= ResolveUrl("~/site/assets/images/gallery/gallery_1783531216_f246131a.png") %>" data-title="NGO" aria-label="View NGO">
-                        <div class="gallery-card-media">
-                            <img src="<%= ResolveUrl("~/site/assets/images/gallery/gallery_1783531216_f246131a.png") %>" alt="NGO" loading="lazy" />
-                            <div class="gallery-card-shade"></div>
-                        </div>
-                        <div class="gallery-card-body">
-                            <span class="gallery-card-index">03</span>
-                            <h4 class="gallery-item-title">NGO</h4>
-                            <span class="gallery-card-action"><span class="gallery-action-icon">+</span> View</span>
-                        </div>
-                    </button>
-                </article>
+                <asp:Repeater ID="rptGallery" runat="server">
+                    <ItemTemplate>
+                        <article class="gallery-item animate-on-scroll" data-delay="<%# (Container.ItemIndex % 6) * 90 %>" data-gallery-index="<%# Container.ItemIndex %>">
+                            <button type="button" class="gallery-card"
+                                data-src="<%# ResolveUrl("~/" + Convert.ToString(Eval("ImagePath")).TrimStart('~','/')) %>"
+                                data-title="<%# Server.HtmlEncode(Convert.ToString(Eval("Title"))) %>"
+                                aria-label="View <%# Server.HtmlEncode(Convert.ToString(Eval("Title"))) %>">
+                                <div class="gallery-card-media">
+                                    <img src="<%# ResolveUrl("~/" + Convert.ToString(Eval("ImagePath")).TrimStart('~','/')) %>"
+                                        alt="<%# Server.HtmlEncode(Convert.ToString(Eval("Title"))) %>" loading="lazy" />
+                                    <div class="gallery-card-shade"></div>
+                                </div>
+                                <div class="gallery-card-body">
+                                    <span class="gallery-card-index"><%# (Container.ItemIndex + 1).ToString("00") %></span>
+                                    <h4 class="gallery-item-title"><%# Server.HtmlEncode(Convert.ToString(Eval("Title"))) %></h4>
+                                    <span class="gallery-card-action"><span class="gallery-action-icon">+</span> View</span>
+                                </div>
+                            </button>
+                        </article>
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
         </div>
     </section>
@@ -499,24 +481,21 @@
                             <div class="contact-card-icon">📍</div>
                             <div>
                                 <strong>Visit Us</strong>
-                                <span class="contact-card-hi">पता</span>
-                                <p>New Delhi, India</p>
+                                <p><asp:Literal ID="litContactAddress" runat="server" Text="New Delhi, India"></asp:Literal></p>
                             </div>
                         </div>
                         <div class="contact-card">
                             <div class="contact-card-icon">📞</div>
                             <div>
                                 <strong>Call Us</strong>
-                                <span class="contact-card-hi">फ़ोन</span>
-                                <p><a href="tel:+919876543210">+91 98765 43210</a></p>
+                                <p><asp:HyperLink ID="hypContactPhone" runat="server" NavigateUrl="tel:+919876543210"><asp:Literal ID="litContactPhone" runat="server" Text="+91 98765 43210"></asp:Literal></asp:HyperLink></p>
                             </div>
                         </div>
                         <div class="contact-card">
                             <div class="contact-card-icon">✉️</div>
                             <div>
                                 <strong>Email Us</strong>
-                                <span class="contact-card-hi">ईमेल</span>
-                                <p><a href="mailto:info@bharatmanavkalyantrust.org">info@bharatmanavkalyantrust.org</a></p>
+                                <p><asp:HyperLink ID="hypContactEmail" runat="server" NavigateUrl="mailto:info@bharatmanavkalyantrust.org"><asp:Literal ID="litContactEmail" runat="server" Text="info@bharatmanavkalyantrust.org"></asp:Literal></asp:HyperLink></p>
                             </div>
                         </div>
                     </div>

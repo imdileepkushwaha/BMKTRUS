@@ -18,7 +18,7 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
-            <div class="adm-util-page">
+            <div class="adm-util-page adm-tree-page">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-primary">
@@ -49,18 +49,37 @@
                                 <h3 class="box-title">Network Tree</h3>
                             </div>
                             <div class="box-body">
-                                <asp:Panel ID="pnllist" runat="server" Visible="false">
+                                <asp:Panel ID="pnllist" runat="server" Visible="false" CssClass="adm-tree-panel">
+                                    <div class="adm-tree-meta">
+                                        <div class="adm-tree-meta__item">
+                                            <span class="adm-tree-meta__label">Root member</span>
+                                            <span class="adm-tree-meta__value">
+                                                <asp:Label ID="lblRootUser" runat="server"></asp:Label>
+                                            </span>
+                                        </div>
+                                        <div class="adm-tree-meta__hint">
+                                            Click <strong>+</strong> to expand downline levels
+                                        </div>
+                                    </div>
                                     <div class="adm-tree-wrap">
-                                        <asp:TreeView ShowLines="true" ID="Account_Chart" runat="server" ExpandDepth="0" ImageSet="Simple" OnTreeNodePopulate="Account_Chart_TreeNodePopulate" BorderStyle="None">
-                                            <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
-                                            <NodeStyle Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" HorizontalPadding="0px" NodeSpacing="0px" VerticalPadding="0px" />
-                                            <ParentNodeStyle Font-Bold="False" />
-                                            <SelectedNodeStyle Font-Underline="True" HorizontalPadding="0px" VerticalPadding="0px" ForeColor="#5555DD" />
-                                            <LeafNodeStyle ForeColor="#C00000" />
-                                            <NodeStyle Font-Names="Tahoma" Font-Size="10pt" ForeColor="Black" HorizontalPadding="5px"
-                                                NodeSpacing="0px" VerticalPadding="0px" />
+                                        <asp:TreeView ShowLines="true" ID="Account_Chart" runat="server" ExpandDepth="0"
+                                            ImageSet="Arrows" OnTreeNodePopulate="Account_Chart_TreeNodePopulate"
+                                            BorderStyle="None" NodeIndent="22" CssClass="adm-net-tree">
+                                            <HoverNodeStyle CssClass="adm-net-tree__hover" Font-Underline="false" />
+                                            <SelectedNodeStyle CssClass="adm-net-tree__selected" Font-Underline="false" />
+                                            <RootNodeStyle CssClass="adm-net-tree__root" Font-Bold="true" />
+                                            <ParentNodeStyle CssClass="adm-net-tree__parent" Font-Bold="false" />
+                                            <LeafNodeStyle CssClass="adm-net-tree__leaf" />
+                                            <NodeStyle CssClass="adm-net-tree__node" HorizontalPadding="6px" NodeSpacing="2px" VerticalPadding="2px" />
                                         </asp:TreeView>
                                         <asp:Literal ID="ltteam" runat="server"></asp:Literal>
+                                    </div>
+                                </asp:Panel>
+
+                                <asp:Panel ID="pnlEmpty" runat="server" Visible="true" CssClass="adm-tree-empty">
+                                    <div class="adm-tree-empty__card">
+                                        <div class="adm-tree-empty__title">No tree loaded</div>
+                                        <p class="adm-tree-empty__text">Enter a User ID above and click Search to view the member network tree.</p>
                                     </div>
                                 </asp:Panel>
                             </div>

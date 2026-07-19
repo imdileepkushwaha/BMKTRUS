@@ -98,25 +98,25 @@
                                  <div class="col-md-4">
                                     <div class="form-group">
                                         <label>User Id</label>
-                                        <asp:TextBox ID="txtuserid" CssClass="form-control" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtuserid" CssClass="form-control" runat="server" placeholder="Enter user ID"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Name</label>
-                                       <asp:TextBox ID="txtname" CssClass="form-control" runat="server"></asp:TextBox>
+                                       <asp:TextBox ID="txtname" CssClass="form-control" runat="server" placeholder="Enter user name"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Mobile No</label>
-                                      <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server"></asp:TextBox>
+                                      <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server" placeholder="Enter mobile number" MaxLength="10"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4" style="display:none;">
                                     <div class="form-group">
                                         <label>Email Id</label>
-                                        <asp:TextBox ID="txtemail" CssClass="form-control" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtemail" CssClass="form-control" runat="server" placeholder="Enter email"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
@@ -125,23 +125,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>From date</label>
-                                       <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                       <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server" placeholder="Select from date"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>To date</label>
-                                         <asp:TextBox ID="txttodate"  CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                         <asp:TextBox ID="txttodate"  CssClass="form-control form_date" runat="server" placeholder="Select to date"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                          <%--<label>Country</label>
-                                         <asp:DropDownList ID="ddcountry" AutoPostBack="true" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddcountry_SelectedIndexChanged">
-                                            <asp:ListItem Value="0"> Select Country</asp:ListItem>
-                                        </asp:DropDownList>--%>
                                         <label>Area Pin Code</label>
-                                        <asp:TextBox ID="txtPinCode" runat="server" CssClass="form-control" MaxLength="6"></asp:TextBox>
+                                        <asp:TextBox ID="txtPinCode" runat="server" CssClass="form-control" MaxLength="6" placeholder="6-digit pincode"></asp:TextBox>
                                         </div>
                                     </div>
                             </div>
@@ -191,7 +187,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Spnsor Id</label>
+                                        <label>Sponsor Id</label>
                                            <asp:DropDownList ID="ddlSponsor" CssClass="form-control" runat="server">
                                             <asp:ListItem Value="0"> Select Sponsor</asp:ListItem>
                                         </asp:DropDownList>
@@ -200,7 +196,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                          <label>Pan Number</label>
-                                         <asp:TextBox ID="txtPanNumber" runat="server" CssClass="form-control"></asp:TextBox>
+                                         <asp:TextBox ID="txtPanNumber" runat="server" CssClass="form-control" placeholder="Enter PAN number"></asp:TextBox>
                                         </div>
                                     </div>
                             </div>
@@ -224,35 +220,33 @@
 
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Details</h3>
-                              <div style="float: right">
-                                <asp:DropDownList ID="ddlRecordFilter" runat="server" AutoPostBack="true" OnSelectedIndexChanged="btnSubmit_Click">
-                                    <%--<asp:ListItem>5</asp:ListItem>--%>
+                            <h3 class="box-title">User List</h3>
+                            <div class="adm-toolbar" style="margin:0;">
+                                <asp:DropDownList ID="ddlRecordFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="btnSubmit_Click" style="width:auto; min-width:110px;">
                                     <asp:ListItem>25</asp:ListItem>
                                     <asp:ListItem>50</asp:ListItem>
                                     <asp:ListItem>100</asp:ListItem>
                                     <asp:ListItem>500</asp:ListItem>
                                     <asp:ListItem>All</asp:ListItem>
                                 </asp:DropDownList>
-                               
                             </div>
                         </div>
 
                         <div class="box-body">
-                       
-                               
-                                    <div class="form-group table-responsive">
-                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand">
+                                    <div class="table-responsive">
+                                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable" Width="100%" AutoGenerateColumns="False" OnRowCommand="GridView1_RowCommand"
+                                            EmptyDataText="No users found. Clear date filters or adjust search and try again." GridLines="None">
                                 <Columns>
                                     <asp:TemplateField HeaderText="#">
                                         <ItemTemplate>
                                             <%#Container.DataItemIndex+1 %>
-                                          
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField HeaderText="User ID">
+                                    <asp:TemplateField HeaderText="User ID">
                                         <ItemTemplate>
-                                            <asp:Label ID="lbluserid" runat="server" Text='<%#Eval("userid") %>'></asp:Label>
+                                            <span class="adm-code-pill">
+                                                <asp:Label ID="lbluserid" runat="server" Text='<%#Eval("userid") %>'></asp:Label>
+                                            </span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Name">
@@ -260,14 +254,9 @@
                                             <asp:Label ID="lblusername" runat="server" Text='<%#Eval("username") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                      <asp:TemplateField HeaderText="Course Name">
+                                    <asp:TemplateField HeaderText="Mobile">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblcoursename" runat="server" Text='<%#Eval("coursename") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                     <asp:TemplateField HeaderText="Password">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblpassword" runat="server" Text='<%#Eval("password") %>'></asp:Label>
+                                            <asp:Label ID="lblmobile" runat="server" Text='<%#Eval("mobile") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Package">
@@ -280,106 +269,34 @@
                                             <asp:Label ID="lblCity" runat="server" Text='<%#Eval("CityName") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="State">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblState" runat="server" Text='<%#Eval("stateName") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Mobile">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblmobile" runat="server" Text='<%#Eval("mobile") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Telegram Name">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lbltelegramname" runat="server" Text='<%#Eval("telegramname") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Telegram Number">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lbltelegramnumber" runat="server" Text='<%#Eval("telegramnumber") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Email">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblemail" runat="server" Text='<%#Eval("email") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Pan Number">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblPanCard" runat="server" Text='<%# Eval("PanNumber") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Pin Code">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblPincode" runat="server" Text='<%# Eval("Pincode") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Sponsor Id">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblSponsorId" runat="server" Text='<%# Eval("SponserId") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Sponsor Name">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblSponsorName" runat="server" Text='<%# Eval("sponserName") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <%--<asp:TemplateField HeaderText="City">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lbladdress" runat="server" Text='<%#Eval("cityname") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>--%>
-                                    <%--<asp:TemplateField HeaderText="Balance Amount">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lbladdress1" runat="server" Text='<%#Eval("balanceamount") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>--%>
-                                    <asp:TemplateField HeaderText="Recharge Wallet">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblRechargeWallet" runat="server" Text='<%#Eval("balanceamount") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Utility Wallet">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblUtilityWallet" runat="server" Text='<%#Eval("utilityBalance") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Reg. Date">
                                         <ItemTemplate>
                                             <asp:Label ID="lbldate" runat="server" Text='<%#Eval("mentiondate","{0:dd/MM/yyyy}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="E-Pin Generation Status">
-                                        <ItemTemplate>
-                                            <asp:LinkButton ID="lnkEpinStatus" runat="server" CommandName="epin" CommandArgument='<%# Eval("userid") %>' 
-                                                Text='<%# Eval("epinGenerationStatus").ToString() == "1" ? "Unblock" : "Block" %>' CssClass='<%# Eval("epinGenerationStatus").ToString() == "1" ? "Active" : "Deactive" %>' ToolTip='<%# "Click to " + (Eval("epinGenerationStatus").ToString() == "1" ? "Block" : "Unblock") %>'></asp:LinkButton>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
                                     <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lnkActiveStatus" runat="server" CommandName="changeStatus" CommandArgument='<%#Eval("userid") %>' 
-                                                Text='<%#Eval("activeStatus").ToString() == "1" ? "Active" : "Deactive" %>' CssClass='<%#Eval("activeStatus").ToString() == "1" ? "Active" : "Deactive" %>' ToolTip='<%# "Click to " + (Eval("activeStatus").ToString() == "1" ? "Deactive" : "Active") %>'></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkActiveStatus" runat="server" CommandName="changeStatus" CommandArgument='<%#Eval("userid") %>'
+                                                Text='<%# Convert.ToString(Eval("activeStatus")) == "1" ? "Active" : "Deactive" %>' CssClass='<%# Convert.ToString(Eval("activeStatus")) == "1" ? "Active" : "Deactive" %>' ToolTip='<%# "Click to " + (Convert.ToString(Eval("activeStatus")) == "1" ? "Deactive" : "Active") %>'></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                      <asp:TemplateField HeaderText="TopUp Status">
+                                    <asp:TemplateField HeaderText="TopUp">
                                         <ItemTemplate>
-                                            <asp:Label ID="lnkActiveStatus1" runat="server" Text='<%#Eval("TopUpStatus").ToString() == "1" ? "Topup" : "Free" %>' CssClass='<%#Eval("TopUpStatus").ToString() == "1" ? "Active" : "Deactive" %>'></asp:Label>
+                                            <asp:Label ID="lnkActiveStatus1" runat="server" Text='<%# Convert.ToString(Eval("TopUpStatus")) == "1" ? "Topup" : "Free" %>' CssClass='<%# Convert.ToString(Eval("TopUpStatus")) == "1" ? "Active" : "Deactive" %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Action">
                                         <ItemTemplate>
+                                            <asp:HyperLink ID="lnkView" runat="server" NavigateUrl='<%# "UserView.aspx?userId=" + Eval("userid") %>' CssClass="adm-action-btn" ToolTip="View details">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </asp:HyperLink>
                                             <asp:LinkButton ID="lbEdit" CommandName="edt" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
                                                 runat="server" CssClass="adm-action-btn" ToolTip="Edit user">
                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                             </asp:LinkButton>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="BankDetails">
-                                        <ItemTemplate>
-                                            <asp:LinkButton ID="lbEditw" CommandArgument='<%# Eval("userid") %>' runat="server" Text="Edit" OnClick="btneditbank_click"></asp:LinkButton>
+                                            <asp:LinkButton ID="lbEditw" CommandArgument='<%# Eval("userid") %>' runat="server" CssClass="adm-action-btn" ToolTip="Bank details" OnClick="btneditbank_click">
+                                                <i class="fa fa-university" aria-hidden="true"></i>
+                                            </asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

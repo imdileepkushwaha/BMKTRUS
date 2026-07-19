@@ -15,6 +15,8 @@ public partial class admin_BankAccountAdd : System.Web.UI.Page
     {
         if (Session["useradmin"] != null)
         {
+            ProductImageUpload.Attributes["data-preview"] = "#bankQrPreview";
+            FileUpload1.Attributes["data-preview"] = "#ImageButton1";
             loaddata();
         }
         else
@@ -66,12 +68,12 @@ public partial class admin_BankAccountAdd : System.Web.UI.Page
         string res = objbank.Insert_BankAccount(objbank);
         if (res == "t")
         {
-            string popupScript = "alert('Account Added Successfully');";
+            string popupScript = "alert('Account Added Successfully');var p=document.getElementById('bankQrPreview');if(p){p.removeAttribute('src');p.style.display='none';}";
             ScriptManager.RegisterStartupScript(UpdatePanel1, UpdatePanel1.GetType(), Guid.NewGuid().ToString(), popupScript, true);
             txtdepositbank.Text = "";
             txtaccountholdername.Text = "";
             txtdepositaccountno.Text = "";
-          
+            txtifsccode.Text = "";
             loaddata();
         }
         else if (res == "f")

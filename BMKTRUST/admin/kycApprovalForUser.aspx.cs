@@ -95,6 +95,7 @@ public partial class admin_kycApprovalForUser : System.Web.UI.Page
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        GridView1.PageIndex = 0;
         loaduser();
     }
     void loaduser()
@@ -123,8 +124,26 @@ public partial class admin_kycApprovalForUser : System.Web.UI.Page
         objUser.UserId = txtname.Text;
         DataTable dt = new DataTable();
         dt = objUser.getUserReport(objUser);
+        if (dt == null)
+            dt = new DataTable();
         GridView1.DataSource = dt;
         GridView1.DataBind();
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+        loaduser();
+    }
+
+    protected void ddlPageSize_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int size;
+        if (!int.TryParse(ddlPageSize.SelectedValue, out size) || size <= 0)
+            size = 25;
+        GridView1.PageSize = size;
+        GridView1.PageIndex = 0;
+        loaduser();
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {

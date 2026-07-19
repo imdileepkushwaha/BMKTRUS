@@ -15,6 +15,9 @@ public partial class franchiseeAdd : System.Web.UI.Page
     Clsmail objmail = new Clsmail();
     protected void Page_Load(object sender, EventArgs e)
     {
+        filePAN.Attributes["data-preview"] = "#imgPAN";
+        fileGST.Attributes["data-preview"] = "#imgGST";
+
         if (!IsPostBack)
         {
             if (Session["useradmin"] != null)
@@ -306,6 +309,7 @@ public partial class franchiseeAdd : System.Web.UI.Page
         ViewState["PAN_Img"] = UploadPAN();
 
         imgPAN.ImageUrl = "~/ProductImage/" + ViewState["PAN_Img"];
+        imgPAN.Style["display"] = "block";
     }
 
     protected void btnGSTUpload_Click(object sender, EventArgs e)
@@ -319,6 +323,7 @@ public partial class franchiseeAdd : System.Web.UI.Page
         ViewState["GST_Img"] = UploadGST();
 
         imgGST.ImageUrl = "~/ProductImage/" + ViewState["GST_Img"];
+        imgGST.Style["display"] = "block";
     }
 
     protected void imgPAN_Click(object sender, ImageClickEventArgs e)
