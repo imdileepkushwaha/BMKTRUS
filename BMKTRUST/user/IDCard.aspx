@@ -12,14 +12,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
     <style type="text/css">
         :root {
-            --id-green: #22A84A;
-            --id-green-deep: #178A3A;
-            --id-green-dark: #0F5C28;
-            --id-heading: #14532D;
-            --id-ink: #14532D;
-            --id-muted: #4B7A5C;
-            --id-line: #D7EBDD;
-            --id-bg: #F3F5F4;
+            --id-navy: #002B5C;
+            --id-navy-deep: #001A3A;
+            --id-navy-light: #003D7A;
+            --id-gold: #C9A227;
+            --id-gold-light: #E8C547;
+            --id-heading: #002B5C;
+            --id-ink: #1A2B3C;
+            --id-muted: #5A6B7C;
+            --id-line: #E8E4D8;
+            --id-bg: #FAF8F3;
             --id-card-w: 340px;
             --id-card-h: 540px;
         }
@@ -31,7 +33,7 @@
             min-height: 100vh;
             font-family: "Source Sans 3", "Segoe UI", sans-serif;
             background:
-                radial-gradient(ellipse at top, rgba(34, 168, 74, 0.12), transparent 50%),
+                radial-gradient(ellipse at top, rgba(201, 162, 39, 0.14), transparent 50%),
                 linear-gradient(180deg, #FAFBFD 0%, var(--id-bg) 100%);
             color: var(--id-ink);
         }
@@ -88,9 +90,9 @@
         }
 
         .id-btn-primary {
-            background: var(--id-green);
+            background: linear-gradient(135deg, var(--id-navy), var(--id-navy-light));
             color: #fff;
-            box-shadow: 0 8px 18px rgba(23, 138, 58, 0.28);
+            box-shadow: 0 8px 18px rgba(0, 26, 58, 0.28);
         }
 
         .id-btn-ghost {
@@ -114,14 +116,14 @@
             position: relative;
             background: #fff;
             box-shadow:
-                0 20px 40px rgba(15, 92, 40, 0.12),
+                0 20px 40px rgba(0, 26, 58, 0.14),
                 0 2px 0 rgba(255, 255, 255, 0.6) inset;
-            border: 1px solid rgba(23, 138, 58, 0.12);
+            border: 1px solid rgba(201, 162, 39, 0.28);
         }
 
         .id-card--front {
             background:
-                linear-gradient(165deg, #F3FBF6 0%, #FFFFFF 42%, #FAFBFD 100%);
+                linear-gradient(165deg, #F7F1E3 0%, #FFFFFF 42%, #FAFBFD 100%);
         }
 
         .id-card--front::before {
@@ -130,8 +132,8 @@
             inset: 0 0 auto 0;
             height: 148px;
             background:
-                radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.35), transparent 40%),
-                linear-gradient(135deg, #2FC25A 0%, var(--id-green) 45%, var(--id-green-deep) 100%);
+                radial-gradient(circle at 85% 20%, rgba(232, 197, 71, 0.28), transparent 40%),
+                linear-gradient(135deg, #001A3A 0%, #002B5C 45%, #003D7A 100%);
         }
 
         .id-card--front::after {
@@ -171,6 +173,7 @@
             border-radius: 14px;
             padding: 4px;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+            border: 1.5px solid rgba(201, 162, 39, 0.55);
         }
 
         .id-brand__text strong {
@@ -188,7 +191,8 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            opacity: 0.92;
+            color: var(--id-gold-light);
+            opacity: 0.95;
         }
 
         .id-photo-wrap {
@@ -198,9 +202,9 @@
             height: 132px;
             border-radius: 50%;
             padding: 5px;
-            background: linear-gradient(145deg, #fff, #F3FBF6);
-            box-shadow: 0 10px 24px rgba(15, 92, 40, 0.12);
-            border: 3px solid rgba(34, 168, 74, 0.28);
+            background: linear-gradient(145deg, #fff, #F7F1E3);
+            box-shadow: 0 10px 24px rgba(0, 26, 58, 0.12);
+            border: 3px solid rgba(201, 162, 39, 0.45);
         }
 
         .id-photo-wrap img {
@@ -209,7 +213,7 @@
             object-fit: cover;
             border-radius: 50%;
             display: block;
-            background: #E8F6EC;
+            background: #F3EFE4;
         }
 
         .id-name {
@@ -229,7 +233,7 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--id-green-deep);
+            color: var(--id-gold);
         }
 
         .id-chip {
@@ -240,11 +244,12 @@
             min-height: 34px;
             padding: 0 14px;
             border-radius: 999px;
-            background: rgba(34, 168, 74, 0.12);
-            color: var(--id-green-dark);
+            background: rgba(0, 43, 92, 0.08);
+            color: var(--id-navy);
             font-size: 13px;
             font-weight: 700;
             margin-bottom: 16px;
+            border: 1px solid rgba(201, 162, 39, 0.28);
         }
 
         .id-chip span {
@@ -290,21 +295,24 @@
 
         .id-card--back {
             background:
-                linear-gradient(180deg, #2FC25A 0%, var(--id-green) 42%, var(--id-green-deep) 100%);
+                linear-gradient(180deg, #001A3A 0%, #002B5C 42%, #003D7A 100%);
             color: #fff;
         }
 
         .id-card--back .id-card__inner {
-            padding: 22px 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .id-back-top {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 18px 20px 16px;
+            background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
+            border-bottom: 2px solid rgba(201, 162, 39, 0.45);
+            flex-shrink: 0;
         }
 
         .id-back-top img {
@@ -314,6 +322,7 @@
             background: #fff;
             border-radius: 12px;
             padding: 4px;
+            border: 1.5px solid rgba(201, 162, 39, 0.55);
         }
 
         .id-back-top strong {
@@ -321,29 +330,39 @@
             font-family: "Cormorant Garamond", Georgia, serif;
             font-size: 18px;
             font-weight: 700;
+            color: #fff;
         }
 
         .id-back-top span {
             display: block;
             margin-top: 2px;
             font-size: 11px;
-            opacity: 0.88;
+            color: var(--id-gold-light);
             font-weight: 600;
             letter-spacing: 0.06em;
             text-transform: uppercase;
         }
 
+        .id-back-body {
+            flex: 1;
+            min-height: 0;
+            background: #fff;
+            color: var(--id-ink);
+            padding: 16px 18px 14px;
+            overflow: auto;
+        }
+
         .id-back-block {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .id-back-block h3 {
-            margin: 0 0 8px;
+            margin: 0 0 6px;
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.72);
+            color: var(--id-gold);
         }
 
         .id-back-block p,
@@ -352,43 +371,47 @@
             font-size: 13px;
             font-weight: 600;
             line-height: 1.45;
-            color: #fff;
+            color: var(--id-heading);
             word-break: break-word;
         }
 
         .id-back-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 10px 12px;
+            margin-bottom: 12px;
         }
 
         .id-note {
-            margin-top: auto;
+            margin-top: 4px;
             padding: 12px 14px;
-            border-radius: 14px;
-            background: rgba(0, 0, 0, 0.16);
-            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 12px;
+            background: linear-gradient(180deg, #FBF9F4, #F7F9FC);
+            border: 1px solid rgba(0, 43, 92, 0.1);
             font-size: 11px;
             line-height: 1.5;
-            color: rgba(255, 255, 255, 0.92);
+            color: var(--id-muted);
         }
 
         .id-note strong {
             display: block;
             margin-bottom: 4px;
-            color: #fff;
+            color: var(--id-navy);
             font-size: 12px;
         }
 
         .id-footer-mark {
-            margin-top: 14px;
+            flex-shrink: 0;
+            margin-top: 0;
+            padding: 14px 16px;
             text-align: center;
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(232, 197, 71, 0.95);
+            background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
+            border-top: 2px solid rgba(201, 162, 39, 0.45);
         }
 
         @media print {
@@ -493,44 +516,46 @@
                             </div>
                         </div>
 
-                        <div class="id-back-block">
-                            <h3>Address</h3>
-                            <p><asp:Label ID="lbladdress" runat="server"></asp:Label></p>
-                        </div>
+                        <div class="id-back-body">
+                            <div class="id-back-block">
+                                <h3>Address</h3>
+                                <p><asp:Label ID="lbladdress" runat="server"></asp:Label></p>
+                            </div>
 
-                        <div class="id-back-grid">
-                            <div class="id-back-block">
-                                <h3>City</h3>
-                                <div class="id-back-value"><asp:Label ID="lblcity" runat="server"></asp:Label></div>
+                            <div class="id-back-grid">
+                                <div class="id-back-block">
+                                    <h3>City</h3>
+                                    <div class="id-back-value"><asp:Label ID="lblcity" runat="server"></asp:Label></div>
+                                </div>
+                                <div class="id-back-block">
+                                    <h3>State</h3>
+                                    <div class="id-back-value"><asp:Label ID="lblstate" runat="server"></asp:Label></div>
+                                </div>
+                                <div class="id-back-block">
+                                    <h3>Pin Code</h3>
+                                    <div class="id-back-value"><asp:Label ID="lblpincode" runat="server"></asp:Label></div>
+                                </div>
+                                <div class="id-back-block">
+                                    <h3>Date of Birth</h3>
+                                    <div class="id-back-value"><asp:Label ID="lbldob" runat="server"></asp:Label></div>
+                                </div>
                             </div>
-                            <div class="id-back-block">
-                                <h3>State</h3>
-                                <div class="id-back-value"><asp:Label ID="lblstate" runat="server"></asp:Label></div>
-                            </div>
-                            <div class="id-back-block">
-                                <h3>Pin Code</h3>
-                                <div class="id-back-value"><asp:Label ID="lblpincode" runat="server"></asp:Label></div>
-                            </div>
-                            <div class="id-back-block">
-                                <h3>Date of Birth</h3>
-                                <div class="id-back-value"><asp:Label ID="lbldob" runat="server"></asp:Label></div>
-                            </div>
-                        </div>
 
-                        <div class="id-back-grid">
-                            <div class="id-back-block">
-                                <h3>Sponsor ID</h3>
-                                <div class="id-back-value"><asp:Label ID="lblsponsorid" runat="server"></asp:Label></div>
+                            <div class="id-back-grid">
+                                <div class="id-back-block">
+                                    <h3>Sponsor ID</h3>
+                                    <div class="id-back-value"><asp:Label ID="lblsponsorid" runat="server"></asp:Label></div>
+                                </div>
+                                <div class="id-back-block">
+                                    <h3>Sponsor Name</h3>
+                                    <div class="id-back-value"><asp:Label ID="lblsponsorname" runat="server"></asp:Label></div>
+                                </div>
                             </div>
-                            <div class="id-back-block">
-                                <h3>Sponsor Name</h3>
-                                <div class="id-back-value"><asp:Label ID="lblsponsorname" runat="server"></asp:Label></div>
-                            </div>
-                        </div>
 
-                        <div class="id-note">
-                            <strong>Important</strong>
-                            This card is the property of Bharat Manav Kalyan Trust. If found, please return to the Trust office. Misuse is prohibited.
+                            <div class="id-note">
+                                <strong>Important</strong>
+                                This card is the property of Bharat Manav Kalyan Trust. If found, please return to the Trust office. Misuse is prohibited.
+                            </div>
                         </div>
 
                         <div class="id-footer-mark">Authorized Membership Card</div>

@@ -11,6 +11,55 @@ public partial class SiteMaster : MasterPage
     {
         FaviconUrl = ResolveUrl("~/site/assets/images/logo.png");
         BindWebsiteSettings();
+        BindActivePopup();
+    }
+
+    void BindActivePopup()
+    {
+        try
+        {
+            if (pnlSitePopup == null) return;
+            pnlSitePopup.Visible = false;
+
+            DataTable dt = _web.GetActivePopup();
+            if (dt == null || dt.Rows.Count == 0) return;
+
+            DataRow r = dt.Rows[0];
+            string path = Convert.ToString(r["ImagePath"]);
+            if (string.IsNullOrWhiteSpace(path)) return;
+
+            string imageUrl = "~/" + path.Trim().TrimStart('~', '/', '\\').Replace("\\", "/");
+            string link = Convert.ToString(r["LinkUrl"]);
+            string title = Convert.ToString(r["Title"]);
+            string popupId = Convert.ToString(r["PopupId"]);
+
+            hdnPopupId.Value = popupId;
+            pnlSitePopup.Visible = true;
+            pnlSitePopup.CssClass = "bmk-site-popup is-open";
+
+            string resolvedImage = ResolveUrl(imageUrl);
+
+            if (!string.IsNullOrWhiteSpace(link))
+            {
+                hypPopupLink.Visible = true;
+                phPopupNoLink.Visible = false;
+                hypPopupLink.NavigateUrl = link.Trim();
+                imgSitePopup.ImageUrl = resolvedImage;
+                imgSitePopup.AlternateText = string.IsNullOrWhiteSpace(title) ? "Announcement" : title;
+            }
+            else
+            {
+                hypPopupLink.Visible = false;
+                phPopupNoLink.Visible = true;
+                imgSitePopupPlain.ImageUrl = resolvedImage;
+                imgSitePopupPlain.AlternateText = string.IsNullOrWhiteSpace(title) ? "Announcement" : title;
+            }
+        }
+        catch
+        {
+            if (pnlSitePopup != null)
+                pnlSitePopup.Visible = false;
+        }
     }
 
     void BindWebsiteSettings()

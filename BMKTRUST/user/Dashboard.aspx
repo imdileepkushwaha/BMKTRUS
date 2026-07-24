@@ -238,43 +238,69 @@
     <div class="row gy-4">
         <!-- Personal Info -->
         <div class="col-lg-6">
-            <div class="bmk-card">
-                <div class="bmk-card-body">
-                    <h6 class="bmk-card-title">Personal Info</h6>
-                    <ul class="bmk-info-list">
-                        <li>
-                            <span class="label">Welcome</span>
-                            <span class="value"><asp:Label ID="lblusername" runat="server" Text="Label"></asp:Label></span>
-                        </li>
-                        <li>
-                            <span class="label">User ID</span>
-                            <span class="value"><asp:Label ID="lbluserid" runat="server" Text="Label"></asp:Label></span>
-                        </li>
-                        <li>
+            <div class="bmk-card bmk-personal">
+                <div class="bmk-personal-head">
+                    <div class="bmk-personal-avatar">
+                        <asp:Image ID="ImgMyPhoto" runat="server" AlternateText="Member photo" />
+                    </div>
+                    <div class="bmk-personal-intro">
+                        <span class="bmk-personal-eyebrow">Personal Info</span>
+                        <h3 class="bmk-personal-name">
+                            <span class="bmk-personal-hello">Welcome,</span>
+                            <asp:Label ID="lblusername" runat="server" Text="Label"></asp:Label>
+                        </h3>
+                        <p class="bmk-personal-idline">
+                            Member ID
+                            <strong><asp:Label ID="lbluserid" runat="server" Text="Label"></asp:Label></strong>
+                        </p>
+                    </div>
+                    <div class="bmk-personal-status-wrap">
+                        <asp:Label ID="lblstatus" runat="server" CssClass="bmk-personal-status" Text="Label"></asp:Label>
+                    </div>
+                </div>
+                <div class="bmk-personal-grid">
+                    <div class="bmk-personal-tile">
+                        <span class="bmk-personal-ico mobile"><iconify-icon icon="solar:phone-bold"></iconify-icon></span>
+                        <div>
                             <span class="label">Mobile</span>
                             <span class="value"><asp:Label ID="lblmobile" runat="server" Text=""></asp:Label></span>
-                        </li>
-                        <li>
+                        </div>
+                    </div>
+                    <div class="bmk-personal-tile">
+                        <span class="bmk-personal-ico rank"><iconify-icon icon="solar:medal-ribbons-star-bold"></iconify-icon></span>
+                        <div>
                             <span class="label">Rank</span>
                             <span class="value"><asp:Label ID="lblrank" runat="server" Text=""></asp:Label></span>
-                        </li>
-
-                        <li>
-                            <span class="label">Status</span>
-                            <span class="value"><asp:Label ID="lblstatus" runat="server" Text="Label"></asp:Label></span>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                    <div class="bmk-personal-tile bmk-personal-actions">
+                        <a href="UserProfile.aspx" class="bmk-personal-link">
+                            <iconify-icon icon="solar:user-id-bold"></iconify-icon>
+                            View Profile
+                        </a>
+                        <a href="UserEdit.aspx" class="bmk-personal-link ghost">
+                            <iconify-icon icon="solar:pen-bold"></iconify-icon>
+                            Edit
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Affiliate Link -->
         <div class="col-lg-6">
-            <div class="bmk-card">
-                <div class="bmk-card-body">
-                    <h6 class="bmk-card-title">Affiliate Link</h6>
+            <div class="bmk-card bmk-block">
+                <div class="bmk-block-head">
+                    <div class="bmk-block-icon"><iconify-icon icon="solar:link-circle-bold"></iconify-icon></div>
+                    <div class="bmk-block-intro">
+                        <span class="bmk-block-eyebrow">Referral</span>
+                        <h3 class="bmk-block-title">Affiliate Link</h3>
+                        <p class="bmk-block-sub">Share your link and grow your team</p>
+                    </div>
+                </div>
+                <div class="bmk-block-body">
                     <div id="dvlink" runat="server" visible="True" class="bmk-affiliate">
-                        <asp:Label class="form-label" ID="Label1" runat="server" Text="Share your referral link"></asp:Label>
+                        <asp:Label class="form-label" ID="Label1" runat="server" Text="Your referral link"></asp:Label>
                         <div class="input-group mb-0">
                             <asp:TextBox ID="TxtLeftLinkLink" runat="server" CssClass="form-control" />
                             <asp:Button ID="Button1" runat="server" Text="Copy" CssClass="btn btn-primary" OnClientClick="CopyToClipboard()" />
@@ -286,6 +312,12 @@
                             <asp:TextBox ID="TxtRightLink" runat="server" CssClass="form-control" />
                             <asp:Button ID="Button2" runat="server" Text="Copy" CssClass="btn btn-primary" OnClientClick="CopyToClipboard2()" />
                         </div>
+                    </div>
+                    <div class="bmk-block-foot">
+                        <a href="UserDirectAssociates.aspx" class="bmk-personal-link ghost">
+                            <iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon>
+                            My Direct
+                        </a>
                     </div>
                 </div>
             </div>
@@ -348,11 +380,20 @@
         </div>
 
         <div class="col-xxl-12">
-            <div class="bmk-section-card" style="margin-top:0;">
-                <div class="bmk-section-head">
-                    <h6>Team Overview</h6>
+            <div class="bmk-card bmk-block" style="margin-top:0;">
+                <div class="bmk-block-head">
+                    <div class="bmk-block-icon"><iconify-icon icon="solar:users-group-two-rounded-bold"></iconify-icon></div>
+                    <div class="bmk-block-intro">
+                        <span class="bmk-block-eyebrow">Network</span>
+                        <h3 class="bmk-block-title">Team Overview</h3>
+                        <p class="bmk-block-sub">Your directs and downline at a glance</p>
+                    </div>
+                    <div class="bmk-block-head-actions">
+                        <a href="DownlineReport.aspx" class="bmk-block-chip">Downline</a>
+                        <a href="leveltree.aspx" class="bmk-block-chip">Tree</a>
+                    </div>
                 </div>
-                <div class="bmk-section-body">
+                <div class="bmk-block-body">
                     <div class="row gy-3 bmk-team-grid">
                         <div class="col-6 col-md-4">
                             <div class="bmk-team-tile">
@@ -397,11 +438,19 @@
 
         <!-- Wallet / Income / Performance: full-width rows (footer ke upar hi) -->
         <div class="col-12">
-            <div class="bmk-section-card" style="margin-top:0;">
-                <div class="bmk-section-head">
-                    <h6>Wallet</h6>
+            <div class="bmk-card bmk-block" style="margin-top:0;">
+                <div class="bmk-block-head">
+                    <div class="bmk-block-icon"><iconify-icon icon="solar:wallet-bold"></iconify-icon></div>
+                    <div class="bmk-block-intro">
+                        <span class="bmk-block-eyebrow">Finance</span>
+                        <h3 class="bmk-block-title">Wallet</h3>
+                        <p class="bmk-block-sub">Credits, debits and available balance</p>
+                    </div>
+                    <div class="bmk-block-head-actions">
+                        <a href="WithdrawlRequstAdd.aspx" class="bmk-block-chip">Withdraw</a>
+                    </div>
                 </div>
-                <div class="bmk-section-body">
+                <div class="bmk-block-body">
                     <div class="row gy-3">
                         <div class="col-md-4 col-sm-6">
                             <div class="bmk-stat">
@@ -436,13 +485,18 @@
         </div>
 
         <div class="col-12">
-            <div class="bmk-section-card">
-                <div class="bmk-section-head">
-                    <h6>Income</h6>
+            <div class="bmk-card bmk-block">
+                <div class="bmk-block-head">
+                    <div class="bmk-block-icon"><iconify-icon icon="solar:graph-up-bold"></iconify-icon></div>
+                    <div class="bmk-block-intro">
+                        <span class="bmk-block-eyebrow">Earnings</span>
+                        <h3 class="bmk-block-title">Income</h3>
+                        <p class="bmk-block-sub">Referral, level and growth income</p>
+                    </div>
                 </div>
-                <div class="bmk-section-body">
+                <div class="bmk-block-body">
                     <div class="row gy-3">
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon gold"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
                                 <div>
@@ -452,9 +506,9 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
-                                <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Level Income</span>
                                     <span class="bmk-stat-value">0</span>
@@ -462,11 +516,21 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
-                                <span class="bmk-stat-icon green"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <span class="bmk-stat-icon green"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Level Growth Income</span>
+                                    <span class="bmk-stat-value">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Royalty Income</span>
                                     <span class="bmk-stat-value">0</span>
                                 </div>
                             </div>
@@ -549,11 +613,16 @@
         </div>
 
         <div class="col-12">
-            <div class="bmk-section-card">
-                <div class="bmk-section-head">
-                    <h6>Performance</h6>
+            <div class="bmk-card bmk-block">
+                <div class="bmk-block-head">
+                    <div class="bmk-block-icon"><iconify-icon icon="solar:calendar-bold"></iconify-icon></div>
+                    <div class="bmk-block-intro">
+                        <span class="bmk-block-eyebrow">Activity</span>
+                        <h3 class="bmk-block-title">Performance</h3>
+                        <p class="bmk-block-sub">Tap a card for detailed breakdown</p>
+                    </div>
                 </div>
-                <div class="bmk-section-body">
+                <div class="bmk-block-body">
                     <div class="row gy-3">
                         <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat bmk-stat-click" data-bs-toggle="modal" data-bs-target="#modal-today" role="button">
@@ -2746,8 +2815,7 @@ Profit Share Budget</p>
             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <div class="userbox">
                     <div class="box-icon">
-                        <asp:Image ID="ImgMyPhoto" runat="server" class="img-responsive img-circle" />
-                        <%-- <img src="img/pic.png" class="img-responsive img-circle"/>--%>
+                        <%-- ImgMyPhoto moved to Personal Info avatar --%>
                     </div>
                     <div class="info">
                         <h4 class="text-center">User Details</h4>

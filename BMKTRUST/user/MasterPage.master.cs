@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using BusinessLogicTier;
 
 public partial class MasterPage : System.Web.UI.MasterPage
 {
@@ -33,7 +35,6 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
             if (lnkAddUser != null && !string.IsNullOrEmpty(userId))
             {
-                // Same referral URL pattern as Dashboard affiliate link
                 lnkAddUser.HRef = ResolveUrl("~/RegistrationNew.aspx")
                     + "?UserId=" + HttpUtility.UrlEncode(userId)
                     + "&standingposition=1";
@@ -47,21 +48,70 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
     private string GetUserAvatarUrl()
     {
-        string userImage = Session["UserImage"] != null ? Session["UserImage"].ToString().Trim() : string.Empty;
-        if (string.IsNullOrEmpty(userImage) ||
-            userImage.Equals("default.png", StringComparison.OrdinalIgnoreCase) ||
-            userImage.Equals("null", StringComparison.OrdinalIgnoreCase))
+        string fileName = BmkPhotoHelper.NormalizePhotoFileName(
+            Session["UserImage"] != null ? Session["UserImage"].ToString() : string.Empty);
+
+        if (string.IsNullOrEmpty(fileName))
         {
-            return DefaultAvatar;
+            fileName = LoadPhotoFileNameFromDb();
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                Session["UserImage"] = fileName;
+            }
         }
 
-        string relativePath = "~/ProductImage/" + userImage;
+        if (string.IsNullOrEmpty(fileName))
+        {
+            return ResolveUrl(DefaultAvatar);
+        }
+
+        string relativePath = "~/ProductImage/" + fileName;
         string physicalPath = Server.MapPath(relativePath);
         if (!string.IsNullOrEmpty(physicalPath) && File.Exists(physicalPath))
         {
-            return relativePath;
+            return ResolveUrl(relativePath);
         }
 
-        return DefaultAvatar;
+        // Session may be stale after a new upload — refresh once from DB
+        string dbFile = LoadPhotoFileNameFromDb();
+        if (!string.IsNullOrEmpty(dbFile) && !dbFile.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+        {
+            Session["UserImage"] = dbFile;
+            relativePath = "~/ProductImage/" + dbFile;
+            physicalPath = Server.MapPath(relativePath);
+            if (File.Exists(physicalPath))
+            {
+                return ResolveUrl(relativePath);
+            }
+        }
+
+        return ResolveUrl(DefaultAvatar);
+    }
+
+    private string LoadPhotoFileNameFromDb()
+    {
+        try
+        {
+            if (Session["userid"] == null)
+                return string.Empty;
+
+            clsUser objUser = new clsUser();
+            objUser.UserId = Session["userid"].ToString();
+            DataTable dt = objUser.getUserName(objUser);
+            if (dt == null || dt.Rows.Count == 0)
+                return string.Empty;
+
+            string photo = string.Empty;
+            if (dt.Columns.Contains("Photo") && dt.Rows[0]["Photo"] != DBNull.Value)
+                photo = Convert.ToString(dt.Rows[0]["Photo"]);
+            else if (dt.Columns.Contains("PhotoImage") && dt.Rows[0]["PhotoImage"] != DBNull.Value)
+                photo = Convert.ToString(dt.Rows[0]["PhotoImage"]);
+
+            return BmkPhotoHelper.NormalizePhotoFileName(photo);
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 }

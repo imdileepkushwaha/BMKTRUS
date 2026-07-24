@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BusinessLogicTier;
@@ -47,11 +48,7 @@ public partial class user_idcard : System.Web.UI.Page
         lblsponsorname.Text = Dash(Safe(r, "Sponsername"));
         lblcity.Text = ResolveCityName(Safe(r, "cityid"), Safe(r, "stateid"));
 
-        string photo = Safe(r, "PhotoImage");
-        if (string.IsNullOrWhiteSpace(photo))
-            photo = "img/default.png";
-        // getUserDetail already prefixes ../ProductImage/ when present
-        ImgMyPhoto.ImageUrl = photo;
+        ImgMyPhoto.ImageUrl = ResolveMemberPhotoUrl(Safe(r, "PhotoImage"));
 
         try
         {
@@ -124,6 +121,48 @@ public partial class user_idcard : System.Web.UI.Page
     static string Dash(string value)
     {
         return string.IsNullOrWhiteSpace(value) ? "-" : value;
+    }
+
+    string ResolveMemberPhotoUrl(string photoValue)
+    {
+        const string defaultAvatar = "~/site/assets/images/default-user.svg";
+        if (string.IsNullOrWhiteSpace(photoValue))
+            return ResolveUrl(defaultAvatar);
+
+        string value = photoValue.Trim().Replace("\\", "/");
+
+        // Already a usable URL
+        if (value.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
+        {
+            return value;
+        }
+
+        if (value.StartsWith("~/"))
+            return ResolveUrl(value);
+
+        if (value.StartsWith("../") || value.StartsWith("/"))
+            return value;
+
+        // Raw file name from DB (most common when ud.* PhotoImage wins)
+        string fileName = value;
+        int slash = fileName.LastIndexOf('/');
+        if (slash >= 0 && slash < fileName.Length - 1)
+            fileName = fileName.Substring(slash + 1);
+
+        if (fileName.Equals("default.png", StringComparison.OrdinalIgnoreCase) ||
+            fileName.Equals("img/default.png", StringComparison.OrdinalIgnoreCase))
+        {
+            return ResolveUrl(defaultAvatar);
+        }
+
+        string relative = "~/ProductImage/" + fileName;
+        string physical = Server.MapPath(relative);
+        if (!string.IsNullOrEmpty(physical) && File.Exists(physical))
+            return ResolveUrl(relative);
+
+        return ResolveUrl(defaultAvatar);
     }
 
     protected void btnprint_Click(object sender, EventArgs e)

@@ -1,16 +1,14 @@
 /* Bharat Manav Kalyan Trust — User Dashboard */
 .bmk-dashboard {
-    --navy: #14532D;
-    --navy-dark: #0F5C28;
-    --navy-light: #178A3A;
-    --gold: #22A84A;
-    --gold-light: #A8E6BC;
-    --cream: #F3F5F4;
-    --text: #14532D;
-    --muted: #4B7A5C;
-    --green: #22A84A;
-    --green-deep: #178A3A;
-    --green-mid: #2FC25A;
+    --navy: #002B5C;
+    --navy-dark: #001A3A;
+    --navy-light: #003D7A;
+    --gold: #C9A227;
+    --gold-light: #E8C547;
+    --cream: #FAF8F3;
+    --text: #1A2B3C;
+    --muted: #5A6B7C;
+    --green: #138808;
     --saffron: #FF9933;
 }
 
@@ -23,9 +21,9 @@
     padding: 22px 24px;
     margin-bottom: 20px;
     border-radius: 18px;
-    background: linear-gradient(135deg, #0F5C28 0%, #178A3A 45%, #22A84A 100%);
+    background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
     color: #fff;
-    box-shadow: 0 12px 28px rgba(15, 92, 40, 0.22);
+    box-shadow: 0 12px 28px rgba(0, 26, 58, 0.22);
     position: relative;
     overflow: hidden;
 }
@@ -38,7 +36,7 @@
     width: 160px;
     height: 160px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(201, 162, 39, 0.16);
 }
 
 .bmk-dash-hero-text {
@@ -91,23 +89,23 @@
 }
 
 .bmk-dash-hero-actions .btn-gold {
-    background: #fff;
+    background: var(--gold);
     color: var(--navy-dark);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
 }
 
 .bmk-dash-hero-actions .btn-gold:hover {
-    background: #F7FCF8;
+    background: var(--gold-light);
     color: var(--navy-dark);
 }
 
 .bmk-dash-hero-actions .btn-ghost {
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(232, 197, 71, 0.45);
     color: #fff;
 }
 
 .bmk-dash-hero-actions .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(201, 162, 39, 0.18);
     color: #fff;
 }
 
@@ -230,6 +228,403 @@
     line-height: 1.3;
 }
 
+/* ---- Personal Info card ---- */
+.bmk-personal {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.bmk-personal.bmk-card::before {
+    height: 0;
+}
+
+.bmk-personal-head {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 20px 20px 18px;
+    background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
+    color: #fff;
+}
+
+.bmk-personal-head::after {
+    content: '';
+    position: absolute;
+    right: -24px;
+    top: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(201, 162, 39, 0.16);
+    pointer-events: none;
+}
+
+.bmk-personal-avatar {
+    position: relative;
+    z-index: 1;
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: var(--navy);
+    font-size: 1.6rem;
+    border: 2px solid rgba(201, 162, 39, 0.7);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.bmk-personal-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+.bmk-personal-intro {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
+}
+
+.bmk-personal-eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+}
+
+.bmk-personal-name {
+    margin: 0;
+    font-size: 1.2rem !important;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #fff !important;
+    word-break: break-word;
+}
+
+.bmk-personal-hello {
+    display: inline;
+    font-weight: 600;
+    opacity: 0.82;
+    margin-right: 4px;
+}
+
+.bmk-personal-idline {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.bmk-personal-idline strong {
+    color: var(--gold-light);
+    font-weight: 700;
+    margin-left: 4px;
+}
+
+.bmk-personal-status-wrap {
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+}
+
+.bmk-personal-status,
+span.bmk-personal-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(201, 162, 39, 0.2);
+    border: 1px solid rgba(232, 197, 71, 0.55);
+    color: var(--gold-light) !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.bmk-personal-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px 18px 18px;
+}
+
+.bmk-personal-tile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(0, 43, 92, 0.035);
+    border: 1px solid rgba(0, 43, 92, 0.06);
+    min-height: 72px;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.bmk-personal-tile:hover {
+    background: rgba(201, 162, 39, 0.08);
+    border-color: rgba(201, 162, 39, 0.28);
+    transform: translateY(-1px);
+}
+
+.bmk-personal-ico {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.bmk-personal-ico.mobile {
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+}
+
+.bmk-personal-ico.rank {
+    background: linear-gradient(135deg, #B8911F, var(--gold-light));
+    color: var(--navy-dark);
+}
+
+.bmk-personal-tile .label {
+    display: block;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.bmk-personal-tile .value {
+    display: block;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 0.98rem;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+.bmk-personal-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: transparent;
+    border: 0;
+    padding: 2px 0 0;
+    min-height: 0;
+}
+
+.bmk-personal-actions:hover {
+    background: transparent;
+    border-color: transparent;
+    transform: none;
+}
+
+.bmk-personal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 0.86rem;
+    text-decoration: none !important;
+    box-shadow: 0 6px 14px rgba(0, 26, 58, 0.16);
+}
+
+.bmk-personal-link:hover {
+    filter: brightness(1.08);
+    color: #fff !important;
+}
+
+.bmk-personal-link.ghost {
+    background: #fff;
+    color: var(--navy) !important;
+    border: 1px solid rgba(0, 43, 92, 0.14);
+    box-shadow: none;
+}
+
+.bmk-personal-link.ghost:hover {
+    border-color: rgba(201, 162, 39, 0.45);
+    background: #FFFEFA;
+    color: var(--navy) !important;
+    filter: none;
+}
+
+@media (max-width: 575px) {
+    .bmk-personal-head {
+        padding: 16px;
+    }
+
+    .bmk-personal-status-wrap {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .bmk-personal-grid {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    .bmk-personal-name {
+        font-size: 1.08rem !important;
+    }
+}
+
+/* ---- Shared section blocks (Referral / Team / Wallet / Income / Performance) ---- */
+.bmk-block {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.bmk-block.bmk-card::before {
+    height: 0;
+}
+
+.bmk-block-head {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
+    color: #fff;
+    overflow: hidden;
+}
+
+.bmk-block-head::after {
+    content: '';
+    position: absolute;
+    right: -28px;
+    top: -36px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(201, 162, 39, 0.16);
+    pointer-events: none;
+}
+
+.bmk-block-icon {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(201, 162, 39, 0.45);
+    color: var(--gold-light);
+    font-size: 1.4rem;
+}
+
+.bmk-block-intro {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
+}
+
+.bmk-block-eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 2px;
+}
+
+.bmk-block-title {
+    margin: 0;
+    font-size: 1.15rem !important;
+    font-weight: 700;
+    color: #fff !important;
+    line-height: 1.25;
+}
+
+.bmk-block-sub {
+    margin: 4px 0 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.72);
+    display: none;
+}
+
+.bmk-block-head-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.bmk-block-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(201, 162, 39, 0.18);
+    border: 1px solid rgba(232, 197, 71, 0.5);
+    color: var(--gold-light) !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    letter-spacing: 0.02em;
+}
+
+.bmk-block-chip:hover {
+    background: rgba(201, 162, 39, 0.28);
+    color: #fff !important;
+}
+
+.bmk-block-body {
+    position: relative;
+    z-index: 1;
+    padding: 16px 18px 18px;
+    flex: 1;
+}
+
+.bmk-block-foot {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
 .bmk-affiliate .form-label {
     margin-bottom: 10px !important;
 }
@@ -248,7 +643,7 @@
     background: #fff !important;
     color: var(--navy) !important;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 14px;
     padding-left: 14px;
 }
 
@@ -269,6 +664,21 @@
 
 .bmk-affiliate .btn:hover {
     filter: brightness(1.08);
+}
+
+@media (max-width: 767px) {
+    .bmk-block-head {
+        padding: 16px;
+    }
+
+    .bmk-block-head-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .bmk-block-title {
+        font-size: 1.05rem !important;
+    }
 }
 
 .bmk-status-row {
@@ -428,11 +838,12 @@
     border: 1px solid rgba(0, 43, 92, 0.08);
     background: linear-gradient(180deg, #fff, #fbfcfe);
     height: 100%;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .bmk-stat:hover {
     transform: translateY(-2px);
+    border-color: rgba(201, 162, 39, 0.3);
     box-shadow: 0 10px 22px rgba(0, 43, 92, 0.1);
 }
 

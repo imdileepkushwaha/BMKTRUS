@@ -1,18 +1,18 @@
 ﻿/* Bharat Manav Kalyan Trust — My Profile pages */
 .bmk-profile,
 .bmk-panel {
-    --navy: #14532D;
-    --navy-dark: #0F5C28;
-    --navy-light: #178A3A;
-    --gold: #22A84A;
-    --gold-light: #A8E6BC;
-    --cream: #F3F5F4;
-    --text: #14532D;
-    --muted: #4B7A5C;
+    --navy: #002B5C;
+    --navy-dark: #001A3A;
+    --navy-light: #003D7A;
+    --gold: #C9A227;
+    --gold-light: #E8C547;
+    --cream: #FAF8F3;
+    --text: #1A2B3C;
+    --muted: #5A6B7C;
     --danger: #B42318;
 }
 
-/* Page hero */
+/* Page hero — match sidebar navy + gold */
 .bmk-profile-hero {
     display: flex;
     align-items: center;
@@ -22,9 +22,9 @@
     padding: 20px 22px;
     margin-bottom: 20px;
     border-radius: 18px;
-    background: linear-gradient(135deg, #0F5C28 0%, #178A3A 45%, #22A84A 100%);
+    background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
     color: #fff;
-    box-shadow: 0 12px 28px rgba(15, 92, 40, 0.22);
+    box-shadow: 0 12px 28px rgba(0, 26, 58, 0.22);
     position: relative;
     overflow: hidden;
 }
@@ -37,7 +37,7 @@
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(201, 162, 39, 0.16);
 }
 
 .bmk-profile-hero-text {
@@ -100,23 +100,23 @@
 }
 
 .bmk-profile-hero-actions .btn-gold {
-    background: #fff;
+    background: var(--gold);
     color: var(--navy-dark);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
 }
 
 .bmk-profile-hero-actions .btn-gold:hover {
-    background: #F7FCF8;
+    background: var(--gold-light);
     color: var(--navy-dark);
 }
 
 .bmk-profile-hero-actions .btn-ghost {
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(232, 197, 71, 0.45);
     color: #fff;
 }
 
 .bmk-profile-hero-actions .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(201, 162, 39, 0.18);
     color: #fff;
 }
 
@@ -204,7 +204,7 @@
 .bmk-panel label:not(.bmk-dropzone){
     display: block;
     margin-bottom: 6px;
-    font-size: 0.8rem;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -214,16 +214,18 @@
 .bmk-profile .form-control, .bmk-panel .form-control,
 .bmk-profile select.form-control, .bmk-panel select.form-control,
 .bmk-profile textarea.form-control, .bmk-panel textarea.form-control{
-    height: 46px !important;
-    border-radius: 12px !important;
-    border: 1.5px solid #dde3ea !important;
+    height: 42px !important;
+    border-radius: 10px !important;
+    border: 1px solid #dde3ea !important;
     background: #fff !important;
     color: var(--navy) !important;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 14px;
     box-shadow: none !important;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
+
+
 
 .bmk-profile textarea.form-control, .bmk-panel textarea.form-control{
     height: auto !important;
@@ -487,12 +489,22 @@
 }
 
 .bmk-profile .bmk-photo-actions, .bmk-panel .bmk-photo-actions{
-    margin-top: 16px;
-    padding: 0 !important;
+    margin-top: 8px;
+}
+
+.bmk-profile .box-footer.bmk-photo-actions,
+.bmk-panel .box-footer.bmk-photo-actions{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    padding: 18px 22px 24px !important;
+    border-top: 1px solid rgba(0, 43, 92, 0.08) !important;
 }
 
 .bmk-profile .bmk-photo-actions .btn, .bmk-panel .bmk-photo-actions .btn{
-    margin-right: 8px;
+    margin-right: 0;
 }
 
 @media (max-width: 767px) {
