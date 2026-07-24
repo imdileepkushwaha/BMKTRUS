@@ -12,6 +12,77 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="<%= ResolveUrl("~/site/css/style.css") %>" />
     <link rel="icon" type="image/png" href="<%= string.IsNullOrEmpty(FaviconUrl) ? ResolveUrl("~/site/assets/images/logo.png") : FaviconUrl %>" />
+    <style type="text/css">
+        .bmk-site-popup {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 26, 58, 0.72);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .bmk-site-popup.is-open {
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            display: flex !important;
+        }
+        .bmk-site-popup-dialog {
+            position: relative;
+            max-width: min(560px, 94vw);
+            max-height: 88vh;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+            border: 2px solid rgba(201, 162, 39, 0.55);
+            transform: translateY(12px) scale(0.98);
+            transition: transform 0.25s ease;
+        }
+        .bmk-site-popup.is-open .bmk-site-popup-dialog {
+            transform: none;
+        }
+        .bmk-site-popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #001A3A, #003D7A);
+            color: #E8C547;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+        .bmk-site-popup-close:hover {
+            background: linear-gradient(135deg, #C9A227, #E8C547);
+            color: #001A3A;
+        }
+        .bmk-site-popup-media {
+            display: block;
+            max-width: 100%;
+            max-height: 88vh;
+        }
+        .bmk-site-popup-media img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 88vh;
+            object-fit: contain;
+            background: #0b1a2e;
+        }
+    </style>
     <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body>
@@ -42,6 +113,7 @@
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#gallery" class="nav-link">Gallery</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#faq" class="nav-link">FAQ</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#contact" class="nav-link">Contact Us</a></li>
+                <li><a href="<%= ResolveUrl("~/Register.aspx") %>" class="nav-link">Sign Up</a></li>
                 <li><a href="<%= ResolveUrl("~/user/index.aspx") %>" class="nav-link nav-cta">Login</a></li>
             </ul>
         </div>
@@ -193,6 +265,59 @@
     </asp:HyperLink>
 
     <button class="scroll-top" id="scrollTop" aria-label="Scroll to top" type="button">↑</button>
+
+    <asp:Panel ID="pnlSitePopup" runat="server" Visible="false" CssClass="bmk-site-popup" ClientIDMode="Static">
+        <div class="bmk-site-popup-dialog" role="dialog" aria-modal="true" aria-label="Announcement">
+            <button type="button" class="bmk-site-popup-close" id="bmkSitePopupClose" aria-label="Close">&times;</button>
+            <asp:HyperLink ID="hypPopupLink" runat="server" CssClass="bmk-site-popup-media" Target="_blank">
+                <asp:Image ID="imgSitePopup" runat="server" AlternateText="Announcement" />
+            </asp:HyperLink>
+            <asp:PlaceHolder ID="phPopupNoLink" runat="server" Visible="false">
+                <div class="bmk-site-popup-media">
+                    <asp:Image ID="imgSitePopupPlain" runat="server" AlternateText="Announcement" />
+                </div>
+            </asp:PlaceHolder>
+            <asp:HiddenField ID="hdnPopupId" runat="server" ClientIDMode="Static" />
+        </div>
+    </asp:Panel>
+
+    <script type="text/javascript">
+        (function () {
+            var overlay = document.getElementById('pnlSitePopup');
+            if (!overlay) return;
+
+            function openPopup() {
+                overlay.style.display = 'flex';
+                overlay.classList.add('is-open');
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+            }
+            function closePopup() {
+                overlay.classList.remove('is-open');
+                overlay.style.display = 'none';
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            }
+
+            // Every page load / reload: show popup (no sessionStorage hide)
+            openPopup();
+            // Re-open after page loader fades (in case loader covers briefly)
+            setTimeout(openPopup, 800);
+
+            var btn = document.getElementById('bmkSitePopupClose');
+            if (btn) btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closePopup();
+            });
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) closePopup();
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closePopup();
+            });
+        })();
+    </script>
 
     <script src="<%= ResolveUrl("~/site/js/main.js") %>"></script>
     <asp:ContentPlaceHolder ID="Scripts" runat="server"></asp:ContentPlaceHolder>

@@ -1,10 +1,11 @@
-﻿﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.IO;
 using BusinessLogicTier;
 using System.Web.UI.HtmlControls;
 using System.Web.Services;
@@ -389,7 +390,7 @@ public partial class user_Dashboard : System.Web.UI.Page
             lblusername.Text = dt.Rows[0]["username"].ToString();
             LblSponserId.Text = dt.Rows[0]["sponserId"].ToString();
             LblParentId.Text = dt.Rows[0]["parentuserid"].ToString();
-            ImgMyPhoto.ImageUrl = "../ProductImage/" + dt.Rows[0]["PhotoImage"].ToString();
+            ImgMyPhoto.ImageUrl = ResolveMemberPhotoUrl(dt.Rows[0]["PhotoImage"].ToString());
             lbljoiningdate.Text = dt.Rows[0]["parentuserid"].ToString();
             LblParentName.Text = dt.Rows[0]["parentname"].ToString();
             LblSponserName.Text = dt.Rows[0]["sponsername"].ToString();
@@ -767,5 +768,42 @@ public partial class user_Dashboard : System.Web.UI.Page
     }
 
     //(Ends)
+
+    string ResolveMemberPhotoUrl(string photoValue)
+    {
+        const string defaultAvatar = "~/site/assets/images/default-user.svg";
+        if (string.IsNullOrWhiteSpace(photoValue))
+            return ResolveUrl(defaultAvatar);
+
+        string value = photoValue.Trim().Replace("\\", "/");
+
+        if (value.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
+        {
+            return value;
+        }
+
+        if (value.StartsWith("~/"))
+            return ResolveUrl(value);
+
+        if (value.StartsWith("../") || value.StartsWith("/"))
+            return value;
+
+        string fileName = value;
+        int slash = fileName.LastIndexOf('/');
+        if (slash >= 0 && slash < fileName.Length - 1)
+            fileName = fileName.Substring(slash + 1);
+
+        if (fileName.Equals("default.png", StringComparison.OrdinalIgnoreCase))
+            return ResolveUrl(defaultAvatar);
+
+        string relative = "~/ProductImage/" + fileName;
+        string physical = Server.MapPath(relative);
+        if (!string.IsNullOrEmpty(physical) && File.Exists(physical))
+            return ResolveUrl(relative);
+
+        return ResolveUrl(defaultAvatar);
+    }
 
 }

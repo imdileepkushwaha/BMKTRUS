@@ -3381,5 +3381,72 @@ FROM MyCTE left join userdetail ud on mycte.ReportingManager=ud.userid ";
             }
             return Dt;
         }
+
+        /// <summary>
+        /// Helping Binary tree via sp_getHelpingBinary (@userid).
+        /// Returns: id, userid, ParentId, userlevel, UserName (+ StandingPosition when available).
+        /// </summary>
+        public DataTable getHelpingBinary(clsUser objUser)
+        {
+            DataTable Dt = new DataTable();
+            ObjData.StartConnection();
+            try
+            {
+                SqlParameter[] parameter = {
+                    new SqlParameter("@userid", objUser.UserId ?? "")
+                };
+                Dt = ObjData.RunDataTableProcedure("sp_getHelpingBinary", parameter);
+
+                // Enrich Left/Right from HelpingBinaryDetail (SP does not return StandingPosition)
+                if (Dt != null && Dt.Rows.Count > 0 && !Dt.Columns.Contains("StandingPosition"))
+                {
+                    Dt.Columns.Add("StandingPosition", typeof(int));
+                    Dictionary<string, int> posMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                    foreach (DataRow row in Dt.Rows)
+                    {
+                        string idKey = Convert.ToString(row["id"]);
+                        if (!posMap.ContainsKey(idKey))
+                            posMap[idKey] = -1;
+                    }
+
+                    StringBuilder idList = new StringBuilder();
+                    foreach (string key in posMap.Keys)
+                    {
+                        if (idList.Length > 0) idList.Append(",");
+                        idList.Append(key);
+                    }
+
+                    if (idList.Length > 0)
+                    {
+                        string sql = "SELECT id, StandingPosition FROM HelpingBinaryDetail WITH (nolock) WHERE id IN (" + idList.ToString() + ")";
+                        DataTable dtPos = ObjData.RunDataTable(sql);
+                        if (dtPos != null)
+                        {
+                            foreach (DataRow pr in dtPos.Rows)
+                            {
+                                string idKey = Convert.ToString(pr["id"]);
+                                int pos = 0;
+                                int.TryParse(Convert.ToString(pr["StandingPosition"]), out pos);
+                                posMap[idKey] = pos;
+                            }
+                        }
+                    }
+
+                    foreach (DataRow row in Dt.Rows)
+                    {
+                        string idKey = Convert.ToString(row["id"]);
+                        row["StandingPosition"] = posMap.ContainsKey(idKey) ? posMap[idKey] : 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                ObjData.EndConnection();
+            }
+            return Dt;
+        }
     }
 }

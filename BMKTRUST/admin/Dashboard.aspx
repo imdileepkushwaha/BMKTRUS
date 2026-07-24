@@ -177,7 +177,7 @@
                     <a href="Dailypayoutdetail.aspx" class="adm-kpi-link">View report &rarr;</a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6" style="display:none">
                 <div class="adm-kpi tone-red">
                     <div class="adm-kpi-top">
                         <p class="adm-kpi-label">Products</p>

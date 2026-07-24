@@ -132,10 +132,11 @@
                                 <li><a href="WebsiteLogo.aspx"><i class="fa fa-angle-right"></i> Add Logo</a></li>
                                 <li><a href="WebsiteContact.aspx"><i class="fa fa-angle-right"></i> Contact Details</a></li>
                                 <li><a href="WebsiteGallery.aspx"><i class="fa fa-angle-right"></i> Add Gallery</a></li>
+                                <li><a href="WebsitePopup.aspx"><i class="fa fa-angle-right"></i> Add Popup</a></li>
                             </ul>
                         </li>
 
-                        <li class="treeview">
+                        <li class="treeview" style="display:none">
                             <a href="#">
                                 <i class="fa fa-building"></i> <span>Franchisee Master</span>
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -191,7 +192,7 @@
                             </ul>
                         </li>
 
-                        <li class="treeview">
+                        <li class="treeview" style="display:none;">
                             <a href="#">
                                 <i class="fa fa-exchange"></i> <span>Fund Request</span>
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>

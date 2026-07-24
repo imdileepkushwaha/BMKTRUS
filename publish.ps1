@@ -17,6 +17,7 @@ $excludeDirs = @(
     "HomeCss",        # unused theme CSS
     "new_assets",     # duplicate of user/new_assets (user pages use relative user path)
     "App_Data",       # VS publish profiles only
+    "App_Code",       # compiled into Bin — never upload source to precompiled site
     ".git",
     ".vs",
     "obj"

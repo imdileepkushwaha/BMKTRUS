@@ -88,6 +88,7 @@
     <Compile Include="clsvendor.cs" />
     <Compile Include="clsVerfification.cs" />
     <Compile Include="clsWebsite.cs" />
+    <Compile Include="BmkPhotoHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Documet_Upload_class.cs" />
   </ItemGroup>

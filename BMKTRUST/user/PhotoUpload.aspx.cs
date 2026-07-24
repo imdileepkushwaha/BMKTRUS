@@ -71,8 +71,12 @@ public partial class PhotoUpload : System.Web.UI.Page
             string RandomNumber = DateTime.Now.Ticks.ToString();
             string fileName = Path.GetFileName(ImageUpload.PostedFile.FileName);
             Imagename = RandomNumber + fileName;
-            ImageUpload.PostedFile.SaveAs(Server.MapPath("~/ProductImage/") + Imagename);
-
+            string folderPath = Server.MapPath("~/ProductImage/");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            ImageUpload.PostedFile.SaveAs(Path.Combine(folderPath, Imagename));
         }
         return Imagename;
     }
@@ -99,8 +103,13 @@ public partial class PhotoUpload : System.Web.UI.Page
         {
             txtusername.Text = dt.Rows[0]["username"].ToString();
             objaccount.UserId = txtuserid.Text;
-            ImageShow.ImageUrl = dt.Rows[0]["photo"].ToString();
-            ViewState["image"] = dt.Rows[0]["photo"].ToString();
+            string photoPath = dt.Rows[0]["photo"].ToString();
+            ImageShow.ImageUrl = ResolvePhotoUrl(photoPath);
+            ViewState["image"] = ImageShow.ImageUrl;
+            // Keep header avatars in sync after upload / reload
+            string fileOnly = BmkPhotoHelper.NormalizePhotoFileName(photoPath);
+            if (!string.IsNullOrEmpty(fileOnly))
+                Session["UserImage"] = fileOnly;
         }
         else
         {
@@ -111,6 +120,32 @@ public partial class PhotoUpload : System.Web.UI.Page
         }
     }
 
+    string ResolvePhotoUrl(string photoValue)
+    {
+        const string defaultAvatar = "~/site/assets/images/default-user.svg";
+        if (string.IsNullOrWhiteSpace(photoValue))
+            return ResolveUrl(defaultAvatar);
+
+        string value = photoValue.Trim().Replace("\\", "/");
+        if (value.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+            value.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            return value;
+        if (value.StartsWith("~/"))
+            return ResolveUrl(value);
+        if (value.StartsWith("../") || value.StartsWith("/"))
+            return value;
+
+        string fileName = BmkPhotoHelper.NormalizePhotoFileName(value);
+        if (string.IsNullOrEmpty(fileName))
+            return ResolveUrl(defaultAvatar);
+
+        string relative = "~/ProductImage/" + fileName;
+        if (File.Exists(Server.MapPath(relative)))
+            return ResolveUrl(relative);
+
+        return ResolveUrl(defaultAvatar);
+    }
+
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         if (txtuserid.Text != "")
@@ -118,13 +153,17 @@ public partial class PhotoUpload : System.Web.UI.Page
             if (txtusername.Text != "")
             {
 
-                objUser.Photo = UploadImage();
+                string uploadedPhoto = UploadImage();
+                objUser.Photo = uploadedPhoto;
                 objUser.MentionBy = Session["userid"].ToString();
                 objUser.UserId = Session["userid"].ToString();
                 string rs = objUser.Update_UserPhoto(objUser);
                 if (rs == "t")
                 {
-                  //  div_update.Visible = false;
+                    if (!string.IsNullOrWhiteSpace(uploadedPhoto))
+                    {
+                        Session["UserImage"] = uploadedPhoto;
+                    }
                     Message.Show("Request Submitted Successfully...!!!");
                     loadsusername();
                 }

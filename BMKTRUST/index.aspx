@@ -30,6 +30,7 @@
                 </p>
                 <div class="hero-buttons animate-fade-up" data-delay="400">
                     <a href="#programs" class="btn btn-primary">Our Programs</a>
+                    <a href="<%= ResolveUrl("~/Register.aspx") %>" class="btn btn-outline">Sign Up</a>
                     <a href="<%= ResolveUrl("~/user/index.aspx") %>" class="btn btn-outline">Member Login</a>
                 </div>
             </div>
