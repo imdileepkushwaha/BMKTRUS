@@ -1,14 +1,16 @@
 /* Bharat Manav Kalyan Trust — User Dashboard */
 .bmk-dashboard {
-    --navy: #002B5C;
-    --navy-dark: #001A3A;
-    --navy-light: #003D7A;
-    --gold: #C9A227;
-    --gold-light: #E8C547;
-    --cream: #FAF8F3;
-    --text: #1A2B3C;
-    --muted: #5A6B7C;
-    --green: #138808;
+    --navy: #14532D;
+    --navy-dark: #0F5C28;
+    --navy-light: #178A3A;
+    --gold: #22A84A;
+    --gold-light: #A8E6BC;
+    --cream: #F3F5F4;
+    --text: #14532D;
+    --muted: #4B7A5C;
+    --green: #22A84A;
+    --green-deep: #178A3A;
+    --green-mid: #2FC25A;
     --saffron: #FF9933;
 }
 
@@ -21,9 +23,9 @@
     padding: 22px 24px;
     margin-bottom: 20px;
     border-radius: 18px;
-    background: linear-gradient(135deg, var(--navy-dark), var(--navy) 55%, var(--navy-light));
+    background: linear-gradient(135deg, #0F5C28 0%, #178A3A 45%, #22A84A 100%);
     color: #fff;
-    box-shadow: 0 12px 28px rgba(0, 26, 58, 0.18);
+    box-shadow: 0 12px 28px rgba(15, 92, 40, 0.22);
     position: relative;
     overflow: hidden;
 }
@@ -36,7 +38,7 @@
     width: 160px;
     height: 160px;
     border-radius: 50%;
-    background: rgba(201, 162, 39, 0.15);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .bmk-dash-hero-text {
@@ -64,7 +66,7 @@
 
 .bmk-dash-hero-text p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(255, 255, 255, 0.82);
     font-size: 0.95rem;
 }
 
@@ -89,12 +91,23 @@
 }
 
 .bmk-dash-hero-actions .btn-gold {
-    background: var(--gold);
+    background: #fff;
+    color: var(--navy-dark);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.bmk-dash-hero-actions .btn-gold:hover {
+    background: #F7FCF8;
     color: var(--navy-dark);
 }
 
 .bmk-dash-hero-actions .btn-ghost {
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+}
+
+.bmk-dash-hero-actions .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
     color: #fff;
 }
 
@@ -464,6 +477,7 @@
     position: relative;
     overflow: hidden;
     height: 100%;
+    min-height: 110px;
 }
 
 .bmk-team-tile::before {
@@ -486,6 +500,8 @@
     font-size: 0.88rem;
     font-weight: 600;
     margin-bottom: 4px;
+    padding-right: 48px;
+    line-height: 1.3;
 }
 
 .bmk-team-tile .t-value {
@@ -493,12 +509,16 @@
     font-weight: 700;
     color: var(--navy);
     margin: 0;
+    padding-right: 48px;
+    word-break: break-word;
+    line-height: 1.25;
 }
 
 .bmk-team-tile .t-meta {
     display: flex;
-    justify-content: space-between;
-    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px 14px;
     margin-top: 10px;
     font-size: 0.85rem;
 }
@@ -506,6 +526,7 @@
 .bmk-team-tile .t-meta a {
     text-decoration: none;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .bmk-team-tile .t-meta .ok { color: var(--green); }
@@ -521,13 +542,22 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 43, 92, 0.06);
+    background: rgba(15, 92, 40, 0.08);
     color: var(--navy);
+    z-index: 1;
 }
 
 .bmk-team-tile .t-icon a {
     color: inherit;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bmk-team-tile .t-icon i {
+    font-size: 1.15rem;
+    line-height: 1;
 }
 
 /* Soften default theme cards inside dashboard */
@@ -603,7 +633,62 @@
         font-size: 1.3rem;
     }
 
+    .bmk-dashboard .bmk-section-card {
+        --card-pad: 14px;
+        border-radius: 14px;
+        overflow: visible;
+    }
+
+    .bmk-dashboard .bmk-section-head h6 {
+        font-size: 1rem !important;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+
+    .bmk-team-grid {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+    }
+
+    .bmk-team-tile {
+        padding: 14px 12px 12px 14px;
+        min-height: 96px;
+        border-radius: 12px;
+    }
+
+    .bmk-team-tile .t-label {
+        font-size: 0.78rem;
+        padding-right: 40px;
+        margin-bottom: 6px;
+    }
+
     .bmk-team-tile .t-value {
-        font-size: 1.2rem;
+        font-size: 1.2rem !important;
+        padding-right: 40px;
+    }
+
+    .bmk-team-tile .t-icon {
+        width: 32px;
+        height: 32px;
+        right: 10px;
+        top: 10px;
+        border-radius: 8px;
+    }
+
+    .bmk-team-tile .t-icon i {
+        font-size: 1rem;
+    }
+
+    .bmk-team-tile .t-meta {
+        margin-top: 8px;
+        gap: 8px 16px;
+        font-size: 0.78rem;
+    }
+
+    .bmk-team-tile.gold {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 88px;
     }
 }

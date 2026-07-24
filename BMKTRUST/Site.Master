@@ -42,6 +42,7 @@
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#gallery" class="nav-link">Gallery</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#faq" class="nav-link">FAQ</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#contact" class="nav-link">Contact Us</a></li>
+                <li><a href="<%= ResolveUrl("~/Register.aspx") %>" class="nav-link">Sign Up</a></li>
                 <li><a href="<%= ResolveUrl("~/user/index.aspx") %>" class="nav-link nav-cta">Login</a></li>
             </ul>
         </div>

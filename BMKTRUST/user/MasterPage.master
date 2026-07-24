@@ -63,8 +63,8 @@
 
 
     <aside class="sidebar">
-        <button type="button" class="sidebar-close-btn">
-            <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+        <button type="button" class="sidebar-close-btn" aria-label="Close menu" title="Close">
+            <span class="bmk-close-x" aria-hidden="true">&times;</span>
         </button>
         <div>
             <a href="Dashboard.aspx" class="sidebar-logo">
@@ -102,11 +102,11 @@
                             <a href="UserEdit.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Edit Profile</a>
                         </li>
 						
-						<li style="display:none">
+						<li>
                             <a href="idcard.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>ID CARD</a>
                         </li>
 						
-						<li style="display:none">
+						<li>
                             <a href="WelcomeLetter.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Welcome Letter</a>
                         </li>
                         <li>
@@ -178,6 +178,9 @@
                         </li>
                         <li>
                             <a href="leveltree.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>My Treeview</a>
+                        </li>
+                        <li>
+                            <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Helping Binary Matrix</a>
                         </li>
 
                         <!--<li>
@@ -489,5 +492,47 @@
 
     <!-- main js -->
     <script src="../web-assets/js/app.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+            function closeMobileSidebar() {
+                $(".sidebar").removeClass("sidebar-open");
+                $("body").removeClass("overlay-active");
+            }
+
+            function openMobileSidebar() {
+                $(".sidebar").addClass("sidebar-open");
+                $("body").addClass("overlay-active");
+            }
+
+            // Remove theme's mobile sidebar handlers (they conflict / don't toggle close)
+            $(".sidebar-mobile-toggle").off("click");
+            $(".sidebar-close-btn").off("click");
+
+            $(document).off("click.bmkSidebar");
+
+            $(document).on("click.bmkSidebar", ".sidebar-mobile-toggle", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if ($(".sidebar").hasClass("sidebar-open")) {
+                    closeMobileSidebar();
+                } else {
+                    openMobileSidebar();
+                }
+            });
+
+            $(document).on("click.bmkSidebar", ".sidebar-close-btn", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeMobileSidebar();
+            });
+
+            // Tap dark overlay / outside sidebar to close
+            $(document).on("click.bmkSidebar", "body.overlay-active", function (e) {
+                if ($(e.target).closest(".sidebar").length) return;
+                if ($(e.target).closest(".sidebar-mobile-toggle").length) return;
+                closeMobileSidebar();
+            });
+        })(jQuery);
+    </script>
 </body>
 </html>

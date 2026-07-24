@@ -258,6 +258,11 @@
                             <span class="label">Rank</span>
                             <span class="value"><asp:Label ID="lblrank" runat="server" Text=""></asp:Label></span>
                         </li>
+
+                        <li>
+                            <span class="label">Status</span>
+                            <span class="value"><asp:Label ID="lblstatus" runat="server" Text="Label"></asp:Label></span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -308,7 +313,7 @@
         </div>
 
         <!-- Account status | Team -->
-        <div class="col-xxl-6">
+        <div class="col-xxl-6" style="display:none;">
             <div class="bmk-card">
                 <div class="bmk-card-body">
                     <h6 class="bmk-card-title">Account Status</h6>
@@ -335,35 +340,35 @@
                             <small><asp:Label ID="Lblactivatedate2" runat="server" Text="01/07/2024"></asp:Label></small>
                         </div>
                         <a href="javascript:void(0)" class="bmk-status-badge">
-                            <asp:Label ID="lblstatus" runat="server" Text="Label"></asp:Label>
+                            <asp:Label ID="lblstatusss" runat="server" Text="Label"></asp:Label>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-xxl-6">
+        <div class="col-xxl-12">
             <div class="bmk-section-card" style="margin-top:0;">
                 <div class="bmk-section-head">
                     <h6>Team Overview</h6>
                 </div>
                 <div class="bmk-section-body">
-                    <div class="row gy-3">
-                        <div class="col-12">
+                    <div class="row gy-3 bmk-team-grid">
+                        <div class="col-6 col-md-4">
                             <div class="bmk-team-tile">
                                 <div class="t-icon"><a href="UserDirectAssociates.aspx"><i class="ri-group-3-fill"></i></a></div>
                                 <span class="t-label">Total Direct</span>
                                 <p class="t-value"><asp:Label ID="LblDirect" runat="server" Text="Label"></asp:Label></p>
                             </div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-6 col-md-4">
                             <div class="bmk-team-tile green">
                                 <div class="t-icon"><a href="UserDirectAssociates.aspx"><i class="ri-user-follow-fill"></i></a></div>
                                 <span class="t-label">Active Direct</span>
                                 <p class="t-value"><asp:Label ID="LblActiveDirect" runat="server" Text="Label"></asp:Label></p>
                             </div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 col-md-4">
                             <div class="bmk-team-tile gold">
                                 <div class="t-icon"><a href="DownlineReport.aspx"><i class="ri-organization-chart"></i></a></div>
                                 <span class="t-label">Total Team</span>
@@ -437,6 +442,35 @@
                 </div>
                 <div class="bmk-section-body">
                     <div class="row gy-3">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon gold"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Referral Income</span>
+                                    <span class="bmk-stat-value">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Level Income</span>
+                                    <span class="bmk-stat-value">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon green"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label">Level Growth Income</span>
+                                    <span class="bmk-stat-value">0</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-3 col-sm-6" style="display:none">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
@@ -446,7 +480,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6"  style="display:none">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon gold"><iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon></span>
                                 <div>
@@ -455,7 +489,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6"  style="display:none">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:chart-bold"></iconify-icon></span>
                                 <div>
@@ -464,7 +498,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6" style="display:none">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon green"><iconify-icon icon="solar:graph-up-bold"></iconify-icon></span>
                                 <div>
@@ -473,7 +507,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6"  style="display:none">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
                                 <div>

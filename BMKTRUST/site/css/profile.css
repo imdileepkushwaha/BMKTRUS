@@ -1,14 +1,14 @@
 ﻿/* Bharat Manav Kalyan Trust — My Profile pages */
 .bmk-profile,
 .bmk-panel {
-    --navy: #002B5C;
-    --navy-dark: #001A3A;
-    --navy-light: #003D7A;
-    --gold: #C9A227;
-    --gold-light: #E8C547;
-    --cream: #FAF8F3;
-    --text: #1A2B3C;
-    --muted: #5A6B7C;
+    --navy: #14532D;
+    --navy-dark: #0F5C28;
+    --navy-light: #178A3A;
+    --gold: #22A84A;
+    --gold-light: #A8E6BC;
+    --cream: #F3F5F4;
+    --text: #14532D;
+    --muted: #4B7A5C;
     --danger: #B42318;
 }
 
@@ -22,9 +22,9 @@
     padding: 20px 22px;
     margin-bottom: 20px;
     border-radius: 18px;
-    background: linear-gradient(135deg, var(--navy-dark), var(--navy) 55%, var(--navy-light));
+    background: linear-gradient(135deg, #0F5C28 0%, #178A3A 45%, #22A84A 100%);
     color: #fff;
-    box-shadow: 0 12px 28px rgba(0, 26, 58, 0.16);
+    box-shadow: 0 12px 28px rgba(15, 92, 40, 0.22);
     position: relative;
     overflow: hidden;
 }
@@ -37,7 +37,7 @@
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    background: rgba(201, 162, 39, 0.16);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .bmk-profile-hero-text {
@@ -66,7 +66,7 @@
 .bmk-profile-hero-text p,
 .bmk-profile-hero-text .bmk-crumb {
     margin: 0;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(255, 255, 255, 0.82);
     font-size: 0.9rem;
 }
 
@@ -100,12 +100,23 @@
 }
 
 .bmk-profile-hero-actions .btn-gold {
-    background: var(--gold);
+    background: #fff;
+    color: var(--navy-dark);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.bmk-profile-hero-actions .btn-gold:hover {
+    background: #F7FCF8;
     color: var(--navy-dark);
 }
 
 .bmk-profile-hero-actions .btn-ghost {
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+}
+
+.bmk-profile-hero-actions .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
     color: #fff;
 }
 
