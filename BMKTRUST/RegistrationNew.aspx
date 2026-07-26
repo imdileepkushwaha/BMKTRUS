@@ -228,7 +228,7 @@
                                     </div>
                                 </asp:Panel>
 
-                                <div class="row">
+                                <div class="row" style="display:none">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <asp:RadioButton ID="RdBtnLeft" runat="server" Text="Left" GroupName="B" CssClass="custom-radio" />

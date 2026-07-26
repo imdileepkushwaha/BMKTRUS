@@ -182,6 +182,9 @@
                         <li>
                             <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Helping Binary Matrix</a>
                         </li>
+                        <li>
+                            <a href="HelpingBinaryMatrix2X2.aspx"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>Helping Binary 2X2 Matrix</a>
+                        </li>
 
                         <!--<li>
             <a href="DirectDownlineReport.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Pool Wise Binary</a>

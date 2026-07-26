@@ -738,3 +738,11 @@ C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debu
 C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.dll
 C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.pdb
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\bin\Debug\Newtonsoft.Json.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\BusinessLogicTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\BusinessLogicTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\DataTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\Newtonsoft.Json.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\DataTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.csprojResolveAssemblyReference.cache
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.pdb
