@@ -162,6 +162,8 @@
                                 <li><a href="kycApprovalForUser.aspx"><i class="fa fa-angle-right"></i> Approve KYC</a></li>
                                 <li><a href="DownlineReport.aspx"><i class="fa fa-angle-right"></i> Downline Report</a></li>
                                 <li><a href="treeview.aspx"><i class="fa fa-angle-right"></i> Treeview Report</a></li>
+                                <li><a href="HelpingBinaryMatrix.aspx"><i class="fa fa-angle-right"></i> Helping Binary Matrix</a></li>
+                                <li><a href="HelpingBinaryMatrix2X2.aspx"><i class="fa fa-angle-right"></i> Helping Binary 2X2 Matrix</a></li>
                             </ul>
                         </li>
 
