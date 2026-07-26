@@ -10,10 +10,11 @@ namespace BusinessLogicTier
     {
         Data ObjData = new Data();
         static int _schemaVersion;
-        const int SchemaVersion = 2;
+        const int SchemaVersion = 3;
 
         public int GalleryId { get; set; }
         public int PopupId { get; set; }
+        public int SliderId { get; set; }
         public string Title { get; set; }
         public string ImagePath { get; set; }
         public string LinkUrl { get; set; }
@@ -94,6 +95,19 @@ BEGIN
         Title NVARCHAR(200) NOT NULL,
         ImagePath NVARCHAR(500) NOT NULL,
         LinkUrl NVARCHAR(500) NULL,
+        SortOrder INT NOT NULL DEFAULT 0,
+        IsActive BIT NOT NULL DEFAULT 1,
+        MentionBy NVARCHAR(100) NULL,
+        MentionDate DATETIME NULL DEFAULT GETDATE()
+    );
+END
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'WebsiteSlider')
+BEGIN
+    CREATE TABLE WebsiteSlider (
+        SliderId INT IDENTITY(1,1) PRIMARY KEY,
+        Title NVARCHAR(200) NOT NULL,
+        ImagePath NVARCHAR(500) NOT NULL,
         SortOrder INT NOT NULL DEFAULT 0,
         IsActive BIT NOT NULL DEFAULT 1,
         MentionBy NVARCHAR(100) NULL,
@@ -516,6 +530,123 @@ VALUES (@Title, @ImagePath, @LinkUrl, @SortOrder, @IsActive, @MentionBy, GETDATE
             {
                 RunParamQuery("DELETE FROM WebsitePopup WHERE PopupId=@PopupId", tr,
                     new SqlParameter[] { new SqlParameter("@PopupId", popupId) });
+                tr.Commit();
+                res = "t";
+            }
+            catch
+            {
+                try { tr.Rollback(); } catch { }
+                res = "0";
+            }
+            finally
+            {
+                ObjData.EndConnection();
+                tr.Dispose();
+            }
+            return res;
+        }
+
+        public DataTable GetSliders(bool activeOnly)
+        {
+            EnsureSchema();
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try
+            {
+                string q = activeOnly
+                    ? "SELECT * FROM WebsiteSlider WHERE IsActive=1 ORDER BY SortOrder, SliderId"
+                    : "SELECT * FROM WebsiteSlider ORDER BY SortOrder, SliderId";
+                dt = ObjData.RunDataTable(q);
+            }
+            catch
+            {
+                dt = null;
+            }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        public string InsertSlider(clsWebsite obj)
+        {
+            EnsureSchema();
+            string res = "0";
+            SqlConnection cn = ObjData.StartConnectionInTransaction();
+            SqlTransaction tr = cn.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                string sql = @"INSERT INTO WebsiteSlider (Title, ImagePath, SortOrder, IsActive, MentionBy, MentionDate)
+VALUES (@Title, @ImagePath, @SortOrder, @IsActive, @MentionBy, GETDATE())";
+                SqlParameter[] p = {
+                    new SqlParameter("@Title", (object)obj.Title ?? ""),
+                    new SqlParameter("@ImagePath", (object)obj.ImagePath ?? ""),
+                    new SqlParameter("@SortOrder", obj.SortOrder),
+                    new SqlParameter("@IsActive", obj.IsActive),
+                    new SqlParameter("@MentionBy", (object)obj.MentionBy ?? DBNull.Value)
+                };
+                RunParamQuery(sql, tr, p);
+                tr.Commit();
+                res = "t";
+            }
+            catch
+            {
+                try { tr.Rollback(); } catch { }
+                res = "0";
+            }
+            finally
+            {
+                ObjData.EndConnection();
+                tr.Dispose();
+            }
+            return res;
+        }
+
+        public string UpdateSlider(clsWebsite obj)
+        {
+            EnsureSchema();
+            string res = "0";
+            SqlConnection cn = ObjData.StartConnectionInTransaction();
+            SqlTransaction tr = cn.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("UPDATE WebsiteSlider SET Title=@Title, SortOrder=@SortOrder, IsActive=@IsActive");
+                if (!string.IsNullOrEmpty(obj.ImagePath))
+                    sb.Append(", ImagePath=@ImagePath");
+                sb.Append(" WHERE SliderId=@SliderId");
+                SqlParameter[] p = {
+                    new SqlParameter("@Title", (object)obj.Title ?? ""),
+                    new SqlParameter("@SortOrder", obj.SortOrder),
+                    new SqlParameter("@IsActive", obj.IsActive),
+                    new SqlParameter("@ImagePath", (object)obj.ImagePath ?? DBNull.Value),
+                    new SqlParameter("@SliderId", obj.SliderId)
+                };
+                RunParamQuery(sb.ToString(), tr, p);
+                tr.Commit();
+                res = "t";
+            }
+            catch
+            {
+                try { tr.Rollback(); } catch { }
+                res = "0";
+            }
+            finally
+            {
+                ObjData.EndConnection();
+                tr.Dispose();
+            }
+            return res;
+        }
+
+        public string DeleteSlider(int sliderId)
+        {
+            EnsureSchema();
+            string res = "0";
+            SqlConnection cn = ObjData.StartConnectionInTransaction();
+            SqlTransaction tr = cn.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                RunParamQuery("DELETE FROM WebsiteSlider WHERE SliderId=@SliderId", tr,
+                    new SqlParameter[] { new SqlParameter("@SliderId", sliderId) });
                 tr.Commit();
                 res = "t";
             }

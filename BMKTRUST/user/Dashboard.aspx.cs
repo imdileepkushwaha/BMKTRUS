@@ -186,8 +186,10 @@ public partial class user_Dashboard : System.Web.UI.Page
         Lblleftcarrypv.Text = dt.Rows[0]["leftCarryPV"].ToString();
         Lblrightcarrypv.Text = dt.Rows[0]["RightCarryPV"].ToString();
         LblREpurchaseIncome.Text = dt.Rows[0]["Repurchaseincome"].ToString();
+        // Referral Income card = Direct / sponsoring income
         lblDirectincome.Text = dt.Rows[0]["sponcering"].ToString();
-        lbllevelincome.Text = dt.Rows[0]["DailyLevelIncome"].ToString();
+        // Level Income card = Helping Level Income (Level 1 excluded)
+        lbllevelincome.Text = GetHelpingLevelIncomeTotal(Session["userid"].ToString()).ToString("0.00");
         lblleftteam.Text = dt.Rows[0]["leftcount"].ToString();
         lblmiddleteam.Text = dt.Rows[0]["middlecount"].ToString();
         lblrightteam.Text = dt.Rows[0]["rightcount"].ToString();
@@ -199,6 +201,32 @@ public partial class user_Dashboard : System.Web.UI.Page
         //lblrfrl.Text = dt.Rows[0]["sponcering"].ToString();
 
         // LblTds.Text = dt.Rows[0]["TDS"].ToString();
+    }
+
+    decimal GetHelpingLevelIncomeTotal(string userId)
+    {
+        decimal total = 0;
+        try
+        {
+            objaccount.UserId = userId;
+            objaccount.FromDate = DateTime.MinValue;
+            objaccount.ToDate = DateTime.MinValue;
+            DataTable dtHelp = objaccount.getHelpingLevelIncome(objaccount);
+            if (dtHelp != null)
+            {
+                foreach (DataRow row in dtHelp.Rows)
+                {
+                    decimal amt;
+                    if (decimal.TryParse(Convert.ToString(row["Income"]), out amt))
+                        total += amt;
+                }
+            }
+        }
+        catch
+        {
+            total = 0;
+        }
+        return total;
     }
 
     void filldashboard()

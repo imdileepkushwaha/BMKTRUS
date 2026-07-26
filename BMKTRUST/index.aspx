@@ -7,7 +7,14 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-bg">
+        <div class="hero-bg" id="heroBgSlider">
+            <asp:Repeater ID="rptHeroSlider" runat="server">
+                <ItemTemplate>
+                    <div class="hero-slide<%# Container.ItemIndex == 0 ? " is-active" : "" %>"
+                         style="background-image:url('<%# ResolveUrl("~/" + Convert.ToString(Eval("ImagePath")).Trim().TrimStart('~','/','\\').Replace("\\","/")) %>');"
+                         role="img" aria-label="Hero background"></div>
+                </ItemTemplate>
+            </asp:Repeater>
             <div class="hero-particles" id="particles"></div>
             <div class="hero-gradient"></div>
         </div>
@@ -30,7 +37,7 @@
                 </p>
                 <div class="hero-buttons animate-fade-up" data-delay="400">
                     <a href="#programs" class="btn btn-primary">Our Programs</a>
-                    <a href="<%= ResolveUrl("~/Register.aspx") %>" class="btn btn-outline">Sign Up</a>
+                    <a href="<%= ResolveUrl("~/RegistrationNew.aspx") %>" class="btn btn-outline">Sign Up</a>
                     <a href="<%= ResolveUrl("~/user/index.aspx") %>" class="btn btn-outline">Member Login</a>
                 </div>
             </div>
@@ -549,5 +556,22 @@
             </div>
         </div>
     </section>
+
+    <script type="text/javascript">
+        (function () {
+            var root = document.getElementById('heroBgSlider');
+            if (!root) return;
+            var slides = root.querySelectorAll('.hero-slide');
+            if (!slides.length) return;
+            root.classList.add('has-slides');
+            if (slides.length < 2) return;
+            var i = 0;
+            setInterval(function () {
+                slides[i].classList.remove('is-active');
+                i = (i + 1) % slides.length;
+                slides[i].classList.add('is-active');
+            }, 5000);
+        })();
+    </script>
 
 </asp:Content>

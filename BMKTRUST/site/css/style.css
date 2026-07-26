@@ -300,6 +300,39 @@ body.loaded .page-loader {
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%);
+    overflow: hidden;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 1.2s ease, transform 8s ease;
+    z-index: 0;
+}
+
+.hero-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.hero-bg.has-slides {
+    background: #001A3A;
+}
+
+.hero-bg.has-slides .hero-gradient {
+    background:
+        linear-gradient(135deg, rgba(0, 26, 58, 0.72) 0%, rgba(0, 43, 92, 0.55) 45%, rgba(0, 61, 122, 0.65) 100%),
+        radial-gradient(ellipse at 20% 50%, rgba(201, 162, 39, 0.1) 0%, transparent 50%);
+}
+
+.hero-bg .hero-particles,
+.hero-bg .hero-gradient {
+    z-index: 1;
 }
 
 .hero-gradient {

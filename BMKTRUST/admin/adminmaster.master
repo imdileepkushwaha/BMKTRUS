@@ -132,6 +132,7 @@
                                 <li><a href="WebsiteLogo.aspx"><i class="fa fa-angle-right"></i> Add Logo</a></li>
                                 <li><a href="WebsiteContact.aspx"><i class="fa fa-angle-right"></i> Contact Details</a></li>
                                 <li><a href="WebsiteGallery.aspx"><i class="fa fa-angle-right"></i> Add Gallery</a></li>
+                                <li><a href="WebsiteSlider.aspx"><i class="fa fa-angle-right"></i> Add Slider</a></li>
                                 <li><a href="WebsitePopup.aspx"><i class="fa fa-angle-right"></i> Add Popup</a></li>
                             </ul>
                         </li>
@@ -214,6 +215,7 @@
                                 <li><a href="UserAutoPoolIncomeReport.aspx"><i class="fa fa-angle-right"></i> AutoPool Income Report</a></li>
                                 <li><a href="UserDailyIncomeReport.aspx"><i class="fa fa-angle-right"></i> Daily Income Report</a></li>
                                 <li><a href="UserDailyLevelIncomeReport.aspx"><i class="fa fa-angle-right"></i> Daily Level Income Report</a></li>
+                                <li><a href="HelpingLevelIncomeReport.aspx"><i class="fa fa-angle-right"></i> Helping Level Income Report</a></li>
                             </ul>
                         </li>
                     </ul>

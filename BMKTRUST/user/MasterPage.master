@@ -308,6 +308,9 @@
                         <li>
                             <a href="LevelROIIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Level Income</a>
                         </li>
+                        <li>
+                            <a href="HelpingLevelIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>Helping Level Income</a>
+                        </li>
                       
 
                         
@@ -434,9 +437,6 @@
                 <p class="bmk-footer-tag mb-0">सेवा &bull; समर्पण &bull; सशक्तिकरण</p>
             </div>
         </footer>
-
-        <asp:ContentPlaceHolder ID="contentScript" runat="server">
-        </asp:ContentPlaceHolder>
     </main>
     <script>
         // fullscreen
@@ -492,6 +492,8 @@
 
     <!-- main js -->
     <script src="../web-assets/js/app.js"></script>
+    <asp:ContentPlaceHolder ID="contentScript" runat="server">
+    </asp:ContentPlaceHolder>
     <script type="text/javascript">
         (function ($) {
             function closeMobileSidebar() {
