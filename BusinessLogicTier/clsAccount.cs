@@ -787,6 +787,45 @@ namespace BusinessLogicTier
             return Dt;
         }
 
+        public string Reject_PinRequest(clsAccount objaccount)
+        {
+            string res = "";
+            string s2 = "";
+            SqlConnection cn;
+            SqlTransaction tr = null;
+            cn = ObjData.StartConnectionInTransaction();
+            tr = cn.BeginTransaction(IsolationLevel.Serializable);
+
+            try
+            {
+                s2 = "select * from DepositRequest where id=" + objaccount.WithdrawlRequestId + " and status='Pending' ";
+                DataTable dt = ObjData.RunSelectQueryTTrans(s2, tr);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    s2 = "update DepositRequest set status='Rejected', ApproveBy='" + (objaccount.MentionBy ?? "").Replace("'", "''") + "', approvedate=getdate() where id=" + objaccount.WithdrawlRequestId;
+                    ObjData.RunInsUpDelQueryTrans(s2, tr);
+                    res = "t";
+                }
+                else
+                {
+                    res = "f";
+                }
+
+                tr.Commit();
+            }
+            catch (Exception)
+            {
+                res = "0";
+                try { tr.Rollback(); } catch { }
+            }
+            finally
+            {
+                ObjData.EndConnection();
+                if (tr != null) tr.Dispose();
+            }
+            return res;
+        }
+
         public DataTable getPinRequest(clsAccount objaccount)
         {
             string str_query = "select wr.*,CA.AccountNo,CA.AccountNo+'('+CA.bankname+')' as accno2,ud.UserName,ud.SponserId,ud2.UserName AS Sponsername,case when img='' then '../ProductImage/images.png' else '../ProductImage/'+ img end as Image,case when requesttype='R' then 'Recharge Wallet' when requesttype='U' then 'Utility wallet' else 'Wallet' end as RequestType1,RequestTo,ud.mobile  from DepositRequest wr inner JOIN userdetail ud ON wr.UserId=ud.UserId LEFT JOIN userdetail ud2 ON ud2.UserId=ud.SponserId left join CompanyAccountDetail CA on wr.DepositBankID=CA.id where 1=1 ";
@@ -886,6 +925,41 @@ namespace BusinessLogicTier
             str_query += " order by I.levelNo  ASC";
 
 
+
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try
+            {
+                dt = ObjData.RunDataTable(str_query);
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        public DataTable getHelpingLevelIncome(clsAccount objaccount)
+        {
+            // Level 1 excluded as per requirement
+            string str_query = @"SELECT I.id, I.HelpingId, I.UserId, ISNULL(U.UserName,'') AS UserName,
+I.LevelNo, I.Income, Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
+FROM HelpingLevelIncomeDetail I WITH (nolock)
+LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
+WHERE ISNULL(I.LevelNo, 0) <> 1 ";
+
+            if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
+            {
+                str_query += " AND CAST(I.MentionDate AS date) >= CAST('" + objaccount.FromDate + "' AS date) AND CAST(I.MentionDate AS date) <= CAST('" + objaccount.ToDate + "' AS date) ";
+            }
+
+            if (!string.IsNullOrEmpty(objaccount.UserId))
+            {
+                str_query += " AND I.UserId = '" + objaccount.UserId.Replace("'", "''") + "' ";
+            }
+
+            str_query += " ORDER BY I.MentionDate DESC, I.LevelNo ASC, I.id DESC";
 
             DataTable dt = null;
             ObjData.StartConnection();

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BusinessLogicTier;
@@ -75,6 +77,32 @@ public partial class user_idcard : System.Web.UI.Page
         {
             lbldob.Text = Dash(Safe(r, "dateofbirth"));
         }
+
+        BindQrCode();
+    }
+
+    void BindQrCode()
+    {
+        // QR payload = ID card details (scan to verify membership)
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("Bharat Manav Kalyan Trust");
+        sb.AppendLine("Member ID Card");
+        sb.AppendLine("ID: " + lbluserid.Text);
+        sb.AppendLine("Name: " + lblusername.Text);
+        sb.AppendLine("Mobile: " + lblmobile.Text);
+        sb.AppendLine("Email: " + lblemail.Text);
+        sb.AppendLine("Gender: " + lblgender.Text);
+        sb.AppendLine("DOB: " + lbldob.Text);
+        sb.AppendLine("Joined: " + lbljoiningdate.Text);
+        sb.AppendLine("City: " + lblcity.Text);
+        sb.AppendLine("State: " + lblstate.Text);
+        sb.AppendLine("Pin: " + lblpincode.Text);
+        sb.AppendLine("Sponsor: " + lblsponsorid.Text + " / " + lblsponsorname.Text);
+        sb.AppendLine("Address: " + lbladdress.Text);
+        sb.Append("Verify: " + clsUtility.ProjectWebsite.TrimEnd('/') + "/user/IDCard.aspx");
+
+        string data = HttpUtility.UrlEncode(sb.ToString());
+        imgQrCode.ImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=6&data=" + data;
     }
 
     string ResolveCityName(string cityId, string stateId)

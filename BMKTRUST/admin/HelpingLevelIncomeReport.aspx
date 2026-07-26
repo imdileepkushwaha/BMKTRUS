@@ -1,0 +1,146 @@
+<%@ Page Title="Helping Level Income Report" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="HelpingLevelIncomeReport.aspx.cs" Inherits="admin_HelpingLevelIncomeReport" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
+    <section class="content-header">
+        <h1>Helping Level Income Report</h1>
+        <ol class="breadcrumb">
+            <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Income Reports</a></li>
+            <li class="active">Helping Level Income</li>
+        </ol>
+    </section>
+</asp:Content>
+
+<asp:Content ID="Content3" ContentPlaceHolderID="contentpageData" runat="Server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <div class="adm-util-page">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Search Criteria</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>From date</label>
+                                            <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>To date</label>
+                                            <asp:TextBox ID="txttodate" CssClass="form-control form_date" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>User Id</label>
+                                            <asp:TextBox ID="txtuserid" CssClass="form-control" runat="server" placeholder="Leave blank for all"></asp:TextBox>
+                                            <span class="adm-field-hint">Level 1 income is excluded from this report</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Search" OnClick="btnSubmit_Click" />
+                                <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Helping Level Income Details</h3>
+                                <div style="float: right">
+                                    <asp:LinkButton ID="ImageButton1" runat="server" ToolTip="Download Excel" CssClass="bmk-excel-btn" OnClick="ExportToExcel" aria-label="Download Excel">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8.89 17h1.61l.95-1.92L12.4 17h1.61l-1.72-3.05L14.1 11h-1.66l-.88 1.86L10.7 11H9.08l1.72 2.95L8.89 17z"/></svg>
+                                    </asp:LinkButton>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable"
+                                        Width="100%" AutoGenerateColumns="False" EmptyDataText="No records found." GridLines="None">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="#">
+                                                <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
+                                                <HeaderStyle Width="50px" />
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="User Id">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lbluserid" runat="server" Text='<%# Eval("UserId") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Username">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblusername" runat="server" Text='<%# Eval("UserName") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Helping Id">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblHelpingId" runat="server" Text='<%# Eval("HelpingId") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Level No">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblLevelNo" runat="server" Text='<%# Eval("LevelNo") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Income">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblIncome" runat="server" Text='<%# Eval("Income", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblDate" runat="server" Text='<%# Eval("MentionDate") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Mention By">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblMentionBy" runat="server" Text='<%# Eval("MentionBy") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ContentTemplate>
+        <Triggers>
+            <asp:PostBackTrigger ControlID="ImageButton1" />
+        </Triggers>
+    </asp:UpdatePanel>
+</asp:Content>
+
+<asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
+    <script type="text/javascript">
+        $('.form_date').datepicker({
+            format: 'dd/mm/yyyy',
+        }).on('changeDate', function (ev) {
+            $(this).datepicker('hide');
+        });
+    </script>
+    <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript">
+        Sys.Application.add_load(LoadHandler);
+        function LoadHandler() {
+            $('.form_date').datepicker({
+                format: 'dd/mm/yyyy',
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        }
+    </script>
+</asp:Content>

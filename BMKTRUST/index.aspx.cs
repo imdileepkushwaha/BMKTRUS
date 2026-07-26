@@ -49,11 +49,17 @@ public partial class IndexPage : Page
             DataTable gallery = objWeb.GetGallery(true);
             rptGallery.DataSource = gallery;
             rptGallery.DataBind();
+
+            DataTable sliders = objWeb.GetSliders(true);
+            rptHeroSlider.DataSource = sliders;
+            rptHeroSlider.DataBind();
         }
         catch
         {
             rptGallery.DataSource = null;
             rptGallery.DataBind();
+            rptHeroSlider.DataSource = null;
+            rptHeroSlider.DataBind();
         }
 
         litHeroEn.Text = Server.HtmlEncode(siteEn);

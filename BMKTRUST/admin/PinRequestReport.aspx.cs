@@ -148,7 +148,7 @@ public partial class admin_PinRequestReport : System.Web.UI.Page
         Label lblgalleryid = (Label)gvRow.FindControl("lblId");
         objaccount.WithdrawlRequestId = lblgalleryid.Text;
         objaccount.MentionBy = Session["useradmin"].ToString();
-        string res = objaccount.Reject_DepositRequest(objaccount);
+        string res = objaccount.Reject_PinRequest(objaccount);
         if (res == "t")
         {
             string popupScript = "alert('Request Rejected Successfully');";

@@ -501,7 +501,7 @@
                                 <span class="bmk-stat-icon gold"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Referral Income</span>
-                                    <span class="bmk-stat-value">0</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblDirectincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>
@@ -511,7 +511,7 @@
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Level Income</span>
-                                    <span class="bmk-stat-value">0</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lbllevelincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>
@@ -540,7 +540,7 @@
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Direct Income</span>
-                                    <span class="bmk-stat-value"><asp:Label ID="lblDirectincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                    <span class="bmk-stat-value">0</span>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +576,7 @@
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Level Income</span>
-                                    <span class="bmk-stat-value"><asp:Label ID="lbllevelincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                    <span class="bmk-stat-value">0</span>
                                 </div>
                             </div>
                         </div>

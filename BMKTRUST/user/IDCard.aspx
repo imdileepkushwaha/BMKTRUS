@@ -9,7 +9,7 @@
     <title>Member ID Card | Bharat Manav Kalyan Trust</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Noto+Sans+Devanagari:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
     <style type="text/css">
         :root {
             --id-navy: #002B5C;
@@ -353,7 +353,7 @@
         }
 
         .id-back-block {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .id-back-block h3 {
@@ -379,18 +379,22 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px 12px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .id-note {
             margin-top: 4px;
-            padding: 12px 14px;
+            padding: 10px 10px;
             border-radius: 12px;
             background: linear-gradient(180deg, #FBF9F4, #F7F9FC);
             border: 1px solid rgba(0, 43, 92, 0.1);
             font-size: 11px;
             line-height: 1.5;
             color: var(--id-muted);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
         }
 
         .id-note strong {
@@ -398,6 +402,52 @@
             margin-bottom: 4px;
             color: var(--id-navy);
             font-size: 12px;
+        }
+
+        .id-note p {
+            margin: 0 0 6px;
+            font-size: 10px;
+        }
+
+        .id-note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .id-note-hi {
+            font-family: "Noto Sans Devanagari", "Hind", "Segoe UI", sans-serif;
+            color: var(--id-navy);
+        }
+
+        .id-note__qr {
+            flex-shrink: 0;
+            width: 88px;
+            height: 88px;
+            padding: 4px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid rgba(0, 43, 92, 0.12);
+            box-shadow: 0 4px 10px rgba(0, 26, 58, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .id-note__qr img {
+            width: 78px;
+            height: 78px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .id-note__qr-label {
+            display: block;
+            margin-top: 4px;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--id-navy);
         }
 
         .id-footer-mark {
@@ -442,6 +492,15 @@
         @media (max-width: 760px) {
             .id-toolbar h1 {
                 font-size: 24px;
+            }
+
+            .id-note {
+                grid-template-columns: 1fr;
+                justify-items: start;
+            }
+
+            .id-note > div:last-child {
+                justify-self: center;
             }
         }
     </style>
@@ -553,8 +612,21 @@
                             </div>
 
                             <div class="id-note">
-                                <strong>Important</strong>
-                                This card is the property of Bharat Manav Kalyan Trust. If found, please return to the Trust office. Misuse is prohibited.
+                                <div class="id-note__text">
+                                    <strong>Important / महत्वपूर्ण</strong>
+                                    <p>
+                                        This card is the property of Bharat Manav Kalyan Trust. If found, please return to the Trust office. Misuse is prohibited.
+                                    </p>
+                                    <p class="id-note-hi">
+                                        यह कार्ड भारत मानव कल्याण ट्रस्ट की संपत्ति है। यदि यह कार्ड मिले, तो कृपया ट्रस्ट कार्यालय में वापस करें। इसका दुरुपयोग वर्जित है।
+                                    </p>
+                                </div>
+                                <div>
+                                    <div class="id-note__qr">
+                                        <asp:Image ID="imgQrCode" runat="server" AlternateText="Member QR Code" />
+                                    </div>
+                                    <span class="id-note__qr-label">Scan ID</span>
+                                </div>
                             </div>
                         </div>
 
