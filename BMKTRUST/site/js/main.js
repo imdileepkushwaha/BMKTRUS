@@ -160,7 +160,7 @@ function initSmoothScroll() {
             const target = document.querySelector(anchor.getAttribute('href'));
             if (!target) return;
             e.preventDefault();
-            const offset = 80;
+            const offset = 120;
             const top = target.getBoundingClientRect().top + window.scrollY - offset;
             window.scrollTo({ top, behavior: 'smooth' });
         });

@@ -1,6 +1,7 @@
 using BusinessLogicTier;
 using System;
 using System.Data;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 
@@ -40,14 +41,28 @@ public partial class IndexPage : Page
                 tagline = FirstNonEmpty(Convert.ToString(r["Tagline"]), tagline);
                 string logo = Convert.ToString(r["LogoPath"]);
                 if (!string.IsNullOrWhiteSpace(logo))
-                    logoPath = "~/" + logo.TrimStart('~', '/', '\\').Replace("\\", "/");
+                {
+                    string candidate = "~/" + logo.TrimStart('~', '/', '\\').Replace("\\", "/");
+                    if (File.Exists(Server.MapPath(candidate)))
+                        logoPath = candidate;
+                }
                 address = FirstNonEmpty(Convert.ToString(r["Address"]), address);
                 phone = FirstNonEmpty(Convert.ToString(r["Phone"]), phone);
                 email = FirstNonEmpty(Convert.ToString(r["Email"]), email);
             }
 
             DataTable gallery = objWeb.GetGallery(true);
-            rptGallery.DataSource = gallery;
+            if (gallery != null && gallery.Rows.Count > 6)
+            {
+                DataTable preview = gallery.Clone();
+                for (int i = 0; i < 6; i++)
+                    preview.ImportRow(gallery.Rows[i]);
+                rptGallery.DataSource = preview;
+            }
+            else
+            {
+                rptGallery.DataSource = gallery;
+            }
             rptGallery.DataBind();
 
             DataTable sliders = objWeb.GetSliders(true);
@@ -65,7 +80,7 @@ public partial class IndexPage : Page
         litHeroEn.Text = Server.HtmlEncode(siteEn);
         litHeroHi.Text = Server.HtmlEncode(siteHi);
         litHeroTagline.Text = Server.HtmlEncode(tagline);
-        imgHeroLogo.ImageUrl = logoPath;
+        imgHeroLogo.ImageUrl = WithVersion(logoPath);
         imgHeroLogo.AlternateText = siteEn + " Logo";
 
         litContactAddress.Text = Server.HtmlEncode(address);
@@ -78,6 +93,21 @@ public partial class IndexPage : Page
     static string FirstNonEmpty(string value, string fallback)
     {
         return string.IsNullOrWhiteSpace(value) ? fallback : value.Trim();
+    }
+
+    // Logo keeps the same file name after every upload, so bust the browser cache.
+    string WithVersion(string appRelativePath)
+    {
+        try
+        {
+            string physical = Server.MapPath(appRelativePath);
+            if (!File.Exists(physical)) return appRelativePath;
+            return appRelativePath + "?v=" + File.GetLastWriteTimeUtc(physical).Ticks;
+        }
+        catch
+        {
+            return appRelativePath;
+        }
     }
 
     protected void btnSendMessage_Click(object sender, EventArgs e)

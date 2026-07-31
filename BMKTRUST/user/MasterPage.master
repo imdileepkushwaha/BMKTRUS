@@ -163,7 +163,7 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)">
                         <iconify-icon icon="solar:document-text-outline" class="menu-icon"></iconify-icon>
-                        <span>My Team</span>
+                        <span>Team Report Model</span>
                     </a>
                     <ul class="sidebar-submenu">
 					
@@ -180,14 +180,18 @@
                             <a href="leveltree.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>My Treeview</a>
                         </li>
                         <li>
-                            <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Helping Binary Matrix</a>
+                            <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Helping Level Matrix</a>
                         </li>
                         <li>
-                            <a href="HelpingBinaryMatrix2X2.aspx"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>Helping Binary 2X2 Matrix</a>
+                            <a href="HelpingBinaryMatrix2X2.aspx"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>Helping Level 2X2 Matrix</a>
+                        </li>
+
+                        <li>
+                            <a href="HelpingBinaryLevelWiseReport2X2.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>2X2 Level Wise Report</a>
                         </li>
 
                         <!--<li>
-            <a href="DirectDownlineReport.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Pool Wise Binary</a>
+            <a href="DirectDownlineReport.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Pool Wise Level</a>
           </li>
           <li>
             <a href="DownlineReport.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Pool Wise Downline</a>

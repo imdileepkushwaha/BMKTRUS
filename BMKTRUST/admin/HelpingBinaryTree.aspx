@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Helping Binary Matrix</title>
+    <title>Helping Level Matrix</title>
     <style type="text/css">
         :root {
             --hb-line: #3d5a80;
@@ -117,7 +117,7 @@
 <body>
     <form id="form1" runat="server">
         <div class="hb-head">
-            <h1>Helping Binary Matrix</h1>
+            <h1>Helping Level Matrix</h1>
             <span class="hb-badge">LEVEL 0–4</span>
         </div>
         <div class="hb-wrap">

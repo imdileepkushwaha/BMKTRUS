@@ -49,8 +49,8 @@ CONTACT – 9648484584 EMAIL- SUPPORT@RAANMAT.COM WEBSITE – RAANMAT.COM </h4>
         .
     </div>
     <div style="background-color: grey; text-align: center; padding: 10px; font-size: 16px; margin-bottom: 5px; border: 1px; border-color: black; border-style:double;">
-       <b style="text-align: left; margin-right: 50px;"> COMPANY GSTN - 09AAMCR1468G1Z1  </b>
-       <b style="text-align: right;"> COMPANY CIN - U52399UP2022PTC169910 </b>
+       <b style="text-align: left; margin-right: 50px;"> Sanstha GSTN - 09AAMCR1468G1Z1  </b>
+       <b style="text-align: right;"> Sanstha CIN - U52399UP2022PTC169910 </b>
     </div>
     <div style="display: flex;">
         <table style="border-collapse: collapse; width: 50%; max-width: 1250px; margin-right: 10px; flex: 1;">

@@ -228,15 +228,17 @@
                                     </div>
                                 </asp:Panel>
 
-                                <div class="row" style="display:none">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <asp:RadioButton ID="RdBtnLeft" runat="server" Text="Left" GroupName="B" CssClass="custom-radio" />
-                                            <asp:RadioButton ID="RdBtnRight" runat="server" Text="Middle" GroupName="B" CssClass="custom-radio" />
-                                            <asp:RadioButton ID="RdbtnLast" runat="server" Text="Right" GroupName="B" CssClass="custom-radio" />
+                                <asp:Panel ID="pnlStandingPosition" runat="server" Visible="false">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <asp:RadioButton ID="RdBtnLeft" runat="server" Text="Left" GroupName="B" CssClass="custom-radio" />
+                                                <asp:RadioButton ID="RdBtnRight" runat="server" Text="Middle" GroupName="B" CssClass="custom-radio" />
+                                                <asp:RadioButton ID="RdbtnLast" runat="server" Text="Right" GroupName="B" CssClass="custom-radio" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </asp:Panel>
                             </div>
 
                             <div class="register-section">
@@ -302,16 +304,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="display:none;">
                                         <div class="form-group">
+                                            <label>Interest Programs</label>
                                             <div class="input-group">
-                                                <div class="input-group-addon"><i class="fa fa-book"></i></div>
+                                                <div class="input-group-addon"><i class="fa fa-heart"></i></div>
                                                 <asp:DropDownList ID="DropDowncourse" CssClass="form-control" runat="server">
-                                                    <asp:ListItem Value="0">Select Course</asp:ListItem>
-                                                    <asp:ListItem Value="VaidicMathsMarathi">Vaidik  Maths Marathi</asp:ListItem>
-                                                    <asp:ListItem Value="VaidicMathsEnglish">Vaidik  Maths English</asp:ListItem>
-                                                    <asp:ListItem Value="FingerAbacus">Finger Abacus</asp:ListItem>
-                                                    <asp:ListItem Value="Aurachakra">Aura &amp; Chakra report </asp:ListItem>
+                                                    <asp:ListItem Value="0">Select Interest Program</asp:ListItem>
+                                                    <asp:ListItem Value="Education for All">Education for All</asp:ListItem>
+                                                    <asp:ListItem Value="Healthcare Camps">Healthcare Camps</asp:ListItem>
+                                                    <asp:ListItem Value="Women Empowerment">Women Empowerment</asp:ListItem>
+                                                    <asp:ListItem Value="Rural Development">Rural Development</asp:ListItem>
+                                                    <asp:ListItem Value="Food Security">Food Security</asp:ListItem>
+                                                    <asp:ListItem Value="Disaster Relief">Disaster Relief</asp:ListItem>
+                                                    <asp:ListItem Value="Old Age Homes">Old Age Homes (Upcoming)</asp:ListItem>
+                                                    <asp:ListItem Value="Swachta Abhiyan">Swachta Abhiyan (Upcoming)</asp:ListItem>
+                                                    <asp:ListItem Value="Free Eye Camp">Free Eye Camp (Upcoming)</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
@@ -332,7 +340,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="display:none;">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-paper-plane"></i></div>
@@ -340,7 +348,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="display:none;">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-paper-plane"></i></div>
@@ -406,7 +414,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row" style="display: none;">
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="input-group-addon"><i class="fa fa-user"></i></div>
@@ -468,7 +476,7 @@
                             <div class="register-section">
                                 <div class="register-terms">
                                     <asp:CheckBox ID="CheckBox1" AutoPostBack="true" OnCheckedChanged="CheckBox1_CheckedChanged" runat="server" />
-                                    <span>I agree to the <a href="termscondition.pdf" class="thembo" target="_blank">Terms &amp; Conditions</a></span>
+                                    <span>I agree to the <a href="<%= ResolveUrl("~/TermsConditions.aspx") %>" class="thembo" target="_blank">Terms &amp; Conditions</a></span>
                                 </div>
 
                                 <div class="register-actions">

@@ -1,6 +1,7 @@
 using BusinessLogicTier;
 using System;
 using System.Data;
+using System.IO;
 using System.Web.UI;
 
 public partial class SiteMaster : MasterPage
@@ -14,12 +15,54 @@ public partial class SiteMaster : MasterPage
         BindActivePopup();
     }
 
+    // DB is shared between local and live, so a path saved from one machine can
+    // point to a file that was never uploaded to the other. Verify before using it.
+    bool FileExistsOnServer(string appRelativePath)
+    {
+        try
+        {
+            return File.Exists(Server.MapPath(appRelativePath));
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    // The logo keeps the same file name after every upload, so browsers would
+    // otherwise keep serving the previous image from cache.
+    string WithVersion(string appRelativePath)
+    {
+        try
+        {
+            string physical = Server.MapPath(appRelativePath);
+            if (!File.Exists(physical)) return appRelativePath;
+            return appRelativePath + "?v=" + File.GetLastWriteTimeUtc(physical).Ticks;
+        }
+        catch
+        {
+            return appRelativePath;
+        }
+    }
+
+    bool IsHomePage()
+    {
+        string path = Request.AppRelativeCurrentExecutionFilePath;
+        if (string.IsNullOrEmpty(path)) return false;
+
+        return path.Equals("~/", StringComparison.OrdinalIgnoreCase)
+            || path.Equals("~/index.aspx", StringComparison.OrdinalIgnoreCase)
+            || path.Equals("~/default.aspx", StringComparison.OrdinalIgnoreCase);
+    }
+
     void BindActivePopup()
     {
         try
         {
             if (pnlSitePopup == null) return;
             pnlSitePopup.Visible = false;
+
+            if (!IsHomePage()) return;
 
             DataTable dt = _web.GetActivePopup();
             if (dt == null || dt.Rows.Count == 0) return;
@@ -29,6 +72,8 @@ public partial class SiteMaster : MasterPage
             if (string.IsNullOrWhiteSpace(path)) return;
 
             string imageUrl = "~/" + path.Trim().TrimStart('~', '/', '\\').Replace("\\", "/");
+            if (!FileExistsOnServer(imageUrl)) return;
+
             string link = Convert.ToString(r["LinkUrl"]);
             string title = Convert.ToString(r["Title"]);
             string popupId = Convert.ToString(r["PopupId"]);
@@ -89,7 +134,11 @@ public partial class SiteMaster : MasterPage
                 tagline = FirstNonEmpty(Convert.ToString(r["Tagline"]), tagline);
                 string logo = Convert.ToString(r["LogoPath"]);
                 if (!string.IsNullOrWhiteSpace(logo))
-                    logoPath = "~/" + logo.TrimStart('~', '/', '\\').Replace("\\", "/");
+                {
+                    string candidate = "~/" + logo.TrimStart('~', '/', '\\').Replace("\\", "/");
+                    if (FileExistsOnServer(candidate))
+                        logoPath = candidate;
+                }
                 address = FirstNonEmpty(Convert.ToString(r["Address"]), address);
                 phone = FirstNonEmpty(Convert.ToString(r["Phone"]), phone);
                 whatsapp = FirstNonEmpty(Convert.ToString(r["WhatsApp"]), whatsapp);
@@ -106,9 +155,10 @@ public partial class SiteMaster : MasterPage
             // Keep defaults if DB is unavailable
         }
 
-        imgLoaderLogo.ImageUrl = logoPath;
-        imgNavLogo.ImageUrl = logoPath;
-        imgFooterLogo.ImageUrl = logoPath;
+        string versionedLogo = WithVersion(logoPath);
+        imgLoaderLogo.ImageUrl = versionedLogo;
+        imgNavLogo.ImageUrl = versionedLogo;
+        imgFooterLogo.ImageUrl = versionedLogo;
         imgNavLogo.AlternateText = siteEn;
         imgFooterLogo.AlternateText = siteEn;
 
@@ -128,6 +178,11 @@ public partial class SiteMaster : MasterPage
         litFooterEmail.Text = Server.HtmlEncode(email);
         hypFooterEmail.NavigateUrl = "mailto:" + email;
 
+        litTopPhone.Text = Server.HtmlEncode(phone);
+        hypTopPhone.HRef = "tel:" + clsWebsite.DigitsOnly(phone);
+        litTopEmail.Text = Server.HtmlEncode(email);
+        hypTopEmail.HRef = "mailto:" + email;
+
         hypFacebook.NavigateUrl = facebook;
         hypInstagram.NavigateUrl = instagram;
         hypTwitter.NavigateUrl = twitter;
@@ -139,7 +194,7 @@ public partial class SiteMaster : MasterPage
         if (string.IsNullOrWhiteSpace(litPageTitle.Text) || litPageTitle.Text.Contains("Bharat Manav Kalyan Trust"))
             litPageTitle.Text = siteEn + " — " + tagline;
 
-        FaviconUrl = ResolveUrl(logoPath);
+        FaviconUrl = ResolveUrl(versionedLogo);
     }
 
     public string FaviconUrl { get; private set; }

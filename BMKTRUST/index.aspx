@@ -38,7 +38,7 @@
                 <div class="hero-buttons animate-fade-up" data-delay="400">
                     <a href="#programs" class="btn btn-primary">Our Programs</a>
                     <a href="<%= ResolveUrl("~/RegistrationNew.aspx") %>" class="btn btn-outline">Sign Up</a>
-                    <a href="<%= ResolveUrl("~/user/index.aspx") %>" class="btn btn-outline">Member Login</a>
+                    <a href="<%= ResolveUrl("~/Donate.aspx") %>" class="btn btn-outline">Donate</a>
                 </div>
             </div>
             <div class="hero-visual animate-scale-in" data-delay="200">
@@ -112,37 +112,38 @@
                     </div>
                 </div>
                 <div class="about-text animate-on-scroll">
-                    <h3>Building a Stronger, Kinder India</h3>
+                    <h3>A Non-Profit Dedicated to Human Welfare</h3>
                     <p>
-                        <strong>Bharat Manav Kalyan Trust</strong> is a registered non-profit trust committed to
-                        human welfare across India. Like the mighty Banyan tree in our emblem &#8212; deep-rooted,
-                        far-reaching, and sheltering &#8212; we nurture communities with care and compassion.
+                        <strong>Bharat Manav Kalyan Trust</strong> is a registered non-profit organisation (NGO)
+                        working across India for the upliftment of underprivileged communities. We focus on
+                        education, healthcare, women empowerment, rural development, and social welfare with
+                        honesty, transparency, and compassion.
                     </p>
                     <p>
-                        Our symbol carries profound meaning: the map of India on the tree trunk reflects our
-                        nationwide commitment; the open book and Ashoka Lion represent knowledge and national
-                        pride; the blessing hand and rising sun signify hope and protection for all.
+                        Through grassroots programs and volunteer-driven initiatives, we support children,
+                        families, senior citizens, and villages that need care the most. Our aim is simple —
+                        to create lasting change so every person can live with dignity, opportunity, and hope.
                     </p>
                     <div class="about-features">
                         <div class="feature-item">
-                            <div class="feature-icon">🌳</div>
+                            <div class="feature-icon">🤝</div>
                             <div>
-                                <strong>Deep Roots</strong>
-                                <p>Community-driven programs built on trust</p>
+                                <strong>Community First</strong>
+                                <p>Grassroots programs built with local trust</p>
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">☀️</div>
+                            <div class="feature-icon">❤️</div>
                             <div>
-                                <strong>Hope &amp; Light</strong>
-                                <p>Bringing opportunity to every corner</p>
+                                <strong>Welfare Focus</strong>
+                                <p>Education, health and livelihood support</p>
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">📖</div>
+                            <div class="feature-icon">🇮🇳</div>
                             <div>
-                                <strong>Knowledge First</strong>
-                                <p>Education as the foundation of change</p>
+                                <strong>Pan-India Reach</strong>
+                                <p>Serving communities across the nation</p>
                             </div>
                         </div>
                     </div>
@@ -265,6 +266,60 @@
                     <p class="program-desc">Rapid response teams providing emergency aid during floods, droughts, and natural calamities.</p>
                     <div class="program-card-bar"></div>
                 </div>
+                <div class="program-card program-card--upcoming animate-on-scroll" data-delay="480">
+                    <span class="program-badge">Upcoming</span>
+                    <div class="program-card-front">
+                        <span class="program-icon">🏡</span>
+                        <h3>Old Age Homes</h3>
+                        <p class="program-title-hi">वृद्धाश्रम</p>
+                    </div>
+                    <p class="program-desc">Safe shelter, care, and dignity for senior citizens — coming soon under our welfare programs.</p>
+                    <div class="program-card-bar"></div>
+                </div>
+                <div class="program-card program-card--upcoming animate-on-scroll" data-delay="560">
+                    <span class="program-badge">Upcoming</span>
+                    <div class="program-card-front">
+                        <span class="program-icon">🧹</span>
+                        <h3>Swachta Abhiyan</h3>
+                        <p class="program-title-hi">स्वच्छता अभियान</p>
+                    </div>
+                    <p class="program-desc">Cleanliness drives and awareness campaigns for healthier villages and cities — launching soon.</p>
+                    <div class="program-card-bar"></div>
+                </div>
+                <div class="program-card program-card--upcoming animate-on-scroll" data-delay="640">
+                    <span class="program-badge">Upcoming</span>
+                    <div class="program-card-front">
+                        <span class="program-icon">👁️</span>
+                        <h3>Free Eye Camp</h3>
+                        <p class="program-title-hi">निःशुल्क नेत्र शिविर</p>
+                    </div>
+                    <p class="program-desc">Free eye check-ups and treatment support for underserved communities — upcoming initiative.</p>
+                    <div class="program-card-bar"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crowd Funding Section -->
+    <section class="section crowdfunding" id="crowdfunding">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-label">Support a Cause</span>
+                <h2 class="section-title">Crowd Funding</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="info-panel animate-on-scroll">
+                <h3>Donate. Support. Transform Lives.</h3>
+                <p>
+                    Through crowd funding, every contribution — big or small — helps Bharat Manav Kalyan Trust
+                    run education, healthcare, and community welfare programs. Join hands with us to bring hope
+                    to those who need it most.
+                </p>
+                <p>
+                    Your support funds school supplies, medical camps, nutrition drives, and upcoming initiatives
+                    like Old Age Homes, Swachta Abhiyan, and Free Eye Camps.
+                </p>
+                <a href="<%= ResolveUrl("~/Donate.aspx") %>" class="btn btn-primary">Donate Now →</a>
             </div>
         </div>
     </section>
@@ -337,6 +392,10 @@
                         </article>
                     </ItemTemplate>
                 </asp:Repeater>
+            </div>
+
+            <div class="gallery-view-all animate-on-scroll">
+                <a href="<%= ResolveUrl("~/Gallery.aspx") %>" class="btn btn-primary">View All</a>
             </div>
         </div>
     </section>

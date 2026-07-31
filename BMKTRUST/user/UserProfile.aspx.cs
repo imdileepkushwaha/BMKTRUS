@@ -160,12 +160,6 @@ public partial class UserProfile : System.Web.UI.Page
         lblKycBadge.Text = kycDone ? "KYC Submitted" : "KYC Pending";
         lblKycBadge.CssClass = kycDone ? "bmk-badge bmk-badge-ok" : "bmk-badge bmk-badge-warn";
 
-        string standing = Safe(row, "StandingPosition");
-        if (standing == "1") litPosition.Text = "Left";
-        else if (standing == "2") litPosition.Text = "Right";
-        else if (!string.IsNullOrEmpty(standing)) litPosition.Text = HttpUtility.HtmlEncode(standing);
-        else litPosition.Text = "—";
-
         litSponsorId.Text = HttpUtility.HtmlEncode(txtsponserid.Text);
         litSponsorName.Text = HttpUtility.HtmlEncode(string.IsNullOrEmpty(txtsponsername.Text) ? "—" : txtsponsername.Text);
 
@@ -203,7 +197,6 @@ public partial class UserProfile : System.Web.UI.Page
         int leftDirect = 0, rightDirect = 0;
         int leftTeam = 0, rightTeam = 0, middleTeam = 0;
         decimal directIncome = 0, binaryIncome = 0, levelIncome = 0, selfIncome = 0;
-        decimal leftBv = 0, rightBv = 0;
         string rank = "—";
 
         try
@@ -241,12 +234,14 @@ public partial class UserProfile : System.Web.UI.Page
                 decimal.TryParse(Safe(r, "Binaryincome"), out binaryIncome);
                 decimal.TryParse(Safe(r, "DailyLevelIncome"), out levelIncome);
                 decimal.TryParse(Safe(r, "selfincome"), out selfIncome);
-                decimal.TryParse(Safe(r, "currentleftbv"), out leftBv);
-                decimal.TryParse(Safe(r, "currentrightbv"), out rightBv);
                 rank = string.IsNullOrEmpty(Safe(r, "Rank")) ? "—" : Safe(r, "Rank");
             }
         }
         catch { }
+
+        // Dashboard sources level income from the helping-level ledger, keep both in sync
+        decimal helpingLevelIncome = GetHelpingLevelIncomeTotal(userId);
+        if (helpingLevelIncome > 0) levelIncome = helpingLevelIncome;
 
         int directTotal = leftDirect + rightDirect;
         int teamTotal = leftTeam + rightTeam + middleTeam;
@@ -257,10 +252,37 @@ public partial class UserProfile : System.Web.UI.Page
         litTeamCount.Text = teamTotal.ToString();
         litWalletMini.Text = wallet.ToString("0.00");
         litMetricEarnings.Text = totalEarnings.ToString("0.00");
-        litLRCount.Text = leftTeam + " / " + rightTeam;
-        litLeftBV.Text = leftBv.ToString("0");
-        litRightBV.Text = rightBv.ToString("0");
+        litDirectMembers.Text = directTotal.ToString();
+        litTeamNet.Text = teamTotal.ToString();
+        litReferralIncome.Text = directIncome.ToString("0.00");
+        litLevelIncomeNet.Text = levelIncome.ToString("0.00");
         litRank.Text = HttpUtility.HtmlEncode(rank);
+    }
+
+    decimal GetHelpingLevelIncomeTotal(string userId)
+    {
+        decimal total = 0;
+        try
+        {
+            objaccount.UserId = userId;
+            objaccount.FromDate = DateTime.MinValue;
+            objaccount.ToDate = DateTime.MinValue;
+            DataTable dtHelp = objaccount.getHelpingLevelIncome(objaccount);
+            if (dtHelp != null)
+            {
+                foreach (DataRow row in dtHelp.Rows)
+                {
+                    decimal amt;
+                    if (decimal.TryParse(Convert.ToString(row["Income"]), out amt))
+                        total += amt;
+                }
+            }
+        }
+        catch
+        {
+            total = 0;
+        }
+        return total;
     }
 
     void BindReferralLinks()

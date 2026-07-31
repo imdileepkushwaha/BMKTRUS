@@ -32,16 +32,34 @@ public partial class admin_WebsiteLogo : System.Web.UI.Page
             txtTagline.Text = Convert.ToString(r["Tagline"]);
             string logo = Convert.ToString(r["LogoPath"]);
             if (!string.IsNullOrEmpty(logo))
-                imgLogoPreview.ImageUrl = "~/" + logo.TrimStart('~', '/').Replace("\\", "/");
+                imgLogoPreview.ImageUrl = WithVersion("~/" + logo.TrimStart('~', '/').Replace("\\", "/"));
             else
-                imgLogoPreview.ImageUrl = "~/site/assets/images/logo.png";
+                imgLogoPreview.ImageUrl = WithVersion("~/" + CanonicalLogoPath);
         }
         else
         {
             txtSiteNameEn.Text = "Bharat Manav Kalyan Trust";
             txtSiteNameHi.Text = "भारत मानव कल्याण ट्रस्ट";
             txtTagline.Text = "सेवा • समर्पण • सशक्तिकरण";
-            imgLogoPreview.ImageUrl = "~/site/assets/images/logo.png";
+            imgLogoPreview.ImageUrl = WithVersion("~/" + CanonicalLogoPath);
+        }
+    }
+
+    // Every page (site, user panel, admin, ID card, invoices) points at logo.png,
+    // so the upload always overwrites that single canonical file.
+    const string CanonicalLogoPath = "site/assets/images/logo.png";
+
+    string WithVersion(string appRelativePath)
+    {
+        try
+        {
+            string physical = Server.MapPath(appRelativePath);
+            if (!File.Exists(physical)) return appRelativePath;
+            return appRelativePath + "?v=" + File.GetLastWriteTimeUtc(physical).Ticks;
+        }
+        catch
+        {
+            return appRelativePath;
         }
     }
 
@@ -56,18 +74,19 @@ public partial class admin_WebsiteLogo : System.Web.UI.Page
         if (!Directory.Exists(folder))
             Directory.CreateDirectory(folder);
 
-        string fileName = "logo_" + DateTime.Now.Ticks + ext;
-        fuLogo.SaveAs(Path.Combine(folder, fileName));
+        byte[] data = fuLogo.FileBytes;
+        if (data == null || data.Length == 0) return "";
 
-        // Also refresh default logo.png for favicon/loader compatibility
-        string defaultLogo = Path.Combine(folder, "logo.png");
+        File.WriteAllBytes(Path.Combine(folder, "logo.png"), data);
+
+        // Keep a dated copy so an earlier logo can be restored if needed
         try
         {
-            File.Copy(Path.Combine(folder, fileName), defaultLogo, true);
+            File.WriteAllBytes(Path.Combine(folder, "logo_" + DateTime.Now.Ticks + ext), data);
         }
         catch { }
 
-        return "site/assets/images/" + fileName;
+        return CanonicalLogoPath;
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)

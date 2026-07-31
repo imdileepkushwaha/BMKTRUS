@@ -313,7 +313,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="UserDownload.aspx"><i class="fa fa-angle-right"></i>Download</a></li>
-                            <li><a href="BankDetail.aspx"><i class="fa fa-angle-right"></i>Company Bank Details</a></li>
+                            <li><a href="BankDetail.aspx"><i class="fa fa-angle-right"></i>Sanstha Bank Details</a></li>
                         </ul>
                     </li>
                     <li class="treeview">

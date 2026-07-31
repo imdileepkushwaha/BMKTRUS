@@ -31,6 +31,7 @@ public partial class user_Dashboard : System.Web.UI.Page
             {
                 TxtLeftLinkLink.Attributes.Add("readonly", "readonly");
                 TxtRightLink.Attributes.Add("readonly", "readonly");
+                SetGreeting();
                 loadnotification();
                 laoddata();
                 string url = clsUtility.ProjectWebsite;
@@ -187,9 +188,29 @@ public partial class user_Dashboard : System.Web.UI.Page
         Lblrightcarrypv.Text = dt.Rows[0]["RightCarryPV"].ToString();
         LblREpurchaseIncome.Text = dt.Rows[0]["Repurchaseincome"].ToString();
         // Referral Income card = Direct / sponsoring income
-        lblDirectincome.Text = dt.Rows[0]["sponcering"].ToString();
+        string referralIncome = Convert.ToString(dt.Rows[0]["sponcering"]);
+        lblDirectincome.Text = referralIncome;
+        // Same value on Team Overview "My Direct Bonus" and hidden Direct Income tile
+        litDirectBonus.Text = FormatAmount(referralIncome);
+        if (lblDirectIncomeHidden != null)
+            lblDirectIncomeHidden.Text = referralIncome;
+
         // Level Income card = Helping Level Income (Level 1 excluded)
-        lbllevelincome.Text = GetHelpingLevelIncomeTotal(Session["userid"].ToString()).ToString("0.00");
+        string levelIncome = GetHelpingLevelIncomeTotal(Session["userid"].ToString()).ToString("0.00");
+        lbllevelincome.Text = levelIncome;
+        if (lbllevelincome2 != null)
+            lbllevelincome2.Text = levelIncome;
+
+        // Level Growth Income + Helping Growth Bonus = Growth Income ledger total
+        string growthIncome = GetGrowthIncomeTotal(Session["userid"].ToString()).ToString("0.00");
+        lblLevelGrowthIncome.Text = growthIncome;
+        litGrowthBonus.Text = growthIncome;
+
+        // Self Donation amount from total-income selfincome
+        litSelfDonation.Text = FormatAmount(Convert.ToString(dt.Rows[0]["selfincome"]));
+
+        BindLevelProgress(Session["userid"].ToString());
+
         lblleftteam.Text = dt.Rows[0]["leftcount"].ToString();
         lblmiddleteam.Text = dt.Rows[0]["middlecount"].ToString();
         lblrightteam.Text = dt.Rows[0]["rightcount"].ToString();
@@ -201,6 +222,77 @@ public partial class user_Dashboard : System.Web.UI.Page
         //lblrfrl.Text = dt.Rows[0]["sponcering"].ToString();
 
         // LblTds.Text = dt.Rows[0]["TDS"].ToString();
+    }
+
+    static string FormatAmount(string value)
+    {
+        decimal amt;
+        if (decimal.TryParse(value, out amt))
+            return amt.ToString("0.00");
+        return "0.00";
+    }
+
+    decimal GetGrowthIncomeTotal(string userId)
+    {
+        decimal total = 0;
+        try
+        {
+            objaccount.UserId = userId;
+            objaccount.FromDate = DateTime.MinValue;
+            objaccount.ToDate = DateTime.MinValue;
+            DataTable dtGrowth = objaccount.getGrowthIncome(objaccount);
+            if (dtGrowth != null)
+            {
+                foreach (DataRow row in dtGrowth.Rows)
+                {
+                    decimal amt;
+                    string raw = string.Empty;
+                    if (row.Table.Columns.Contains("CrAmount"))
+                        raw = Convert.ToString(row["CrAmount"]);
+                    else if (row.Table.Columns.Contains("Amount"))
+                        raw = Convert.ToString(row["Amount"]);
+                    else if (row.Table.Columns.Contains("Credit"))
+                        raw = Convert.ToString(row["Credit"]);
+
+                    if (decimal.TryParse(raw, out amt))
+                        total += amt;
+                }
+            }
+        }
+        catch
+        {
+            total = 0;
+        }
+        return total;
+    }
+
+    void BindLevelProgress(string userId)
+    {
+        int maxLevel = 0;
+        try
+        {
+            objaccount.UserId = userId;
+            objaccount.FromDate = DateTime.MinValue;
+            objaccount.ToDate = DateTime.MinValue;
+            DataTable dtHelp = objaccount.getHelpingLevelIncome(objaccount);
+            if (dtHelp != null)
+            {
+                foreach (DataRow row in dtHelp.Rows)
+                {
+                    int levelNo;
+                    if (int.TryParse(Convert.ToString(row["LevelNo"]), out levelNo) && levelNo > maxLevel)
+                        maxLevel = levelNo;
+                }
+            }
+        }
+        catch
+        {
+            maxLevel = 0;
+        }
+
+        // Completed = highest paid helping level; current = next level in progress
+        litLevelCompleted.Text = maxLevel.ToString();
+        litCurrentLevel.Text = "Level " + (maxLevel + 1);
     }
 
     decimal GetHelpingLevelIncomeTotal(string userId)
@@ -366,14 +458,68 @@ public partial class user_Dashboard : System.Web.UI.Page
 
     void loadnews()
     {
-        DataTable dt = new DataTable();
-        dt = objnews.getRecentNews();
-        ltnews.Text += "<span style='color:blue;'> ";
+        DataTable dt = objnews.getRecentNews();
+        if (dt != null)
+        {
+            ltnews.Text += "<span style='color:blue;'> ";
+            foreach (DataRow r in dt.Rows)
+            {
+                ltnews.Text += r["newsdetail"].ToString() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+            ltnews.Text += "</span>";
+        }
+
+        LoadNewsTicker(dt);
+    }
+
+    void LoadNewsTicker(DataTable dt)
+    {
+        if (dt == null || dt.Rows.Count == 0)
+        {
+            pnlNewsBar.Visible = false;
+            return;
+        }
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
         foreach (DataRow r in dt.Rows)
         {
-            ltnews.Text += r["newsdetail"].ToString() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            string item = Convert.ToString(r["newsdetail"]).Trim();
+            if (item.Length == 0) continue;
+
+            if (sb.Length > 0)
+                sb.Append("<span class=\"bmk-news-sep\">&bull;</span>");
+            sb.Append("<span class=\"bmk-news-item\">").Append(Server.HtmlEncode(item)).Append("</span>");
         }
-        ltnews.Text += "</span>";
+
+        pnlNewsBar.Visible = sb.Length > 0;
+        litNewsTicker.Text = sb.ToString();
+    }
+
+    void SetGreeting()
+    {
+        int hour = IndiaNow().Hour;
+        string greeting;
+
+        if (hour < 12) greeting = "Good Morning";
+        else if (hour < 17) greeting = "Good Afternoon";
+        else if (hour < 21) greeting = "Good Evening";
+        else greeting = "Good Night";
+
+        litGreeting.Text = greeting;
+    }
+
+    // Hosting server may not run on IST, so convert explicitly.
+    static DateTime IndiaNow()
+    {
+        try
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+                TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+        }
+        catch
+        {
+            return DateTime.UtcNow.AddHours(5.5);
+        }
     }
 
     void TotalDownline()

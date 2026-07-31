@@ -1,16 +1,16 @@
-<%@ Page Title="Helping Binary Matrix" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="HelpingBinaryMatrix.aspx.cs" Inherits="admin_HelpingBinaryMatrix" %>
+<%@ Page Title="Helping Level Matrix" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="HelpingBinaryMatrix.aspx.cs" Inherits="admin_HelpingBinaryMatrix" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" Runat="Server">
    <section class="content-header">
       <h1>
-       Helping Binary Matrix
+       Helping Level Matrix
       </h1>
       <ol class="breadcrumb">
      <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Network</a></li>
-        <li class="active">Helping Binary Matrix</li>
+        <li class="active">Helping Level Matrix</li>
       </ol>
     </section>
 </asp:Content>
@@ -47,7 +47,7 @@
 
                     <div class="box box-primary" style="border-top-color:#4cc9f0;">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Helping Binary Matrix Tree</h3>
+                            <h3 class="box-title">Helping Level Matrix Tree</h3>
                         </div>
                         <div class="box-body" style="padding:0; background:#0d1728;">
                             <iframe id="f1" runat="server" style="height:980px;width:100%;border:0;display:block;"></iframe>

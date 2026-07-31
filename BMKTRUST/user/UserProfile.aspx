@@ -227,10 +227,10 @@
                                 </header>
                                 <div class="bmk-net-grid">
                                     <div class="bmk-net-item">
-                                        <span class="bmk-net-ico bmk-net-navy"><iconify-icon icon="solar:routing-2-bold"></iconify-icon></span>
+                                        <span class="bmk-net-ico bmk-net-navy"><iconify-icon icon="solar:user-plus-bold"></iconify-icon></span>
                                         <div class="bmk-net-text">
-                                            <em>Position</em>
-                                            <strong><asp:Literal ID="litPosition" runat="server" Text="—" /></strong>
+                                            <em>Direct Members</em>
+                                            <strong><asp:Literal ID="litDirectMembers" runat="server" Text="0" /></strong>
                                         </div>
                                     </div>
                                     <div class="bmk-net-item">
@@ -243,22 +243,22 @@
                                     <div class="bmk-net-item">
                                         <span class="bmk-net-ico bmk-net-teal"><iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon></span>
                                         <div class="bmk-net-text">
-                                            <em>Left / Right</em>
-                                            <strong><asp:Literal ID="litLRCount" runat="server" Text="0 / 0" /></strong>
+                                            <em>Total Team</em>
+                                            <strong><asp:Literal ID="litTeamNet" runat="server" Text="0" /></strong>
                                         </div>
                                     </div>
                                     <div class="bmk-net-item">
-                                        <span class="bmk-net-ico bmk-net-green"><iconify-icon icon="solar:chart-bold"></iconify-icon></span>
+                                        <span class="bmk-net-ico bmk-net-green"><iconify-icon icon="solar:hand-money-bold"></iconify-icon></span>
                                         <div class="bmk-net-text">
-                                            <em>Left BV</em>
-                                            <strong><asp:Literal ID="litLeftBV" runat="server" Text="0" /></strong>
+                                            <em>Referral Income</em>
+                                            <strong>₹<asp:Literal ID="litReferralIncome" runat="server" Text="0.00" /></strong>
                                         </div>
                                     </div>
                                     <div class="bmk-net-item">
-                                        <span class="bmk-net-ico bmk-net-amber"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
+                                        <span class="bmk-net-ico bmk-net-amber"><iconify-icon icon="solar:layers-minimalistic-bold"></iconify-icon></span>
                                         <div class="bmk-net-text">
-                                            <em>Right BV</em>
-                                            <strong><asp:Literal ID="litRightBV" runat="server" Text="0" /></strong>
+                                            <em>Level Income</em>
+                                            <strong>₹<asp:Literal ID="litLevelIncomeNet" runat="server" Text="0.00" /></strong>
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                     </a>
                                     <a href="leveltree.aspx" class="bmk-qlink">
                                         <span class="bmk-qlink-ico bmk-qlink-blue"><iconify-icon icon="solar:graph-new-bold"></iconify-icon></span>
-                                        <span class="bmk-qlink-text"><strong>Binary Tree</strong><em>Team structure</em></span>
+                                        <span class="bmk-qlink-text"><strong>Level Tree</strong><em>Team structure</em></span>
                                         <iconify-icon class="bmk-qlink-arrow" icon="solar:alt-arrow-right-linear"></iconify-icon>
                                     </a>
                                     <a href="TransactionReport.aspx" class="bmk-qlink">

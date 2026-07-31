@@ -92,6 +92,28 @@
         <asp:Image ID="imgLoaderLogo" runat="server" CssClass="loader-logo" AlternateText="Loading" ImageUrl="~/site/assets/images/logo.png" />
     </div>
 
+    <div class="top-header" id="topHeader">
+        <div class="top-header-inner">
+            <div class="top-header-left">
+                <a id="hypTopPhone" runat="server" class="top-header-link" href="tel:+919876543210">
+                    <span class="top-header-ico" aria-hidden="true">📞</span>
+                    <asp:Literal ID="litTopPhone" runat="server" Text="+91 98765 43210"></asp:Literal>
+                </a>
+                <a id="hypTopEmail" runat="server" class="top-header-link" href="mailto:info@bharatmanavkalyantrust.org">
+                    <span class="top-header-ico" aria-hidden="true">✉️</span>
+                    <asp:Literal ID="litTopEmail" runat="server" Text="info@bharatmanavkalyantrust.org"></asp:Literal>
+                </a>
+            </div>
+            <div class="top-header-right">
+                <span class="top-lang-label">Language</span>
+                <div class="top-lang-switch" role="group" aria-label="Language options">
+                    <button type="button" class="top-lang-btn is-active" data-lang="hi" aria-pressed="true">हिन्दी</button>
+                    <button type="button" class="top-lang-btn" data-lang="en" aria-pressed="false">English</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="<%= ResolveUrl("~/index.aspx") %>#home" class="nav-brand">
@@ -107,10 +129,11 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#home" class="nav-link active">Home</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#about" class="nav-link">About</a></li>
-                <li><a href="<%= ResolveUrl("~/index.aspx") %>#mission" class="nav-link">Mission</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#programs" class="nav-link">Programs</a></li>
-                <li><a href="<%= ResolveUrl("~/index.aspx") %>#impact" class="nav-link">Impact</a></li>
-                <li><a href="<%= ResolveUrl("~/index.aspx") %>#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="<%= ResolveUrl("~/index.aspx") %>#crowdfunding" class="nav-link">Crowd Funding</a></li>
+                <li><a href="<%= ResolveUrl("~/Product.aspx") %>" class="nav-link">Product</a></li>
+                <li><a href="<%= ResolveUrl("~/Legal.aspx") %>" class="nav-link">Legal</a></li>
+                <li><a href="<%= ResolveUrl("~/Gallery.aspx") %>" class="nav-link">Gallery</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#faq" class="nav-link">FAQ</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#contact" class="nav-link">Contact Us</a></li>
                 <li><a href="<%= ResolveUrl("~/RegistrationNew.aspx") %>" class="nav-link">Sign Up</a></li>
@@ -119,7 +142,9 @@
         </div>
     </nav>
 
+    <main class="site-main" id="siteMain">
     <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+    </main>
 
     <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true" role="dialog">
         <div class="lightbox-backdrop" data-close-lightbox></div>
@@ -196,12 +221,14 @@
                         <h4><span class="footer-heading-line"></span>Quick Links</h4>
                         <ul>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#about"><span class="link-arrow">&#8250;</span> About Us</a></li>
-                            <li><a href="<%= ResolveUrl("~/index.aspx") %>#mission"><span class="link-arrow">&#8250;</span> Our Mission</a></li>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#programs"><span class="link-arrow">&#8250;</span> Programs</a></li>
-                            <li><a href="<%= ResolveUrl("~/index.aspx") %>#impact"><span class="link-arrow">&#8250;</span> Our Impact</a></li>
-                            <li><a href="<%= ResolveUrl("~/index.aspx") %>#gallery"><span class="link-arrow">&#8250;</span> Gallery</a></li>
+                            <li><a href="<%= ResolveUrl("~/index.aspx") %>#crowdfunding"><span class="link-arrow">&#8250;</span> Crowd Funding</a></li>
+                            <li><a href="<%= ResolveUrl("~/Product.aspx") %>"><span class="link-arrow">&#8250;</span> Product</a></li>
+                            <li><a href="<%= ResolveUrl("~/Legal.aspx") %>"><span class="link-arrow">&#8250;</span> Legal</a></li>
+                            <li><a href="<%= ResolveUrl("~/Gallery.aspx") %>"><span class="link-arrow">&#8250;</span> Gallery</a></li>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#faq"><span class="link-arrow">&#8250;</span> FAQ</a></li>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#contact"><span class="link-arrow">&#8250;</span> Contact</a></li>
+                            <li><a href="<%= ResolveUrl("~/TermsConditions.aspx") %>"><span class="link-arrow">&#8250;</span> Terms &amp; Conditions</a></li>
                             <li><a href="<%= ResolveUrl("~/user/index.aspx") %>"><span class="link-arrow">&#8250;</span> Login</a></li>
                         </ul>
                     </div>
@@ -315,6 +342,24 @@
             });
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') closePopup();
+            });
+        })();
+
+        // Language toggle UI only (not functional yet)
+        (function () {
+            var switcher = document.querySelector('.top-lang-switch');
+            if (!switcher) return;
+            var buttons = switcher.querySelectorAll('.top-lang-btn');
+            buttons.forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    buttons.forEach(function (b) {
+                        b.classList.remove('is-active');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
+                    btn.classList.add('is-active');
+                    btn.setAttribute('aria-pressed', 'true');
+                });
             });
         })();
     </script>

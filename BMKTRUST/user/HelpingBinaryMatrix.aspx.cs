@@ -9,7 +9,7 @@ using BusinessLogicTier;
 public partial class user_HelpingBinaryMatrix : System.Web.UI.Page
 {
     clsUser objUser = new clsUser();
-    const int MaxLevel = 3;
+    const int MaxLevel = 4;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -81,7 +81,7 @@ public partial class user_HelpingBinaryMatrix : System.Web.UI.Page
         int rootId = ToInt(root["id"]);
 
         // Build ordered slots per level (binary positions L/R left-to-right)
-        // Level 0: 1 slot, Level 1: 2, Level 2: 4, Level 3: 8
+        // Level 0: 1 slot, Level 1: 2, Level 2: 4, Level 3: 8, Level 4: 16
         var levelSlots = new List<DataRow>[MaxLevel + 1];
         for (int L = 0; L <= MaxLevel; L++)
             levelSlots[L] = new List<DataRow>();
@@ -136,11 +136,11 @@ public partial class user_HelpingBinaryMatrix : System.Web.UI.Page
         }
 
         var sb = new StringBuilder();
-        sb.Append("<div class='hbm-tree'>");
+        sb.Append("<div class='hbm-tree'><div class='hbm-tree-inner'>");
 
         for (int L = 0; L <= MaxLevel; L++)
         {
-            int cols = 1 << L; // 1,2,4,8
+            int cols = 1 << L; // 1,2,4,8,16
             sb.AppendFormat("<div class='hbm-level-label'>Level {0}</div>", L);
             sb.AppendFormat("<div class='hbm-matrix cols-{0}'>", cols);
 
@@ -152,7 +152,7 @@ public partial class user_HelpingBinaryMatrix : System.Web.UI.Page
             sb.Append("</div>");
         }
 
-        sb.Append("</div>");
+        sb.Append("</div></div>");
         litMatrix.Text = sb.ToString();
     }
 
@@ -162,7 +162,7 @@ public partial class user_HelpingBinaryMatrix : System.Web.UI.Page
         {
             string vacantPos = level == 0 ? "Root" : ((index % 2 == 0) ? "Left" : "Right");
             return string.Format(
-                "<div class='hbm-card empty'><div class='pos'>{0}</div><div class='uid'>—</div><div class='uname'>Vacant</div><span class='lvl'>L{1}</span></div>",
+                "<div class='hbm-card empty' title='L{1} {0} — Vacant'><div class='pos'>{0}</div><div class='uid'>—</div><div class='uname'>Vacant</div><span class='lvl'>L{1}</span></div>",
                 vacantPos, level);
         }
 
@@ -196,9 +196,12 @@ public partial class user_HelpingBinaryMatrix : System.Web.UI.Page
         if (string.IsNullOrWhiteSpace(uname))
             uname = Html(Safe(row, "username"));
 
+        // Cards are narrow at deeper levels, so keep the full text in a tooltip
+        string tooltip = string.Format("L{0} {1} — {2} {3}", level, posLabel, uid, uname).Trim();
+
         return string.Format(
-            "<div class='hbm-card {0}'><div class='pos'>{1}</div><div class='uid'>{2}</div><div class='uname'>{3}</div><span class='lvl'>L{4}</span></div>",
-            posClass, posLabel, uid, string.IsNullOrWhiteSpace(uname) ? "&nbsp;" : uname, level);
+            "<div class='hbm-card {0}' title='{1}'><div class='pos'>{2}</div><div class='uid'>{3}</div><div class='uname'>{4}</div><span class='lvl'>L{5}</span></div>",
+            posClass, tooltip, posLabel, uid, string.IsNullOrWhiteSpace(uname) ? "&nbsp;" : uname, level);
     }
 
     static string Safe(DataRow row, string col)

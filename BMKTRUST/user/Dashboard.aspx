@@ -210,7 +210,7 @@
         <div class="bmk-dash-hero">
             <div class="bmk-dash-hero-text">
                 <span class="eyebrow">Member Panel</span>
-                <h1>Welcome back</h1>
+                <h1><asp:Literal ID="litGreeting" runat="server" Text="Welcome"></asp:Literal></h1>
                 <p>Bharat Manav Kalyan Trust &mdash; your account overview</p>
             </div>
             <div class="bmk-dash-hero-actions">
@@ -218,6 +218,15 @@
                 <a class="btn-ghost" href="WithdrawlRequstAdd.aspx">Withdrawal</a>
             </div>
         </div>
+
+        <asp:Panel ID="pnlNewsBar" runat="server" CssClass="bmk-news-bar" Visible="false">
+            <span class="bmk-news-label"><i class="fa fa-bullhorn"></i> News</span>
+            <div class="bmk-news-track">
+                <marquee direction="left" scrollamount="4" onmouseover="this.stop();" onmouseout="this.start();">
+                    <asp:Literal ID="litNewsTicker" runat="server"></asp:Literal>
+                </marquee>
+            </div>
+        </asp:Panel>
     </div>
     <section class="content-header" style="display:none;">
         <div class="ibox-title pull-left">
@@ -249,16 +258,19 @@
                             <span class="bmk-personal-hello">Welcome,</span>
                             <asp:Label ID="lblusername" runat="server" Text="Label"></asp:Label>
                         </h3>
-                        <p class="bmk-personal-idline">
-                            Member ID
-                            <strong><asp:Label ID="lbluserid" runat="server" Text="Label"></asp:Label></strong>
-                        </p>
                     </div>
                     <div class="bmk-personal-status-wrap">
                         <asp:Label ID="lblstatus" runat="server" CssClass="bmk-personal-status" Text="Label"></asp:Label>
                     </div>
                 </div>
                 <div class="bmk-personal-grid">
+                    <div class="bmk-personal-tile">
+                        <span class="bmk-personal-ico memberid"><iconify-icon icon="solar:user-id-bold"></iconify-icon></span>
+                        <div>
+                            <span class="label">Member ID</span>
+                            <span class="value"><asp:Label ID="lbluserid" runat="server" Text="Label"></asp:Label></span>
+                        </div>
+                    </div>
                     <div class="bmk-personal-tile">
                         <span class="bmk-personal-ico mobile"><iconify-icon icon="solar:phone-bold"></iconify-icon></span>
                         <div>
@@ -420,6 +432,49 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile green">
+                                <div class="t-icon"><i class="ri-check-double-line"></i></div>
+                                <span class="t-label">Level Completed</span>
+                                <p class="t-value"><asp:Literal ID="litLevelCompleted" runat="server" Text="0" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile saffron">
+                                <div class="t-icon"><i class="ri-loader-4-line"></i></div>
+                                <span class="t-label">Current Running</span>
+                                <p class="t-value"><asp:Literal ID="litCurrentLevel" runat="server" Text="Level 1" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile gold">
+                                <div class="t-icon"><i class="ri-hand-heart-line"></i></div>
+                                <span class="t-label">Self Donation</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litSelfDonation" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile">
+                                <div class="t-icon"><i class="ri-heart-add-line"></i></div>
+                                <span class="t-label">Team Donation</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litTeamDonation" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile green">
+                                <div class="t-icon"><i class="ri-line-chart-line"></i></div>
+                                <span class="t-label">Helping Growth Bonus</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litGrowthBonus" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile gold">
+                                <div class="t-icon"><i class="ri-user-star-line"></i></div>
+                                <span class="t-label">My Direct Bonus</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litDirectBonus" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+
                         <div class="col-12" style="display:none">
                             <div class="bmk-team-tile saffron">
                                 <div class="t-icon"><i class="ri-group-3-fill"></i></div>
@@ -452,7 +507,7 @@
                 </div>
                 <div class="bmk-block-body">
                     <div class="row gy-3">
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon gold"><iconify-icon icon="solar:wallet-money-bold"></iconify-icon></span>
                                 <div>
@@ -461,7 +516,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:card-send-bold"></iconify-icon></span>
                                 <div>
@@ -470,12 +525,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="solar:safe-square-bold"></iconify-icon></span>
                                 <div>
-                                    <span class="bmk-stat-label">Balance</span>
+                                    <span class="bmk-stat-label">Wallet Balance</span>
                                     <span class="bmk-stat-value"><asp:Label ID="LblCurrentWallet" CssClass="heading" runat="server" Text="0"></asp:Label></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="bmk-stat">
+                                <span class="bmk-stat-icon green"><iconify-icon icon="solar:hand-money-bold"></iconify-icon></span>
+                                <div>
+                                    <span class="bmk-stat-label"> Withdrawal Amount</span>
+                                    <span class="bmk-stat-value">0</span>
                                 </div>
                             </div>
                         </div>
@@ -521,7 +586,7 @@
                                 <span class="bmk-stat-icon green"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Level Growth Income</span>
-                                    <span class="bmk-stat-value">0</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblLevelGrowthIncome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>
@@ -530,7 +595,7 @@
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
                                 <div>
-                                    <span class="bmk-stat-label">Royalty Income</span>
+                                    <span class="bmk-stat-label">Revenue Share</span>
                                     <span class="bmk-stat-value">0</span>
                                 </div>
                             </div>
@@ -540,7 +605,7 @@
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="mingcute:user-follow-fill"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Direct Income</span>
-                                    <span class="bmk-stat-value">0</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblDirectIncomeHidden" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +641,7 @@
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
                                 <div>
                                     <span class="bmk-stat-label">Level Income</span>
-                                    <span class="bmk-stat-value">0</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lbllevelincome2" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>

@@ -109,6 +109,68 @@
     color: #fff;
 }
 
+/* News ticker */
+.bmk-news-bar {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: -8px 0 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 43, 92, 0.1);
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(0, 43, 92, 0.07);
+}
+
+.bmk-news-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+    color: var(--gold-light);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bmk-news-track {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+}
+
+.bmk-news-track marquee {
+    width: 100%;
+}
+
+.bmk-news-item {
+    color: var(--navy);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.bmk-news-sep {
+    margin: 0 14px;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+@media (max-width: 575px) {
+    .bmk-news-label {
+        padding: 9px 12px;
+        font-size: 0.72rem;
+    }
+
+    .bmk-news-item {
+        font-size: 0.85rem;
+    }
+}
+
 .bmk-dashboard .bmk-card {
     --card-pad: 22px;
     position: relative;
@@ -150,7 +212,7 @@
 }
 
 .bmk-dashboard .bmk-card:hover {
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     border-color: rgba(201, 162, 39, 0.35);
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.95) inset,
@@ -244,20 +306,21 @@
     z-index: 1;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     flex-wrap: wrap;
-    padding: 20px 20px 18px;
+    padding: 11px 16px;
     background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
     color: #fff;
+    overflow: hidden;
 }
 
 .bmk-personal-head::after {
     content: '';
     position: absolute;
-    right: -24px;
-    top: -30px;
-    width: 120px;
-    height: 120px;
+    right: -30px;
+    top: -42px;
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
     background: rgba(201, 162, 39, 0.16);
     pointer-events: none;
@@ -266,18 +329,18 @@
 .bmk-personal-avatar {
     position: relative;
     z-index: 1;
-    width: 58px;
-    height: 58px;
-    min-width: 58px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: #fff;
     color: var(--navy);
-    font-size: 1.6rem;
+    font-size: 1.1rem;
     border: 2px solid rgba(201, 162, 39, 0.7);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
     overflow: hidden;
 }
 
@@ -297,18 +360,19 @@
 }
 
 .bmk-personal-eyebrow {
-    display: block;
-    font-size: 0.7rem;
+    display: none;
+    font-size: 0.62rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--gold-light);
-    margin-bottom: 4px;
+    margin-bottom: 0;
+    line-height: 1.3;
 }
 
 .bmk-personal-name {
     margin: 0;
-    font-size: 1.2rem !important;
+    font-size: 1rem !important;
     font-weight: 700;
     line-height: 1.25;
     color: #fff !important;
@@ -322,19 +386,6 @@
     margin-right: 4px;
 }
 
-.bmk-personal-idline {
-    margin: 6px 0 0;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.78);
-}
-
-.bmk-personal-idline strong {
-    color: var(--gold-light);
-    font-weight: 700;
-    margin-left: 4px;
-}
-
 .bmk-personal-status-wrap {
     position: relative;
     z-index: 1;
@@ -345,13 +396,13 @@
 span.bmk-personal-status {
     display: inline-flex;
     align-items: center;
-    min-height: 30px;
-    padding: 0 12px;
+    min-height: 27px;
+    padding: 0 10px;
     border-radius: 999px;
     background: rgba(201, 162, 39, 0.2);
     border: 1px solid rgba(232, 197, 71, 0.55);
     color: var(--gold-light) !important;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -404,6 +455,10 @@ span.bmk-personal-status {
 .bmk-personal-ico.rank {
     background: linear-gradient(135deg, #B8911F, var(--gold-light));
     color: var(--navy-dark);
+}
+
+.bmk-personal-ico.memberid {
+    background: linear-gradient(135deg, var(--navy), var(--saffron));
 }
 
 .bmk-personal-tile .label {
@@ -478,7 +533,8 @@ span.bmk-personal-status {
 
 @media (max-width: 575px) {
     .bmk-personal-head {
-        padding: 16px;
+        padding: 10px 13px;
+        gap: 9px;
     }
 
     .bmk-personal-status-wrap {
@@ -492,7 +548,7 @@ span.bmk-personal-status {
     }
 
     .bmk-personal-name {
-        font-size: 1.08rem !important;
+        font-size: 0.95rem !important;
     }
 }
 
@@ -513,9 +569,9 @@ span.bmk-personal-status {
     z-index: 1;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     flex-wrap: wrap;
-    padding: 18px 20px;
+    padding: 11px 16px;
     background: linear-gradient(135deg, #001A3A 0%, #002B5C 55%, #003D7A 100%);
     color: #fff;
     overflow: hidden;
@@ -524,10 +580,10 @@ span.bmk-personal-status {
 .bmk-block-head::after {
     content: '';
     position: absolute;
-    right: -28px;
-    top: -36px;
-    width: 120px;
-    height: 120px;
+    right: -30px;
+    top: -42px;
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
     background: rgba(201, 162, 39, 0.16);
     pointer-events: none;
@@ -536,17 +592,17 @@ span.bmk-personal-status {
 .bmk-block-icon {
     position: relative;
     z-index: 1;
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    border-radius: 14px;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 7px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(201, 162, 39, 0.45);
     color: var(--gold-light);
-    font-size: 1.4rem;
+    font-size: 1rem;
 }
 
 .bmk-block-intro {
@@ -557,18 +613,19 @@ span.bmk-personal-status {
 }
 
 .bmk-block-eyebrow {
-    display: block;
-    font-size: 0.7rem;
+    display: none;
+    font-size: 0.62rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--gold-light);
-    margin-bottom: 2px;
+    margin-bottom: 0;
+    line-height: 1.3;
 }
 
 .bmk-block-title {
     margin: 0;
-    font-size: 1.15rem !important;
+    font-size: 1rem !important;
     font-weight: 700;
     color: #fff !important;
     line-height: 1.25;
@@ -594,8 +651,8 @@ span.bmk-personal-status {
 .bmk-block-chip {
     display: inline-flex;
     align-items: center;
-    min-height: 32px;
-    padding: 0 12px;
+    min-height: 27px;
+    padding: 0 10px;
     border-radius: 999px;
     background: rgba(201, 162, 39, 0.18);
     border: 1px solid rgba(232, 197, 71, 0.5);
@@ -668,7 +725,8 @@ span.bmk-personal-status {
 
 @media (max-width: 767px) {
     .bmk-block-head {
-        padding: 16px;
+        padding: 10px 13px;
+        gap: 9px;
     }
 
     .bmk-block-head-actions {
@@ -677,7 +735,7 @@ span.bmk-personal-status {
     }
 
     .bmk-block-title {
-        font-size: 1.05rem !important;
+        font-size: 0.95rem !important;
     }
 }
 
