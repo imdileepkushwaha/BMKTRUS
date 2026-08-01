@@ -210,7 +210,7 @@
         <div class="bmk-dash-hero">
             <div class="bmk-dash-hero-text">
                 <span class="eyebrow">Member Panel</span>
-                <h1><asp:Literal ID="litGreeting" runat="server" Text="Welcome"></asp:Literal></h1>
+                <h1 id="bmkGreeting"><asp:Literal ID="litGreeting" runat="server" Text="Welcome"></asp:Literal></h1>
                 <p>Bharat Manav Kalyan Trust &mdash; your account overview</p>
             </div>
             <div class="bmk-dash-hero-actions">
@@ -3372,6 +3372,30 @@ Profit Share Budget</p>
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
+    <script type="text/javascript">
+        // Greeting follows the visitor's own clock. The server-side value stays as a
+        // no-script fallback because the host machine's clock cannot be trusted.
+        (function () {
+            function setGreeting() {
+                var el = document.getElementById('bmkGreeting');
+                if (!el) return;
+
+                var hour = new Date().getHours();
+                var text = 'Good Night';
+                if (hour < 12) text = 'Good Morning';
+                else if (hour < 17) text = 'Good Afternoon';
+                else if (hour < 21) text = 'Good Evening';
+
+                el.textContent = text;
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setGreeting);
+            } else {
+                setGreeting();
+            }
+        })();
+    </script>
     <script type="text/javascript" language="javascript">
         function CopyToClipboard() {
 
