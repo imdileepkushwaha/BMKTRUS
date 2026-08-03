@@ -131,7 +131,7 @@
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#about" class="nav-link" data-hi="परिचय">About</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#programs" class="nav-link" data-hi="कार्यक्रम">Programs</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#crowdfunding" class="nav-link" data-hi="क्राउड फंडिंग">Crowd Funding</a></li>
-                <li><a href="<%= ResolveUrl("~/Product.aspx") %>" class="nav-link" data-hi="उत्पाद">Product</a></li>
+                <li><a href="<%= ResolveUrl("~/Projects.aspx") %>" class="nav-link" data-hi="प्रोजेक्ट्स">Projects</a></li>
                 <li><a href="<%= ResolveUrl("~/Legal.aspx") %>" class="nav-link" data-hi="कानूनी">Legal</a></li>
                 <li><a href="<%= ResolveUrl("~/Gallery.aspx") %>" class="nav-link" data-hi="गैलरी">Gallery</a></li>
                 <li><a href="<%= ResolveUrl("~/index.aspx") %>#faq" class="nav-link" data-hi="सामान्य प्रश्न">FAQ</a></li>
@@ -223,7 +223,7 @@
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#about"><span class="link-arrow">&#8250;</span> <span data-hi="हमारे बारे में">About Us</span></a></li>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#programs"><span class="link-arrow">&#8250;</span> <span data-hi="कार्यक्रम">Programs</span></a></li>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#crowdfunding"><span class="link-arrow">&#8250;</span> <span data-hi="क्राउड फंडिंग">Crowd Funding</span></a></li>
-                            <li><a href="<%= ResolveUrl("~/Product.aspx") %>"><span class="link-arrow">&#8250;</span> <span data-hi="उत्पाद">Product</span></a></li>
+                            <li><a href="<%= ResolveUrl("~/Projects.aspx") %>"><span class="link-arrow">&#8250;</span> <span data-hi="प्रोजेक्ट्स">Projects</span></a></li>
                             <li><a href="<%= ResolveUrl("~/Legal.aspx") %>"><span class="link-arrow">&#8250;</span> <span data-hi="कानूनी">Legal</span></a></li>
                             <li><a href="<%= ResolveUrl("~/Gallery.aspx") %>"><span class="link-arrow">&#8250;</span> <span data-hi="गैलरी">Gallery</span></a></li>
                             <li><a href="<%= ResolveUrl("~/index.aspx") %>#faq"><span class="link-arrow">&#8250;</span> <span data-hi="सामान्य प्रश्न">FAQ</span></a></li>

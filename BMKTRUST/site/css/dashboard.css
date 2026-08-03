@@ -457,6 +457,11 @@ span.bmk-personal-status {
     color: var(--navy-dark);
 }
 
+.bmk-personal-ico.anudan {
+    background: linear-gradient(135deg, #0F5C28, #22A84A);
+    color: #fff;
+}
+
 .bmk-personal-ico.memberid {
     background: linear-gradient(135deg, var(--navy), var(--saffron));
 }

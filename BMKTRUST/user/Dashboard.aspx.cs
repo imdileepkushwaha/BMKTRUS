@@ -223,8 +223,13 @@ public partial class user_Dashboard : System.Web.UI.Page
         if (litAwardReward != null)
             litAwardReward.Text = GetPool2AwardName(userId);
 
-        // Self Donation amount from total-income selfincome
-        litSelfDonation.Text = FormatAmount(Convert.ToString(dt.Rows[0]["selfincome"]));
+        // Anudan Rashi = amount this member has given (UserTopup / plan), fallback selfincome
+        string selfIncomeFallback = Convert.ToString(dt.Rows[0]["selfincome"]);
+        string anudan = GetAnudanRashi(userId, selfIncomeFallback).ToString("0.00");
+        litSelfDonation.Text = FormatAmount(anudan);
+        if (litAnudanRashi != null)
+            litAnudanRashi.Text = FormatAmount(anudan);
+        lblselfincome.Text = anudan;
 
         BindLevelProgress(userId);
 
@@ -247,6 +252,47 @@ public partial class user_Dashboard : System.Web.UI.Page
         if (decimal.TryParse(value, out amt))
             return amt.ToString("0.00");
         return "0.00";
+    }
+
+    /// <summary>
+    /// Amount the logged-in member has contributed (Anudan Rashi).
+    /// Prefer SUM(UserTopupTb.planamount); fallback to selfincome from total-income.
+    /// </summary>
+    decimal GetAnudanRashi(string userId, string selfIncomeFallback)
+    {
+        decimal amount = 0;
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            decimal.TryParse(selfIncomeFallback, out amount);
+            return amount;
+        }
+
+        Data ObjData = new Data();
+        try
+        {
+            ObjData.StartConnection();
+            DataTable dt = ObjData.RunDataTableParam(
+                @"SELECT ISNULL(SUM(ISNULL(planamount,0)),0) AS Amt
+FROM UserTopupTb WITH (nolock)
+WHERE Userid = @UserId",
+                new[] { new SqlParameter("@UserId", userId.Trim()) });
+
+            if (dt != null && dt.Rows.Count > 0)
+                decimal.TryParse(Convert.ToString(dt.Rows[0]["Amt"]), out amount);
+        }
+        catch
+        {
+            amount = 0;
+        }
+        finally
+        {
+            ObjData.EndConnection();
+        }
+
+        if (amount <= 0)
+            decimal.TryParse(selfIncomeFallback, out amount);
+
+        return amount;
     }
 
     decimal GetGrowthIncomeTotal(string userId)
