@@ -212,12 +212,15 @@
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                             </a>
                             <ul class="treeview-menu">
+                                <li><a href="HelpingLevelIncomeReport.aspx"><i class="fa fa-angle-right"></i> Level Bonus Report</a></li>
+                                <li><a href="HelpingGrowthBonusReport.aspx"><i class="fa fa-angle-right"></i> Helping Growth Bonus</a></li>
+                                <li><a href="ReferralBonusReport.aspx"><i class="fa fa-angle-right"></i> Referral Bonus Report</a></li>
+                                <li><a href="MonthlyGrowthIncomeReport.aspx"><i class="fa fa-angle-right"></i> Monthly Growth Income</a></li>
                                 <li><a href="UserLevelIncomeReport.aspx"><i class="fa fa-angle-right"></i> Level Income Report</a></li>
                                 <li><a href="UserDirectIncomeReport.aspx"><i class="fa fa-angle-right"></i> Direct Income Report</a></li>
                                 <li><a href="UserAutoPoolIncomeReport.aspx"><i class="fa fa-angle-right"></i> AutoPool Income Report</a></li>
                                 <li><a href="UserDailyIncomeReport.aspx"><i class="fa fa-angle-right"></i> Daily Income Report</a></li>
                                 <li><a href="UserDailyLevelIncomeReport.aspx"><i class="fa fa-angle-right"></i> Daily Level Income Report</a></li>
-                                <li><a href="HelpingLevelIncomeReport.aspx"><i class="fa fa-angle-right"></i> Helping Level Income Report</a></li>
                             </ul>
                         </li>
                     </ul>

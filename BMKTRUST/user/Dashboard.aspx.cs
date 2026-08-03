@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using BusinessLogicTier;
+using DataTier;
 using System.Web.UI.HtmlControls;
 using System.Web.Services;
 
@@ -195,21 +197,36 @@ public partial class user_Dashboard : System.Web.UI.Page
         if (lblDirectIncomeHidden != null)
             lblDirectIncomeHidden.Text = referralIncome;
 
-        // Level Income card = Helping Level Income (Level 1 excluded)
-        string levelIncome = GetHelpingLevelIncomeTotal(Session["userid"].ToString()).ToString("0.00");
-        lbllevelincome.Text = levelIncome;
-        if (lbllevelincome2 != null)
-            lbllevelincome2.Text = levelIncome;
+        string userId = Session["userid"].ToString();
 
-        // Level Growth Income + Helping Growth Bonus = Growth Income ledger total
-        string growthIncome = GetGrowthIncomeTotal(Session["userid"].ToString()).ToString("0.00");
-        lblLevelGrowthIncome.Text = growthIncome;
-        litGrowthBonus.Text = growthIncome;
+        // Level Bonus = SUM(Income) from HelpingLevelIncomeDetail (Level 1 excluded)
+        string levelBonus = GetHelpingLevelIncomeTotal(userId).ToString("0.00");
+        lbllevelincome.Text = levelBonus;
+        if (litLevelBonus != null)
+            litLevelBonus.Text = FormatAmount(levelBonus);
+        if (lbllevelincome2 != null)
+            lbllevelincome2.Text = levelBonus;
+
+        // Helping Growth Bonus = SUM(Income) from HelpingLevelIncomeDetailPool2 (Level 1 excluded)
+        string growthBonus = GetHelpingGrowthBonusTotal(userId).ToString("0.00");
+        lblLevelGrowthIncome.Text = growthBonus;
+        litGrowthBonus.Text = FormatAmount(growthBonus);
+
+        // Royalty Bonus = SUM(Income) from LoyaltyIncomeDetail
+        string royaltyBonus = GetRoyaltyBonusTotal(userId).ToString("0.00");
+        if (lblRoyaltyBonus != null)
+            lblRoyaltyBonus.Text = royaltyBonus;
+        if (litRoyaltyBonus != null)
+            litRoyaltyBonus.Text = FormatAmount(royaltyBonus);
+
+        // Award & Reward = AwardName from HelpingLevelIncomeDetailPool2
+        if (litAwardReward != null)
+            litAwardReward.Text = GetPool2AwardName(userId);
 
         // Self Donation amount from total-income selfincome
         litSelfDonation.Text = FormatAmount(Convert.ToString(dt.Rows[0]["selfincome"]));
 
-        BindLevelProgress(Session["userid"].ToString());
+        BindLevelProgress(userId);
 
         lblleftteam.Text = dt.Rows[0]["leftcount"].ToString();
         lblmiddleteam.Text = dt.Rows[0]["middlecount"].ToString();
@@ -319,6 +336,92 @@ public partial class user_Dashboard : System.Web.UI.Page
             total = 0;
         }
         return total;
+    }
+
+    decimal GetHelpingGrowthBonusTotal(string userId)
+    {
+        decimal total = 0;
+        try
+        {
+            objaccount.UserId = userId;
+            objaccount.FromDate = DateTime.MinValue;
+            objaccount.ToDate = DateTime.MinValue;
+            DataTable dt = objaccount.getHelpingGrowthBonus(objaccount);
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    decimal amt;
+                    if (decimal.TryParse(Convert.ToString(row["Income"]), out amt))
+                        total += amt;
+                }
+            }
+        }
+        catch
+        {
+            total = 0;
+        }
+        return total;
+    }
+
+    decimal GetRoyaltyBonusTotal(string userId)
+    {
+        decimal total = 0;
+        try
+        {
+            objaccount.UserId = userId;
+            objaccount.FromDate = DateTime.MinValue;
+            objaccount.ToDate = DateTime.MinValue;
+            DataTable dt = objaccount.getMonthlyGrowthIncome(objaccount);
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    decimal amt;
+                    if (decimal.TryParse(Convert.ToString(row["Income"]), out amt))
+                        total += amt;
+                }
+            }
+        }
+        catch
+        {
+            total = 0;
+        }
+        return total;
+    }
+
+    string GetPool2AwardName(string userId)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+            return "-";
+
+        Data ObjData = new Data();
+        try
+        {
+            ObjData.StartConnection();
+            DataTable dt = ObjData.RunDataTableParam(
+                @"SELECT TOP 1 ISNULL(AwardName,'') AS AwardName
+FROM HelpingLevelIncomeDetailPool2 WITH (nolock)
+WHERE UserId = @UserId AND ISNULL(AwardName,'') <> ''
+ORDER BY MentionDate DESC, id DESC",
+                new[] { new SqlParameter("@UserId", userId.Trim()) });
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                string name = Convert.ToString(dt.Rows[0]["AwardName"]).Trim();
+                if (!string.IsNullOrEmpty(name))
+                    return name;
+            }
+        }
+        catch
+        {
+            // fall through
+        }
+        finally
+        {
+            try { ObjData.EndConnection(); } catch { }
+        }
+        return "-";
     }
 
     void filldashboard()

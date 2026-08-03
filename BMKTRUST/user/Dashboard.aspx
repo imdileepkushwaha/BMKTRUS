@@ -461,6 +461,20 @@
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile gold">
+                                <div class="t-icon"><i class="ri-user-star-line"></i></div>
+                                <span class="t-label">My Direct Bonus</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litDirectBonus" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile">
+                                <div class="t-icon"><i class="ri-stack-line"></i></div>
+                                <span class="t-label">Level Bonus</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litLevelBonus" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
                             <div class="bmk-team-tile green">
                                 <div class="t-icon"><i class="ri-line-chart-line"></i></div>
                                 <span class="t-label">Helping Growth Bonus</span>
@@ -468,10 +482,17 @@
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
+                            <div class="bmk-team-tile saffron">
+                                <div class="t-icon"><i class="ri-vip-crown-line"></i></div>
+                                <span class="t-label">Royalty Bonus</span>
+                                <p class="t-value">&#8377; <asp:Literal ID="litRoyaltyBonus" runat="server" Text="0.00" /></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
                             <div class="bmk-team-tile gold">
-                                <div class="t-icon"><i class="ri-user-star-line"></i></div>
-                                <span class="t-label">My Direct Bonus</span>
-                                <p class="t-value">&#8377; <asp:Literal ID="litDirectBonus" runat="server" Text="0.00" /></p>
+                                <div class="t-icon"><i class="ri-award-line"></i></div>
+                                <span class="t-label">Award &amp; Reward</span>
+                                <p class="t-value"><asp:Literal ID="litAwardReward" runat="server" Text="-" /></p>
                             </div>
                         </div>
 
@@ -556,7 +577,7 @@
                     <div class="bmk-block-intro">
                         <span class="bmk-block-eyebrow">Earnings</span>
                         <h3 class="bmk-block-title">Income</h3>
-                        <p class="bmk-block-sub">Referral, level and growth income</p>
+                        <p class="bmk-block-sub">Referral, level, growth and royalty income</p>
                     </div>
                 </div>
                 <div class="bmk-block-body">
@@ -575,7 +596,7 @@
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon navy"><iconify-icon icon="solar:layers-bold"></iconify-icon></span>
                                 <div>
-                                    <span class="bmk-stat-label">Level Income</span>
+                                    <span class="bmk-stat-label">Level Bonus</span>
                                     <span class="bmk-stat-value"><asp:Label ID="lbllevelincome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
@@ -585,7 +606,7 @@
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon green"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
                                 <div>
-                                    <span class="bmk-stat-label">Level Growth Income</span>
+                                    <span class="bmk-stat-label">Helping Growth Bonus</span>
                                     <span class="bmk-stat-value"><asp:Label ID="lblLevelGrowthIncome" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
@@ -593,10 +614,10 @@
 
                         <div class="col-md-3 col-sm-6">
                             <div class="bmk-stat">
-                                <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></span>
+                                <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:crown-bold"></iconify-icon></span>
                                 <div>
-                                    <span class="bmk-stat-label">Revenue Share</span>
-                                    <span class="bmk-stat-value">0</span>
+                                    <span class="bmk-stat-label">Royalty Bonus</span>
+                                    <span class="bmk-stat-value"><asp:Label ID="lblRoyaltyBonus" CssClass="heading" runat="server" Text="0"></asp:Label></span>
                                 </div>
                             </div>
                         </div>

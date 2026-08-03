@@ -8,3 +8,9 @@ c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\DataTier\obj\Release\DataT
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\DataTier\obj\Release\DataTier.csproj.CoreCompileInputs.cache
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\DataTier\obj\Release\DataTier.dll
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\DataTier\obj\Release\DataTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\bin\Release\DataTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\bin\Release\DataTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Release\DataTier.csproj.AssemblyReference.cache
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Release\DataTier.csproj.CoreCompileInputs.cache
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Release\DataTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Release\DataTier.pdb

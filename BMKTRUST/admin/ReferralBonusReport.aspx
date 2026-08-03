@@ -1,15 +1,15 @@
-<%@ Page Title="Level Bonus Report" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="HelpingLevelIncomeReport.aspx.cs" Inherits="admin_HelpingLevelIncomeReport" %>
+<%@ Page Title="Referral Bonus Report" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="ReferralBonusReport.aspx.cs" Inherits="admin_ReferralBonusReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
     <section class="content-header">
-        <h1>Level Bonus Report</h1>
+        <h1>Referral Bonus Report</h1>
         <ol class="breadcrumb">
             <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Income Reports</a></li>
-            <li class="active">Level Bonus Report</li>
+            <li class="active">Referral Bonus Report</li>
         </ol>
     </section>
 </asp:Content>
@@ -43,7 +43,6 @@
                                         <div class="form-group">
                                             <label>User Id</label>
                                             <asp:TextBox ID="txtuserid" CssClass="form-control" runat="server" placeholder="Leave blank for all"></asp:TextBox>
-                                            <span class="adm-field-hint">Level 1 income is excluded from this report</span>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +57,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Level Bonus Details</h3>
+                                <h3 class="box-title">Referral Bonus Details</h3>
                                 <div style="float: right">
                                     <asp:LinkButton ID="ImageButton1" runat="server" ToolTip="Download Excel" CssClass="bmk-excel-btn" OnClick="ExportToExcel" aria-label="Download Excel">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8.89 17h1.61l.95-1.92L12.4 17h1.61l-1.72-3.05L14.1 11h-1.66l-.88 1.86L10.7 11H9.08l1.72 2.95L8.89 17z"/></svg>
@@ -76,7 +75,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="User Id">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lbluserid" runat="server" Text='<%# Eval("UserId") %>'></asp:Label>
+                                                    <asp:Label ID="lbluserid" runat="server" Text='<%# Eval("userid") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Username">
@@ -84,29 +83,39 @@
                                                     <asp:Label ID="lblusername" runat="server" Text='<%# Eval("UserName") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Helping Id">
+                                            <asp:TemplateField HeaderText="From User Id">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblHelpingId" runat="server" Text='<%# Eval("HelpingId") %>'></asp:Label>
+                                                    <asp:Label ID="lblfromuserid" runat="server" Text='<%# Eval("fromuserid") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Level No">
+                                            <asp:TemplateField HeaderText="From Username">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblLevelNo" runat="server" Text='<%# Eval("LevelNo") %>'></asp:Label>
+                                                    <asp:Label ID="lblfromusername" runat="server" Text='<%# Eval("FromUserName") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Income">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblIncome" runat="server" Text='<%# Eval("Income", "{0:0.00}") %>'></asp:Label>
+                                                    <asp:Label ID="lblIncome" runat="server" Text='<%# Eval("directincome", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Admin Charge">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblAdmin" runat="server" Text='<%# Eval("admincharge", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="TDS">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblTds" runat="server" Text='<%# Eval("tdscharge", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Payable">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblPayable" runat="server" Text='<%# Eval("paybleamount", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Date">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblDate" runat="server" Text='<%# Eval("MentionDate") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Mention By">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblMentionBy" runat="server" Text='<%# Eval("MentionBy") %>'></asp:Label>
+                                                    <asp:Label ID="lblDate" runat="server" Text='<%# Eval("entrydate") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>

@@ -6,7 +6,7 @@ using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class admin_HelpingLevelIncomeReport : System.Web.UI.Page
+public partial class admin_ReferralBonusReport : System.Web.UI.Page
 {
     clsAccount objaccount = new clsAccount();
 
@@ -39,7 +39,7 @@ public partial class admin_HelpingLevelIncomeReport : System.Web.UI.Page
             objaccount.ToDate = DateTime.MinValue;
 
         objaccount.UserId = (txtuserid.Text ?? "").Trim();
-        DataTable dt = objaccount.getHelpingLevelIncome(objaccount);
+        DataTable dt = objaccount.getReferralBonus(objaccount);
         GridView1.DataSource = dt;
         GridView1.DataBind();
     }
@@ -56,7 +56,7 @@ public partial class admin_HelpingLevelIncomeReport : System.Web.UI.Page
 
         Response.Clear();
         Response.Buffer = true;
-        Response.AddHeader("content-disposition", "attachment;filename=LevelBonusReport.xls");
+        Response.AddHeader("content-disposition", "attachment;filename=ReferralBonusReport.xls");
         Response.Charset = "";
         Response.ContentType = "application/vnd.ms-excel";
         using (StringWriter sw = new StringWriter())
