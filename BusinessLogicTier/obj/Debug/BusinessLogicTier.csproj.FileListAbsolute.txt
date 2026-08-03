@@ -746,3 +746,6 @@ D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\DataTier.pdb
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.csprojResolveAssemblyReference.cache
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.dll
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\ARA_StringHunt.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\CyberPlatOpenSSL.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\RestSharp.dll

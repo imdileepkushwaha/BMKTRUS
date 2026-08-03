@@ -9,3 +9,16 @@ c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Rele
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.csproj.CoreCompileInputs.cache
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.dll
 c:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.csproj.AssemblyReference.cache
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.csproj.CoreCompileInputs.cache
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Release\BusinessLogicTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\BusinessLogicTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\BusinessLogicTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\ARA_StringHunt.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\CyberPlatOpenSSL.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\DataTier.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\Newtonsoft.Json.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\RestSharp.dll
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Release\DataTier.pdb
+D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Release\Business.2FDD14DE.Up2Date

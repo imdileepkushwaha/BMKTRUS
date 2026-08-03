@@ -176,18 +176,19 @@
                         <li>
                             <a href="DownlineReport.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>My Downline</a>
                         </li>
+                      
                         <li>
-                            <a href="leveltree.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>My Treeview</a>
+                            <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Level Tree</a>
                         </li>
                         <li>
-                            <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Helping Level Matrix</a>
-                        </li>
-                        <li>
-                            <a href="HelpingBinaryMatrix2X2.aspx"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>Helping Level 2X2 Matrix</a>
+                            <a href="HelpingBinaryMatrix2X2.aspx"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>Level Growth Tree</a>
                         </li>
 
                         <li>
-                            <a href="HelpingBinaryLevelWiseReport2X2.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>2X2 Level Wise Report</a>
+                            <a href="HelpingBinaryLevelWiseReport2X2.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Level  Report</a>
+                        </li>
+                        <li>
+                            <a href="HelpingBinaryPool2SummaryReport.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Level Growth Report</a>
                         </li>
 
                         <!--<li>
@@ -311,19 +312,18 @@
                         <span>My Income</span>
                     </a>
                     <ul class="sidebar-submenu">
-                        
                         <li>
-                            <a href="LevelROIIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Level Income</a>
+                            <a href="HelpingLevelIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>Level Bonus Report</a>
                         </li>
                         <li>
-                            <a href="HelpingLevelIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>Helping Level Income</a>
+                            <a href="HelpingGrowthBonusReport.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Helping Growth Bonus</a>
                         </li>
-                      
-
-                        
-						 
-                        
-                        
+                        <li>
+                            <a href="ReferralBonusReport.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Referral Bonus Report</a>
+                        </li>
+                        <li>
+                            <a href="MonthlyGrowthIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Monthly Growth Income</a>
+                        </li>
                     </ul>
                 </li>
 

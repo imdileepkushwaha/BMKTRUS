@@ -942,12 +942,129 @@ namespace BusinessLogicTier
 
         public DataTable getHelpingLevelIncome(clsAccount objaccount)
         {
-            // Level 1 excluded as per requirement
+            // Level Bonus Report — Level 1 excluded
             string str_query = @"SELECT I.id, I.HelpingId, I.UserId, ISNULL(U.UserName,'') AS UserName,
 I.LevelNo, I.Income, Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
 FROM HelpingLevelIncomeDetail I WITH (nolock)
 LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
 WHERE ISNULL(I.LevelNo, 0) <> 1 ";
+
+            if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
+            {
+                str_query += " AND CAST(I.MentionDate AS date) >= CAST('" + objaccount.FromDate + "' AS date) AND CAST(I.MentionDate AS date) <= CAST('" + objaccount.ToDate + "' AS date) ";
+            }
+
+            if (!string.IsNullOrEmpty(objaccount.UserId))
+            {
+                str_query += " AND I.UserId = '" + objaccount.UserId.Replace("'", "''") + "' ";
+            }
+
+            str_query += " ORDER BY I.MentionDate DESC, I.LevelNo ASC, I.id DESC";
+
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try
+            {
+                dt = ObjData.RunDataTable(str_query);
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        /// <summary>
+        /// Helping Growth Bonus — HelpingLevelIncomeDetailPool2 (Level 1 &amp; AwardName excluded)
+        /// </summary>
+        public DataTable getHelpingGrowthBonus(clsAccount objaccount)
+        {
+            string str_query = @"SELECT I.id, I.HelpingId, I.UserId, ISNULL(U.UserName,'') AS UserName,
+I.LevelNo, I.Income, Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
+FROM HelpingLevelIncomeDetailPool2 I WITH (nolock)
+LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
+WHERE ISNULL(I.LevelNo, 0) <> 1 ";
+
+            if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
+            {
+                str_query += " AND CAST(I.MentionDate AS date) >= CAST('" + objaccount.FromDate + "' AS date) AND CAST(I.MentionDate AS date) <= CAST('" + objaccount.ToDate + "' AS date) ";
+            }
+
+            if (!string.IsNullOrEmpty(objaccount.UserId))
+            {
+                str_query += " AND I.UserId = '" + objaccount.UserId.Replace("'", "''") + "' ";
+            }
+
+            str_query += " ORDER BY I.MentionDate DESC, I.LevelNo ASC, I.id DESC";
+
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try
+            {
+                dt = ObjData.RunDataTable(str_query);
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        /// <summary>
+        /// Referral Bonus Report — directincometb
+        /// </summary>
+        public DataTable getReferralBonus(clsAccount objaccount)
+        {
+            string str_query = @"SELECT dt.id, dt.userid, ISNULL(U.UserName,'') AS UserName, dt.fromuserid,
+ISNULL(FU.UserName,'') AS FromUserName, dt.directincome, dt.adminper, dt.admincharge,
+dt.tdsper, dt.tdscharge, dt.paybleamount, Convert(VARCHAR(50), dt.entrydate, 103) AS entrydate
+FROM directincometb dt WITH (nolock)
+LEFT JOIN UserDetail U WITH (nolock) ON dt.userid = U.UserId
+LEFT JOIN UserDetail FU WITH (nolock) ON dt.fromuserid = FU.UserId
+WHERE 1=1 ";
+
+            if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
+            {
+                str_query += " AND CAST(dt.entrydate AS date) >= CAST('" + objaccount.FromDate + "' AS date) AND CAST(dt.entrydate AS date) <= CAST('" + objaccount.ToDate + "' AS date) ";
+            }
+
+            if (!string.IsNullOrEmpty(objaccount.UserId))
+            {
+                str_query += " AND dt.userid = '" + objaccount.UserId.Replace("'", "''") + "' ";
+            }
+
+            str_query += " ORDER BY dt.entrydate DESC, dt.id DESC";
+
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try
+            {
+                dt = ObjData.RunDataTable(str_query);
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        /// <summary>
+        /// Monthly Growth Income — LoyaltyIncomeDetail
+        /// </summary>
+        public DataTable getMonthlyGrowthIncome(clsAccount objaccount)
+        {
+            string str_query = @"SELECT I.id, I.HelpingId, I.UserId, ISNULL(U.UserName,'') AS UserName,
+I.LevelNo, I.DirectCount, I.Income,
+Convert(VARCHAR(50), I.FromDate, 103) AS FromDate,
+Convert(VARCHAR(50), I.ToDate, 103) AS ToDate,
+Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate,
+ISNULL(I.MentionBy,'') AS MentionBy
+FROM LoyaltyIncomeDetail I WITH (nolock)
+LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
+WHERE 1=1 ";
 
             if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
             {

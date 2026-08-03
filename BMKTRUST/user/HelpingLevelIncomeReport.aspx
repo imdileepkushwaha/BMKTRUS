@@ -1,4 +1,4 @@
-<%@ Page Title="Helping Level Income" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="HelpingLevelIncomeReport.aspx.cs" Inherits="user_HelpingLevelIncomeReport" %>
+<%@ Page Title="Level Bonus Report" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="HelpingLevelIncomeReport.aspx.cs" Inherits="user_HelpingLevelIncomeReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../site/css/profile.css" rel="stylesheet" />
@@ -9,8 +9,8 @@
         <div class="bmk-profile-hero">
             <div class="bmk-profile-hero-text">
                 <span class="eyebrow">My Income</span>
-                <h1>Helping Level Income</h1>
-                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; My Income &nbsp;/&nbsp; Helping Level Income</p>
+                <h1>Level Bonus Report</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; My Income &nbsp;/&nbsp; Level Bonus Report</p>
             </div>
         </div>
     </div>
