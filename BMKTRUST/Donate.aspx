@@ -226,10 +226,10 @@
     <section class="donate-page">
         <div class="container">
             <div class="donate-hero">
-                <span class="section-label">Support Our Mission</span>
-                <h1>Donate to Bharat Manav Kalyan Trust</h1>
+                <span class="section-label" data-hi="हमारे मिशन में सहयोग करें">Support Our Mission</span>
+                <h1 data-hi="भारत मानव कल्याण ट्रस्ट को दान करें">Donate to Bharat Manav Kalyan Trust</h1>
                 <div class="title-underline" style="margin: 0 auto 16px;"></div>
-                <p>
+                <p data-hi="आपका योगदान हमें पूरे भारत में शिक्षा, स्वास्थ्य, महिला सशक्तिकरण और समाज कल्याण के कार्यक्रम जारी रखने में मदद करता है। हर दान किसी ज़रूरतमंद तक आशा पहुँचाता है।">
                     Your contribution helps us continue education, healthcare, women empowerment, and community welfare programs across India.
                     Every donation brings hope to someone in need.
                 </p>
@@ -237,8 +237,8 @@
 
             <div class="donate-grid">
                 <div class="donate-card">
-                    <h2>Donation Enquiry</h2>
-                    <p class="card-sub">Fill the form and our team will guide you with secure donation options.</p>
+                    <h2 data-hi="दान संबंधी जानकारी">Donation Enquiry</h2>
+                    <p class="card-sub" data-hi="फ़ॉर्म भरें, हमारी टीम आपको सुरक्षित दान विकल्पों की जानकारी देगी।">Fill the form and our team will guide you with secure donation options.</p>
 
                     <asp:Panel ID="pnlSuccess" runat="server" Visible="false" CssClass="donate-alert donate-alert-success">
                         <asp:Literal ID="litSuccess" runat="server"></asp:Literal>
@@ -249,19 +249,19 @@
 
                     <div class="donate-form">
                         <div class="form-group">
-                            <label for="<%= txtName.ClientID %>">Full Name *</label>
-                            <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Your full name"></asp:TextBox>
+                            <label for="<%= txtName.ClientID %>" data-hi="पूरा नाम *">Full Name *</label>
+                            <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Your full name" data-hi-placeholder="आपका पूरा नाम"></asp:TextBox>
                         </div>
                         <div class="form-group">
-                            <label for="<%= txtEmail.ClientID %>">Email *</label>
-                            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="you@example.com" TextMode="Email"></asp:TextBox>
+                            <label for="<%= txtEmail.ClientID %>" data-hi="ईमेल *">Email *</label>
+                            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="you@example.com" TextMode="Email" data-hi-placeholder="you@example.com"></asp:TextBox>
                         </div>
                         <div class="form-group">
-                            <label for="<%= txtPhone.ClientID %>">Mobile</label>
-                            <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" placeholder="+91 XXXXX XXXXX"></asp:TextBox>
+                            <label for="<%= txtPhone.ClientID %>" data-hi="मोबाइल नंबर">Mobile</label>
+                            <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" placeholder="+91 XXXXX XXXXX" data-hi-placeholder="+91 XXXXX XXXXX"></asp:TextBox>
                         </div>
                         <div class="form-group">
-                            <label>Suggested Amount</label>
+                            <label data-hi="सुझाई गई राशि">Suggested Amount</label>
                             <div class="donate-amounts" id="donateAmounts">
                                 <button type="button" data-amount="500">₹500</button>
                                 <button type="button" data-amount="1000">₹1,000</button>
@@ -270,71 +270,71 @@
                                 <button type="button" data-amount="6000">₹6,000</button>
                                 <button type="button" data-amount="10000">₹10,000</button>
                             </div>
-                            <label for="<%= txtAmount.ClientID %>">Amount (₹) *</label>
-                            <asp:TextBox ID="txtAmount" runat="server" CssClass="form-control" placeholder="Enter amount"></asp:TextBox>
+                            <label for="<%= txtAmount.ClientID %>" data-hi="राशि (₹) *">Amount (₹) *</label>
+                            <asp:TextBox ID="txtAmount" runat="server" CssClass="form-control" placeholder="Enter amount" data-hi-placeholder="राशि दर्ज करें"></asp:TextBox>
                         </div>
                         <div class="form-group">
-                            <label for="<%= ddlProgram.ClientID %>">Support Program</label>
+                            <label for="<%= ddlProgram.ClientID %>" data-hi="किस कार्यक्रम के लिए">Support Program</label>
                             <asp:DropDownList ID="ddlProgram" runat="server" CssClass="form-control">
-                                <asp:ListItem Value="General Donation">General Donation</asp:ListItem>
-                                <asp:ListItem Value="Education for All">Education for All</asp:ListItem>
-                                <asp:ListItem Value="Healthcare Camps">Healthcare Camps</asp:ListItem>
-                                <asp:ListItem Value="Women Empowerment">Women Empowerment</asp:ListItem>
-                                <asp:ListItem Value="Rural Development">Rural Development</asp:ListItem>
-                                <asp:ListItem Value="Food Security">Food Security</asp:ListItem>
-                                <asp:ListItem Value="Disaster Relief">Disaster Relief</asp:ListItem>
-                                <asp:ListItem Value="Old Age Homes">Old Age Homes (Upcoming)</asp:ListItem>
-                                <asp:ListItem Value="Swachta Abhiyan">Swachta Abhiyan (Upcoming)</asp:ListItem>
-                                <asp:ListItem Value="Free Eye Camp">Free Eye Camp (Upcoming)</asp:ListItem>
+                                <asp:ListItem Value="General Donation" data-hi="सामान्य दान">General Donation</asp:ListItem>
+                                <asp:ListItem Value="Education for All" data-hi="सभी के लिए शिक्षा">Education for All</asp:ListItem>
+                                <asp:ListItem Value="Healthcare Camps" data-hi="स्वास्थ्य शिविर">Healthcare Camps</asp:ListItem>
+                                <asp:ListItem Value="Women Empowerment" data-hi="महिला सशक्तिकरण">Women Empowerment</asp:ListItem>
+                                <asp:ListItem Value="Rural Development" data-hi="ग्रामीण विकास">Rural Development</asp:ListItem>
+                                <asp:ListItem Value="Food Security" data-hi="खाद्य सुरक्षा">Food Security</asp:ListItem>
+                                <asp:ListItem Value="Disaster Relief" data-hi="आपदा राहत">Disaster Relief</asp:ListItem>
+                                <asp:ListItem Value="Old Age Homes" data-hi="वृद्धाश्रम (आगामी)">Old Age Homes (Upcoming)</asp:ListItem>
+                                <asp:ListItem Value="Swachta Abhiyan" data-hi="स्वच्छता अभियान (आगामी)">Swachta Abhiyan (Upcoming)</asp:ListItem>
+                                <asp:ListItem Value="Free Eye Camp" data-hi="निःशुल्क नेत्र शिविर (आगामी)">Free Eye Camp (Upcoming)</asp:ListItem>
                             </asp:DropDownList>
                         </div>
                         <div class="form-group">
-                            <label for="<%= ddlPayment.ClientID %>">Payment Option *</label>
+                            <label for="<%= ddlPayment.ClientID %>" data-hi="भुगतान का माध्यम *">Payment Option *</label>
                             <asp:DropDownList ID="ddlPayment" runat="server" CssClass="form-control">
-                                <asp:ListItem Value="">-- Select Payment Option --</asp:ListItem>
-                                <asp:ListItem Value="Online">Online Payment</asp:ListItem>
-                                <asp:ListItem Value="UPI">UPI</asp:ListItem>
-                                <asp:ListItem Value="Cheque">Cheque</asp:ListItem>
-                                <asp:ListItem Value="Cash">Cash</asp:ListItem>
-                                <asp:ListItem Value="Bank Transfer">Bank Transfer / NEFT</asp:ListItem>
+                                <asp:ListItem Value="" data-hi="-- भुगतान का माध्यम चुनें --">-- Select Payment Option --</asp:ListItem>
+                                <asp:ListItem Value="Online" data-hi="ऑनलाइन भुगतान">Online Payment</asp:ListItem>
+                                <asp:ListItem Value="UPI" data-hi="यूपीआई">UPI</asp:ListItem>
+                                <asp:ListItem Value="Cheque" data-hi="चेक">Cheque</asp:ListItem>
+                                <asp:ListItem Value="Cash" data-hi="नकद">Cash</asp:ListItem>
+                                <asp:ListItem Value="Bank Transfer" data-hi="बैंक ट्रांसफ़र / एनईएफटी">Bank Transfer / NEFT</asp:ListItem>
                             </asp:DropDownList>
                         </div>
                         <div class="form-group">
-                            <label for="<%= txtMessage.ClientID %>">Message (optional)</label>
-                            <asp:TextBox ID="txtMessage" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="4" placeholder="Any note for our team..."></asp:TextBox>
+                            <label for="<%= txtMessage.ClientID %>" data-hi="संदेश (वैकल्पिक)">Message (optional)</label>
+                            <asp:TextBox ID="txtMessage" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="4" placeholder="Any note for our team..." data-hi-placeholder="हमारी टीम के लिए कोई संदेश..."></asp:TextBox>
                         </div>
-                        <asp:Button ID="btnDonate" runat="server" Text="Submit Donation Request" CssClass="btn btn-primary" OnClick="btnDonate_Click" />
+                        <asp:Button ID="btnDonate" runat="server" Text="Submit Donation Request" CssClass="btn btn-primary" OnClick="btnDonate_Click" data-hi-value="दान अनुरोध भेजें" />
                     </div>
                 </div>
 
                 <div class="donate-side">
-                    <h3 class="donate-side-title">Why Donate?</h3>
+                    <h3 class="donate-side-title" data-hi="दान क्यों करें?">Why Donate?</h3>
 
                     <div class="donate-benefit">
-                        <h4><span class="donate-benefit-ico">&#10084;</span> Make a Real Impact</h4>
-                        <p>Your donation directly supports our programs and helps create lasting change in communities.</p>
+                        <h4><span class="donate-benefit-ico">&#10084;</span> <span data-hi="वास्तविक बदलाव लाएँ">Make a Real Impact</span></h4>
+                        <p data-hi="आपका दान सीधे हमारे कार्यक्रमों तक पहुँचता है और समुदायों में स्थायी बदलाव लाने में मदद करता है।">Your donation directly supports our programs and helps create lasting change in communities.</p>
                     </div>
 
                     <div class="donate-benefit">
-                        <h4><span class="donate-benefit-ico">&#128737;</span> Transparency</h4>
-                        <p>We maintain complete transparency in how funds are utilized and provide regular updates.</p>
+                        <h4><span class="donate-benefit-ico">&#128737;</span> <span data-hi="पारदर्शिता">Transparency</span></h4>
+                        <p data-hi="धनराशि के उपयोग में हम पूरी पारदर्शिता रखते हैं और नियमित रूप से जानकारी साझा करते हैं।">We maintain complete transparency in how funds are utilized and provide regular updates.</p>
                     </div>
 
                     <div class="donate-benefit">
-                        <h4><span class="donate-benefit-ico">&#127894;</span> Membership ID Card</h4>
-                        <p>&#8377;150/- ID card charges are included in every donation amount you contribute.</p>
+                        <h4><span class="donate-benefit-ico">&#127894;</span> <span data-hi="सदस्यता आईडी कार्ड">Membership ID Card</span></h4>
+                        <p data-hi="&#8377;150/- आईडी कार्ड शुल्क आपके द्वारा दी गई हर दान राशि में शामिल है।">&#8377;150/- ID card charges are included in every donation amount you contribute.</p>
                     </div>
 
                     <div class="donate-benefit">
-                        <h4><span class="donate-benefit-ico">&#9888;</span> Non-Refundable</h4>
-                        <p>All donation amounts are non-refundable once the contribution is confirmed.</p>
+                        <h4><span class="donate-benefit-ico">&#9888;</span> <span data-hi="वापसी योग्य नहीं">Non-Refundable</span></h4>
+                        <p data-hi="योगदान की पुष्टि हो जाने के बाद दान की कोई भी राशि वापस नहीं की जाती।">All donation amounts are non-refundable once the contribution is confirmed.</p>
                     </div>
 
                     <div class="donate-benefit">
-                        <h4><span class="donate-benefit-ico">&#9993;</span> What Happens Next</h4>
+                        <h4><span class="donate-benefit-ico">&#9993;</span> <span data-hi="आगे क्या होगा">What Happens Next</span></h4>
                         <p>
-                            After you submit this form, our team will share bank / UPI details and confirm your donation.
-                            Prefer talking to us? <a href="<%= ResolveUrl("~/index.aspx") %>#contact">Contact the Trust</a>.
+                            <span data-hi="यह फ़ॉर्म भेजने के बाद हमारी टीम आपको बैंक / यूपीआई विवरण देगी और आपके दान की पुष्टि करेगी। बात करना चाहेंगे?">After you submit this form, our team will share bank / UPI details and confirm your donation.
+                            Prefer talking to us?</span> <a href="<%= ResolveUrl("~/index.aspx") %>#contact" data-hi="ट्रस्ट से संपर्क करें">Contact the Trust</a>.
                         </p>
                     </div>
 

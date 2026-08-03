@@ -23,30 +23,26 @@ public partial class DonatePage : System.Web.UI.Page
 
         if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(amount))
         {
-            litError.Text = "Please fill in Name, Email, and Amount.";
-            pnlError.Visible = true;
+            ShowError("Please fill in Name, Email, and Amount.", "कृपया नाम, ईमेल और राशि भरें।");
             return;
         }
 
         if (string.IsNullOrEmpty(payment))
         {
-            litError.Text = "Please select a payment option.";
-            pnlError.Visible = true;
+            ShowError("Please select a payment option.", "कृपया भुगतान का माध्यम चुनें।");
             return;
         }
 
         if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
         {
-            litError.Text = "Please enter a valid email address.";
-            pnlError.Visible = true;
+            ShowError("Please enter a valid email address.", "कृपया एक वैध ईमेल पता दर्ज करें।");
             return;
         }
 
         decimal amt;
         if (!decimal.TryParse(amount, out amt) || amt <= 0)
         {
-            litError.Text = "Please enter a valid donation amount.";
-            pnlError.Visible = true;
+            ShowError("Please enter a valid donation amount.", "कृपया एक वैध दान राशि दर्ज करें।");
             return;
         }
 
@@ -65,6 +61,20 @@ public partial class DonatePage : System.Web.UI.Page
             "</strong> via <strong>" + Server.HtmlEncode(payment) +
             "</strong> has been received. Our team will contact you shortly" +
             (string.IsNullOrEmpty(phone) ? "" : " on your mobile") + ".";
+        pnlSuccess.Attributes["data-hi"] = "धन्यवाद, " + Server.HtmlEncode(name) +
+            "! <strong>" + Server.HtmlEncode(program) +
+            "</strong> के लिए <strong>" + Server.HtmlEncode(payment) +
+            "</strong> के माध्यम से ₹" + amt.ToString("0.##") +
+            " का आपका दान अनुरोध हमें मिल गया है। हमारी टीम शीघ्र ही आपसे" +
+            (string.IsNullOrEmpty(phone) ? "" : " आपके मोबाइल पर") + " संपर्क करेगी।";
         pnlSuccess.Visible = true;
+    }
+
+    // The client-side switcher reads data-hi, so alerts stay bilingual after a postback.
+    void ShowError(string english, string hindi)
+    {
+        litError.Text = english;
+        pnlError.Attributes["data-hi"] = hindi;
+        pnlError.Visible = true;
     }
 }

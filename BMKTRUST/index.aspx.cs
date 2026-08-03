@@ -121,15 +121,13 @@ public partial class IndexPage : Page
 
         if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(message))
         {
-            litContactError.Text = "Please fill in all required fields.";
-            pnlContactError.Visible = true;
+            ShowContactError("Please fill in all required fields.", "कृपया सभी आवश्यक जानकारी भरें।");
             return;
         }
 
         if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
         {
-            litContactError.Text = "Please enter a valid email address.";
-            pnlContactError.Visible = true;
+            ShowContactError("Please enter a valid email address.", "कृपया एक वैध ईमेल पता दर्ज करें।");
             return;
         }
 
@@ -140,6 +138,15 @@ public partial class IndexPage : Page
         txtMessage.Text = string.Empty;
 
         litContactSuccess.Text = "Thank you! Your message has been received. We will get back to you soon.";
+        pnlContactSuccess.Attributes["data-hi"] = "धन्यवाद! आपका संदेश हमें मिल गया है। हम शीघ्र ही आपसे संपर्क करेंगे।";
         pnlContactSuccess.Visible = true;
+    }
+
+    // The client-side switcher reads data-hi, so alerts stay bilingual after a postback.
+    void ShowContactError(string english, string hindi)
+    {
+        litContactError.Text = english;
+        pnlContactError.Attributes["data-hi"] = hindi;
+        pnlContactError.Visible = true;
     }
 }

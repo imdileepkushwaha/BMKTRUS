@@ -137,6 +137,40 @@ body.register-body {
     background: var(--gold-light);
 }
 
+.register-nav .top-lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.register-nav .top-lang-btn {
+    min-height: 34px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.register-nav .top-lang-btn:hover:not(.is-active) {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.register-nav .top-lang-btn.is-active {
+    background: var(--gold);
+    color: var(--navy-dark);
+}
+
 .register-wrap {
     max-width: 1100px;
     margin: 28px auto 48px;

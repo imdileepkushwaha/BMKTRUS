@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RegistrationNew.aspx.cs" Inherits="RegistrationNew" %>
 
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head id="Head1" runat="server">
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
@@ -25,50 +25,80 @@
             return true;
         }
 
+        var registerMessages = {
+            en: {
+                sponsor: 'Enter Sponser Id',
+                epin: 'Enter EPin',
+                firstName: 'Enter First Name',
+                mobile: 'Enter Mobile',
+                email: 'Enter Email',
+                emailInvalid: 'Invalid Email ID',
+                password: 'Enter Password',
+                confirmPassword: 'Enter Confirm Password',
+                passwordMismatch: 'Password Not Match'
+            },
+            hi: {
+                sponsor: 'प्रायोजक आईडी दर्ज करें',
+                epin: 'ई-पिन दर्ज करें',
+                firstName: 'पहला नाम दर्ज करें',
+                mobile: 'मोबाइल नंबर दर्ज करें',
+                email: 'ईमेल दर्ज करें',
+                emailInvalid: 'अमान्य ईमेल आईडी',
+                password: 'पासवर्ड दर्ज करें',
+                confirmPassword: 'पासवर्ड की पुष्टि करें',
+                passwordMismatch: 'पासवर्ड मेल नहीं खा रहे'
+            }
+        };
+
+        function msg(key) {
+            var lang = (window.BMKLang && window.BMKLang.get() === 'hi') ? 'hi' : 'en';
+            return registerMessages[lang][key];
+        }
+
         function validate() {
             if (document.getElementById("<%=txtsponserid.ClientID%>").value == "") {
-                alert('Enter Sponser Id');
+                alert(msg('sponsor'));
                 document.getElementById("<%=txtsponserid.ClientID%>").focus();
                 return false;
             }
             if (document.getElementById("<%=txtepin.ClientID%>").value == "") {
-                alert('Enter EPin');
+                alert(msg('epin'));
                 document.getElementById("<%=txtepin.ClientID%>").focus();
                 return false;
             }
             if (document.getElementById("<%=txtname.ClientID%>").value == "") {
-                alert('Enter First Name');
+                alert(msg('firstName'));
                 document.getElementById("<%=txtname.ClientID%>").focus();
                 return false;
             }
             if (document.getElementById("<%=txtmobile.ClientID%>").value == "") {
-                alert('Enter Mobile');
+                alert(msg('mobile'));
                 document.getElementById("<%=txtmobile.ClientID%>").focus();
                 return false;
             }
             if (document.getElementById("<%=txtemail.ClientID%>").value == "") {
-                alert('Enter Email');
+                alert(msg('email'));
                 document.getElementById("<%=txtemail.ClientID%>").focus();
                 return false;
             }
             if (validateemail(document.getElementById("<%=txtemail.ClientID%>").value) == false) {
-                alert('Invalid Email ID');
+                alert(msg('emailInvalid'));
                 document.getElementById("<%=txtemail.ClientID%>").focus();
                 return false;
             }
             if (document.getElementById("<%=ddgender.ClientID%>").value == "0") {
                 if (document.getElementById("<%=txtuserpassword.ClientID%>").value == "") {
-                    alert('Enter Password');
+                    alert(msg('password'));
                     document.getElementById("<%=txtuserpassword.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=txtconfirmpassword.ClientID%>").value == "") {
-                    alert('Enter Confirm Password');
+                    alert(msg('confirmPassword'));
                     document.getElementById("<%=txtconfirmpassword.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=txtuserpassword.ClientID%>").value != document.getElementById("<%=txtconfirmpassword.ClientID%>").value) {
-                    alert('Password Not Match');
+                    alert(msg('passwordMismatch'));
                     document.getElementById("<%=txtuserpassword.ClientID%>").focus();
                     return false;
                 }
@@ -118,8 +148,12 @@
                     </span>
                 </a>
                 <nav class="register-nav">
-                    <a class="nav-home" href="<%= ResolveUrl("~/index.aspx") %>">Home</a>
-                    <a class="nav-login" href="<%= ResolveUrl("~/user/index.aspx") %>">Login</a>
+                    <div class="top-lang-switch" role="group" aria-label="Language options">
+                        <button type="button" class="top-lang-btn" data-lang="hi" aria-pressed="false">हिन्दी</button>
+                        <button type="button" class="top-lang-btn is-active" data-lang="en" aria-pressed="true">English</button>
+                    </div>
+                    <a class="nav-home" href="<%= ResolveUrl("~/index.aspx") %>" data-hi="होम">Home</a>
+                    <a class="nav-login" href="<%= ResolveUrl("~/user/index.aspx") %>" data-hi="लॉगिन">Login</a>
                 </nav>
             </div>
         </header>
@@ -130,20 +164,20 @@
                     <div class="register-card">
                         <div class="register-tricolor"><span></span><span></span><span></span></div>
                         <div class="register-card-head">
-                            <span class="eyebrow">Member Registration</span>
-                            <h1>Create your account</h1>
-                            <p>Fill in your details to join Bharat Manav Kalyan Trust.</p>
+                            <span class="eyebrow" data-hi="सदस्य पंजीकरण">Member Registration</span>
+                            <h1 data-hi="अपना खाता बनाएँ">Create your account</h1>
+                            <p data-hi="भारत मानव कल्याण ट्रस्ट से जुड़ने के लिए अपनी जानकारी भरें।">Fill in your details to join Bharat Manav Kalyan Trust.</p>
                         </div>
 
                         <div class="register-card-body">
                             <div class="register-section">
-                                <h2 class="register-section-title">Sponsor &amp; E-Pin</h2>
+                                <h2 class="register-section-title" data-hi="प्रायोजक एवं ई-पिन">Sponsor &amp; E-Pin</h2>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                <asp:TextBox ID="txtsponserid" AutoPostBack="true" OnTextChanged="txtsponserid_TextChanged" CssClass="form-control" runat="server" placeholder="Sponsor ID"></asp:TextBox>
+                                                <asp:TextBox ID="txtsponserid" AutoPostBack="true" OnTextChanged="txtsponserid_TextChanged" CssClass="form-control" runat="server" placeholder="Sponsor ID" data-hi-placeholder="प्रायोजक आईडी"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -151,7 +185,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                <asp:TextBox ID="txtsponsername" Enabled="false" CssClass="form-control" runat="server" placeholder="Sponsor Name"></asp:TextBox>
+                                                <asp:TextBox ID="txtsponsername" Enabled="false" CssClass="form-control" runat="server" placeholder="Sponsor Name" data-hi-placeholder="प्रायोजक का नाम"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -192,7 +226,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-key"></i></div>
-                                                <asp:TextBox ID="txtepin" CssClass="form-control" runat="server" placeholder="E-Pin" AutoPostBack="true" OnTextChanged="txtepin_TextChanged"></asp:TextBox>
+                                                <asp:TextBox ID="txtepin" CssClass="form-control" runat="server" placeholder="E-Pin" AutoPostBack="true" OnTextChanged="txtepin_TextChanged" data-hi-placeholder="ई-पिन"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +234,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-inr"></i></div>
-                                                <asp:TextBox ID="txtamount" Enabled="false" CssClass="form-control" runat="server" placeholder="Amount"></asp:TextBox>
+                                                <asp:TextBox ID="txtamount" Enabled="false" CssClass="form-control" runat="server" placeholder="Amount" data-hi-placeholder="राशि"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -210,7 +244,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Select Plan :</label>
+                                                <label data-hi="प्लान चुनें :">Select Plan :</label>
                                                 <asp:DropDownList ID="DDLstPlan" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLstPlan_SelectedIndexChanged" runat="server"></asp:DropDownList>
                                             </div>
                                         </div>
@@ -221,7 +255,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Select E-Pin :</label>
+                                                <label data-hi="ई-पिन चुनें :">Select E-Pin :</label>
                                                 <asp:DropDownList ID="ddepin" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddepin_SelectedIndexChanged" runat="server"></asp:DropDownList>
                                             </div>
                                         </div>
@@ -242,13 +276,13 @@
                             </div>
 
                             <div class="register-section">
-                                <h2 class="register-section-title">Personal Details</h2>
+                                <h2 class="register-section-title" data-hi="व्यक्तिगत जानकारी">Personal Details</h2>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                <asp:TextBox ID="txtname" CssClass="form-control" runat="server" placeholder="First Name"></asp:TextBox>
+                                                <asp:TextBox ID="txtname" CssClass="form-control" runat="server" placeholder="First Name" data-hi-placeholder="पहला नाम"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -256,7 +290,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                <asp:TextBox ID="txtLastname" CssClass="form-control" runat="server" placeholder="Last Name"></asp:TextBox>
+                                                <asp:TextBox ID="txtLastname" CssClass="form-control" runat="server" placeholder="Last Name" data-hi-placeholder="उपनाम"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -287,7 +321,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                <asp:TextBox ID="txtage" CssClass="form-control" runat="server" placeholder="Age"></asp:TextBox>
+                                                <asp:TextBox ID="txtage" CssClass="form-control" runat="server" placeholder="Age" data-hi-placeholder="आयु"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -296,9 +330,9 @@
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-venus-mars"></i></div>
                                                 <asp:DropDownList ID="ddgender" CssClass="form-control" runat="server">
-                                                    <asp:ListItem Value="0">Select Gender</asp:ListItem>
-                                                    <asp:ListItem Value="Male">Male</asp:ListItem>
-                                                    <asp:ListItem Value="Female">Female</asp:ListItem>
+                                                    <asp:ListItem Value="0" data-hi="लिंग चुनें">Select Gender</asp:ListItem>
+                                                    <asp:ListItem Value="Male" data-hi="पुरुष">Male</asp:ListItem>
+                                                    <asp:ListItem Value="Female" data-hi="महिला">Female</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
@@ -328,7 +362,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-phone"></i></div>
-                                                <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server" placeholder="Customer  Mobile No"></asp:TextBox>
+                                                <asp:TextBox ID="txtmobile" onkeypress="return isNumber(event)" CssClass="form-control" runat="server" placeholder="Customer  Mobile No" data-hi-placeholder="मोबाइल नंबर"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -336,7 +370,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
-                                                <asp:TextBox ID="txtemail" CssClass="form-control" runat="server" placeholder="Customer Email"></asp:TextBox>
+                                                <asp:TextBox ID="txtemail" CssClass="form-control" runat="server" placeholder="Customer Email" data-hi-placeholder="ईमेल पता"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -418,13 +452,13 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                            <asp:TextBox ID="txtnomineename" placeholder="Nominee Name" CssClass="form-control" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtnomineename" placeholder="Nominee Name" CssClass="form-control" runat="server" data-hi-placeholder="नामांकित व्यक्ति का नाम"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                            <asp:TextBox ID="txtnomineerelation" placeholder="Nominee Relation" CssClass="form-control" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtnomineerelation" placeholder="Nominee Relation" CssClass="form-control" runat="server" data-hi-placeholder="नामांकित व्यक्ति से संबंध"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-md-6" style="display: none;">
@@ -437,13 +471,13 @@
                             </div>
 
                             <div class="register-section">
-                                <h2 class="register-section-title">Account Security</h2>
+                                <h2 class="register-section-title" data-hi="खाता सुरक्षा">Account Security</h2>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-lock"></i></div>
-                                                <asp:TextBox ID="txtuserpassword" TextMode="Password" CssClass="form-control" runat="server" placeholder="Password"></asp:TextBox>
+                                                <asp:TextBox ID="txtuserpassword" TextMode="Password" CssClass="form-control" runat="server" placeholder="Password" data-hi-placeholder="पासवर्ड"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -451,7 +485,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-lock"></i></div>
-                                                <asp:TextBox ID="txtconfirmpassword" TextMode="Password" CssClass="form-control" runat="server" placeholder="Confirm Password"></asp:TextBox>
+                                                <asp:TextBox ID="txtconfirmpassword" TextMode="Password" CssClass="form-control" runat="server" placeholder="Confirm Password" data-hi-placeholder="पासवर्ड की पुष्टि करें"></asp:TextBox>
                                             </div>
                                         </div>
                                     </div>
@@ -476,12 +510,12 @@
                             <div class="register-section">
                                 <div class="register-terms">
                                     <asp:CheckBox ID="CheckBox1" AutoPostBack="true" OnCheckedChanged="CheckBox1_CheckedChanged" runat="server" />
-                                    <span>I agree to the <a href="<%= ResolveUrl("~/TermsConditions.aspx") %>" class="thembo" target="_blank">Terms &amp; Conditions</a></span>
+                                    <span data-hi="मैं <a href=&quot;<%= ResolveUrl("~/TermsConditions.aspx") %>&quot; class=&quot;thembo&quot; target=&quot;_blank&quot;>नियम एवं शर्तों</a> से सहमत हूँ">I agree to the <a href="<%= ResolveUrl("~/TermsConditions.aspx") %>" class="thembo" target="_blank">Terms &amp; Conditions</a></span>
                                 </div>
 
                                 <div class="register-actions">
-                                    <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary btn-submit" runat="server" Text="Create Account" OnClick="btnSubmit_Click" Enabled="false" />
-                                    <p class="register-footer-note">Already registered? <a href="<%= ResolveUrl("~/user/index.aspx") %>">Login here</a></p>
+                                    <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary btn-submit" runat="server" Text="Create Account" OnClick="btnSubmit_Click" Enabled="false" data-hi-value="खाता बनाएँ" />
+                                    <p class="register-footer-note"><span data-hi="पहले से पंजीकृत हैं?">Already registered?</span> <a href="<%= ResolveUrl("~/user/index.aspx") %>" data-hi="यहाँ लॉगिन करें">Login here</a></p>
                                 </div>
                             </div>
                         </div>
@@ -493,5 +527,6 @@
 
     <script src="<%= ResolveUrl("~/bower_components/jquery/dist/jquery.min.js") %>"></script>
     <script src="<%= ResolveUrl("~/bower_components/bootstrap/dist/js/bootstrap.min.js") %>"></script>
+    <script src="<%= ResolveUrl("~/site/js/i18n.js") %>"></script>
 </body>
 </html>
