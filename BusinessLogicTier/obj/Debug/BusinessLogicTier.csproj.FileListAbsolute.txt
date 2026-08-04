@@ -749,3 +749,6 @@ D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\obj\Debug\BusinessLogicT
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\ARA_StringHunt.dll
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\CyberPlatOpenSSL.dll
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\BusinessLogicTier\bin\Debug\RestSharp.dll
+C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\bin\Debug\ARA_StringHunt.dll
+C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\bin\Debug\CyberPlatOpenSSL.dll
+C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\BusinessLogicTier\bin\Debug\RestSharp.dll
