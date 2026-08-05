@@ -10,9 +10,9 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
 {
     Data ObjData = new Data();
 
-    // Show only income levels up to DB LevelNo 13 → max 7 rows (Sr 1..7)
-    const int MaxDbLevelNo = 13;
-    const int MaxSrRows = 7;
+    // Show only income levels up to DB LevelNo 15 → max 8 rows (Sr 1..8)
+    const int MaxDbLevelNo = 15;
+    const int MaxSrRows = 8;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -91,7 +91,7 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
             .Select((r, index) =>
             {
                 int dbLevelNo = ToInt(r["LevelNo"]);
-                int srNo = index + 1; // display Level as 1..7
+                int srNo = index + 1; // display Level as 1..8
                 int completed = ToInt(r["Team"]);
                 long required = ToLong(r["Target"]);
                 if (required <= 0) required = 1;
@@ -133,12 +133,6 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
         litRequired.Text = required.ToString("N0");
         litPercent.Text = percent + "%";
         litLevels.Text = completedLevels + "/" + levelCount;
-
-        litNoteTeam.Text = total.ToString("N0");
-        litNoteLevels.Text = levelCount.ToString();
-        litNoteRequired.Text = required.ToString("N0");
-        litNotePercent.Text = percent + "%";
-        litNoteDone.Text = completedLevels.ToString();
     }
 
     void ShowLevelMembers(int dbLevelNo, int srNo)
@@ -181,7 +175,7 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
         if (gvMembers.PageIndex > lastPage)
             gvMembers.PageIndex = lastPage;
 
-        // Map DB level (1,3,5...) back to display Sr (1..7) for the label
+        // Map DB level (1,3,5...) back to display Sr (1..8) for the label
         int displaySr = 0;
         if (ViewState["SelectedSr"] != null)
             displaySr = ToInt(ViewState["SelectedSr"]);

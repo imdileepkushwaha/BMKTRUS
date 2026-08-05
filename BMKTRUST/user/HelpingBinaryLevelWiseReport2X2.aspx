@@ -4,15 +4,13 @@
     <link href="../site/css/profile.css" rel="stylesheet" />
     <style type="text/css">
         .bmk-lvlrpt .lvl-summary {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            display: block;
             margin-bottom: 20px;
         }
 
         .bmk-lvlrpt .lvl-cards {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
             align-content: start;
         }
@@ -58,55 +56,8 @@
             color: #5A6B7C;
         }
 
-        .bmk-lvlrpt .lvl-notes {
-            padding: 18px 20px;
-            border-radius: 14px;
-            border: 1px solid rgba(0, 43, 92, 0.1);
-            background: linear-gradient(180deg, #fff, #FBF9F4);
-            box-shadow: 0 8px 20px rgba(0, 43, 92, 0.06);
-        }
-
-        .bmk-lvlrpt .lvl-notes h4 {
-            margin: 0 0 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #002B5C;
-        }
-
-        .bmk-lvlrpt .lvl-notes ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .bmk-lvlrpt .lvl-notes li {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin: 10px 0;
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: #1A2B3C;
-            line-height: 1.45;
-        }
-
-        .bmk-lvlrpt .lvl-notes li .lico {
-            width: 26px;
-            height: 26px;
-            min-width: 26px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 43, 92, 0.07);
-            color: #002B5C;
-            font-size: 0.95rem;
-        }
-
-        .bmk-lvlrpt .lvl-notes li b { color: #002B5C; }
-
-        @media (max-width: 1199px) {
-            .bmk-lvlrpt .lvl-summary { grid-template-columns: 1fr; }
+        @media (max-width: 991px) {
+            .bmk-lvlrpt .lvl-cards { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 520px) {
@@ -332,32 +283,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="lvl-notes">
-                        <h4>आपकी प्रगति</h4>
-                        <ul>
-                            <li>
-                                <span class="lico"><iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon></span>
-                                <span>आपकी टीम में अब तक <b><asp:Literal ID="litNoteTeam" runat="server" Text="0"></asp:Literal></b> सदस्य जुड़ चुके हैं।</span>
-                            </li>
-                            <li>
-                                <span class="lico"><iconify-icon icon="solar:target-bold"></iconify-icon></span>
-                                <span>सभी <b><asp:Literal ID="litNoteLevels" runat="server" Text="0"></asp:Literal></b> स्तर पूरे करने के लिए <b><asp:Literal ID="litNoteRequired" runat="server" Text="0"></asp:Literal></b> सदस्यों की आवश्यकता है।</span>
-                            </li>
-                            <li>
-                                <span class="lico"><iconify-icon icon="solar:graph-up-bold"></iconify-icon></span>
-                                <span>आपकी वर्तमान प्रगति <b><asp:Literal ID="litNotePercent" runat="server" Text="0%"></asp:Literal></b> है।</span>
-                            </li>
-                            <li>
-                                <span class="lico"><iconify-icon icon="solar:medal-ribbons-star-bold"></iconify-icon></span>
-                                <span>आपने <b><asp:Literal ID="litNoteDone" runat="server" Text="0"></asp:Literal></b> स्तर सफलतापूर्वक पूरे कर लिए हैं।</span>
-                            </li>
-                            <li>
-                                <span class="lico"><iconify-icon icon="solar:rocket-2-bold"></iconify-icon></span>
-                                <span>जितनी बड़ी आपकी टीम होगी, उतनी ही तेजी से आपकी आय एवं ग्रोथ बढ़ेगी।</span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
 
                 <!-- Level list -->
@@ -371,9 +296,6 @@
                                 Width="100%" AutoGenerateColumns="False"
                                 OnRowCommand="gvLevels_RowCommand">
                                 <Columns>
-                                    <asp:TemplateField HeaderText="#">
-                                        <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
-                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Level">
                                         <ItemTemplate>
                                             <span class="lvl-name">Level <%# Eval("LevelNo") %></span>

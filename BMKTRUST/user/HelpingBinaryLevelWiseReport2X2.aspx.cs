@@ -132,12 +132,6 @@ public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
         litRequired.Text = required.ToString("N0");
         litPercent.Text = percent + "%";
         litLevels.Text = completedLevels + "/" + levelCount;
-
-        litNoteTeam.Text = total.ToString("N0");
-        litNoteLevels.Text = levelCount.ToString();
-        litNoteRequired.Text = required.ToString("N0");
-        litNotePercent.Text = percent + "%";
-        litNoteDone.Text = completedLevels.ToString();
     }
 
     void ShowLevelMembers(int levelNo)
