@@ -392,7 +392,7 @@
                     </div>
                     <p class="legal-act-en">Government Central Under Act, 1882</p>
                     <div class="legal-act-divider" aria-hidden="true"></div>
-                    <p class="legal-act-hi">भारतीय न्याय अधिनियम, 1882</p>
+                    <p class="legal-act-hi">भारतीय न्यास अधिनियम, 1882</p>
                 </div>
 
                 <p data-hi="भारत मानव कल्याण ट्रस्ट भारतीय कानूनों के अंतर्गत एक पंजीकृत गैर-लाभकारी संस्था के रूप में कार्य करता है। हम पारदर्शिता, नैतिक तरीके से धन संग्रह और समाज कल्याण के लिए मिले हर योगदान के ज़िम्मेदार उपयोग के प्रति प्रतिबद्ध हैं।">
@@ -433,7 +433,7 @@
                 </p>
                 <p style="margin-top:18px;">
                     <a href="<%= ResolveUrl("~/TermsConditions.aspx") %>" class="btn btn-outline-dark" data-hi="नियम एवं शर्तें पढ़ें">Read Terms &amp; Conditions</a>
-                    <a href="<%= ResolveUrl("~/site/assets/docs/pan-card.pdf") %>" class="btn btn-primary" style="margin-left:8px;" target="_blank" rel="noopener" data-hi="पैन PDF डाउनलोड">Download PAN PDF</a>
+                    <!-- <a href="<%= ResolveUrl("~/site/assets/docs/pan-card.pdf") %>" class="btn btn-primary" style="margin-left:8px;" target="_blank" rel="noopener" data-hi="पैन PDF डाउनलोड">Download PAN PDF</a> -->
                 </p>
             </div>
         </div>
