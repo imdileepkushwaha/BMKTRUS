@@ -688,61 +688,57 @@ ORDER BY MentionDate DESC, id DESC",
     void loadnotification()
     {
         objuser.UserId = Session["userid"].ToString();
-        DataTable dt = new DataTable();
+        DataTable dt = objuser.getUserDetail(objuser);
 
-        dt = objuser.getUserDetail(objuser);
-        if (dt.Rows[0]["AccountHolderName"].ToString() == "" || dt.Rows[0]["AccountNo"].ToString() == "" || dt.Rows[0]["IFSCCode"].ToString() == "" || dt.Rows[0]["BankName"].ToString() == "" || dt.Rows[0]["BankName"].ToString() == "0" || dt.Rows[0]["BranchName"].ToString() == "" || dt.Rows[0]["PanNumber"].ToString() == "")
+        if (dt == null || dt.Rows.Count == 0)
         {
             pnlnotification.Visible = true;
+            return;
+        }
 
+        string accountHolder = Convert.ToString(dt.Rows[0]["AccountHolderName"]);
+        string accountNo = Convert.ToString(dt.Rows[0]["AccountNo"]);
+        string ifsc = Convert.ToString(dt.Rows[0]["IFSCCode"]);
+        string bankName = Convert.ToString(dt.Rows[0]["BankName"]);
+        string branchName = Convert.ToString(dt.Rows[0]["BranchName"]);
+        string panNumber = Convert.ToString(dt.Rows[0]["PanNumber"]);
+
+        if (string.IsNullOrEmpty(accountHolder) || string.IsNullOrEmpty(accountNo) || string.IsNullOrEmpty(ifsc)
+            || string.IsNullOrEmpty(bankName) || bankName == "0" || string.IsNullOrEmpty(branchName)
+            || string.IsNullOrEmpty(panNumber))
+        {
+            pnlnotification.Visible = true;
         }
         else
         {
             pnlnotification.Visible = false;
         }
-
     }
     void laoddata()
     {
         objuser.UserId = Session["userid"].ToString();
-        DataTable dt = new DataTable();
-        dt = objuser.getUserDetail(objuser);
-        if (dt.Rows.Count > 0)
-        {
-            lbluserid.Text = dt.Rows[0]["userid"].ToString();
-            lblusername.Text = dt.Rows[0]["username"].ToString();
-            LblSponserId.Text = dt.Rows[0]["sponserId"].ToString();
-            LblParentId.Text = dt.Rows[0]["parentuserid"].ToString();
-            ImgMyPhoto.ImageUrl = ResolveMemberPhotoUrl(dt.Rows[0]["PhotoImage"].ToString());
-            lbljoiningdate.Text = dt.Rows[0]["parentuserid"].ToString();
-            LblParentName.Text = dt.Rows[0]["parentname"].ToString();
-            LblSponserName.Text = dt.Rows[0]["sponsername"].ToString();
-            lbljoiningdate.Text = dt.Rows[0]["regdate"].ToString();
-            lbladdress.Text = dt.Rows[0]["address"].ToString();
-            lblmobile.Text = dt.Rows[0]["mobile"].ToString();
-            lblemail.Text = dt.Rows[0]["email"].ToString();
-            lblaccountholdername.Text = dt.Rows[0]["accountholdername"].ToString();
-            lblaccountno.Text = dt.Rows[0]["accountno"].ToString();
-            lblbank.Text = dt.Rows[0]["branchname"].ToString();
-            lblifsc.Text = dt.Rows[0]["ifsccode"].ToString();
-            lblpan.Text = dt.Rows[0]["pannumber"].ToString();
-            Lblactivatedate.Text = dt.Rows[0]["activationdate"].ToString();
-            lblstatus.Text = dt.Rows[0]["status"].ToString();
-            if (dt.Rows[0]["status"].ToString() == "1")
-            {
-                lblstatus.Text = "Active ";
-            }
-            else
-            {
-                lblstatus.Text = "Deactive";
-            }
+        DataTable dt = objuser.getUserDetail(objuser);
+        if (dt == null || dt.Rows.Count == 0)
+            return;
 
-
-
-
-
-        }
-
+        lbluserid.Text = Convert.ToString(dt.Rows[0]["userid"]);
+        lblusername.Text = Convert.ToString(dt.Rows[0]["username"]);
+        LblSponserId.Text = Convert.ToString(dt.Rows[0]["sponserId"]);
+        LblParentId.Text = Convert.ToString(dt.Rows[0]["parentuserid"]);
+        ImgMyPhoto.ImageUrl = ResolveMemberPhotoUrl(Convert.ToString(dt.Rows[0]["PhotoImage"]));
+        LblParentName.Text = Convert.ToString(dt.Rows[0]["parentname"]);
+        LblSponserName.Text = Convert.ToString(dt.Rows[0]["sponsername"]);
+        lbljoiningdate.Text = Convert.ToString(dt.Rows[0]["regdate"]);
+        lbladdress.Text = Convert.ToString(dt.Rows[0]["address"]);
+        lblmobile.Text = Convert.ToString(dt.Rows[0]["mobile"]);
+        lblemail.Text = Convert.ToString(dt.Rows[0]["email"]);
+        lblaccountholdername.Text = Convert.ToString(dt.Rows[0]["accountholdername"]);
+        lblaccountno.Text = Convert.ToString(dt.Rows[0]["accountno"]);
+        lblbank.Text = Convert.ToString(dt.Rows[0]["branchname"]);
+        lblifsc.Text = Convert.ToString(dt.Rows[0]["ifsccode"]);
+        lblpan.Text = Convert.ToString(dt.Rows[0]["pannumber"]);
+        Lblactivatedate.Text = Convert.ToString(dt.Rows[0]["activationdate"]);
+        lblstatus.Text = Convert.ToString(dt.Rows[0]["status"]) == "1" ? "Active " : "Deactive";
     }
     void loadaward()
     {
@@ -957,16 +953,15 @@ ORDER BY MentionDate DESC, id DESC",
 
     public void UpdateBal(string UserId)
     {
-        DataTable dt = new DataTable();
         objuser.UserId = UserId;
-        dt = objuser.getUserDetail(objuser);
-        if (dt.Rows.Count > 0)
-        {
-            lblwalletbalance123.Text = dt.Rows[0]["balanceamount"].ToString();
-            lblUtilityBalance.Text = dt.Rows[0]["UtilityBalance"].ToString();
-            lblwalletBalance.Text = dt.Rows[0]["balanceamount"].ToString();
-            lblshoppingWallet.Text = dt.Rows[0]["UtilityBalance"].ToString();
-        }
+        DataTable dt = objuser.getUserDetail(objuser);
+        if (dt == null || dt.Rows.Count == 0)
+            return;
+
+        lblwalletbalance123.Text = Convert.ToString(dt.Rows[0]["balanceamount"]);
+        lblUtilityBalance.Text = Convert.ToString(dt.Rows[0]["UtilityBalance"]);
+        lblwalletBalance.Text = Convert.ToString(dt.Rows[0]["balanceamount"]);
+        lblshoppingWallet.Text = Convert.ToString(dt.Rows[0]["UtilityBalance"]);
     }
     private string GetSocialImage(DataTable dt)
     {

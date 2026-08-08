@@ -1353,16 +1353,18 @@ FROM MyCTE left join userdetail ud on mycte.parentuserid=ud.userid  WHERE MyCTE.
 
         public DataTable getUserDetail(clsUser objUser)
         {
-            string str_query = "SELECT ud.*,cm.stateid,sm.countryid,sm.statename,CASE WHEN isnull(ud.PhotoImage,'')='' THEN 'img/default.png' ELSE '../ProductImage/'+ud.PhotoImage END AS PhotoImage,(select UserName from userdetail where UserId=ud.sponserid) as Sponsername,(select UserName from userdetail where UserId=ud.parentuserid) as parentname,convert(char,ud.activatedate,103) as activationdate,(select planamount from UserTopupTb where userid=ud.userid and type='A') planamount FROM userdetail ud left join citymaster cm on ud.cityid=cm.cityid left join statemaster sm on cm.stateid=sm.stateid where ud.UserId = '" + objUser.UserId + "' ";
-            DataTable dt = null;
+            string str_query = "SELECT ud.*,cm.stateid,sm.countryid,sm.statename,CASE WHEN isnull(ud.PhotoImage,'')='' THEN 'img/default.png' ELSE '../ProductImage/'+ud.PhotoImage END AS PhotoImage,(select UserName from userdetail where UserId=ud.sponserid) as Sponsername,(select UserName from userdetail where UserId=ud.parentuserid) as parentname,convert(char,ud.activatedate,103) as activationdate,(select TOP 1 planamount from UserTopupTb where userid=ud.userid and type='A') planamount FROM userdetail ud left join citymaster cm on ud.cityid=cm.cityid left join statemaster sm on cm.stateid=sm.stateid where ud.UserId = '" + objUser.UserId + "' ";
+            DataTable dt = new DataTable();
             ObjData.StartConnection();
             try
             {
                 dt = ObjData.RunDataTable(str_query);
+                if (dt == null)
+                    dt = new DataTable();
             }
             catch (Exception ex)
             {
-                dt = null;
+                dt = new DataTable();
             }
             ObjData.EndConnection();
             return dt;

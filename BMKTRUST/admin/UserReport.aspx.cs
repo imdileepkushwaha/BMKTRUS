@@ -363,9 +363,11 @@ public partial class admin_UserReport : System.Web.UI.Page
 
     public DataTable getUserReportPage(clsUser objUser, string noofrows)
     {
+        // EPinMaster / Logindetail joined via OUTER APPLY TOP 1 so multiple pins/logins
+        // for one user do not duplicate User List rows.
         string topClause = string.IsNullOrWhiteSpace(noofrows) ? "" : (noofrows.Trim() + " ");
         string str_query = @"SELECT " + topClause + @"ud.status,isnull(ud.status,0) as TopUpStatus,ud.userid,ud.coursename,ud.telegramnumber,ud.telegramname, ud.username,ud.Mobile,ud.Email,ud.Gender,ud.Address,cm.CityName,ud.MentionDate,ld.password, 
-                                isnull(ud.balanceamount,0) as balanceamount,isnull(ud.utilityBalance,0) as utilityBalance,ld.status as activeStatus, 
+                                isnull(ud.balanceamount,0) as balanceamount,isnull(ud.utilityBalance,0) as utilityBalance,ld.activeStatus, 
                                 (case when ud.SignUpImgStatus is not null then ud.SignUpFormImage else null end)SignUpFormImage, 
                                 (case when ud.SignUpImgStatus=0 then 'Pending' when ud.SignUpImgStatus=1 then 'Approved' when ud.SignUpImgStatus=2 then 'Rejected' end)SignUpImgStatuss, 
                                 (case when ud.PanImgStatus is not null then ud.PanImage else null end)PanImage, 
@@ -375,12 +377,19 @@ public partial class admin_UserReport : System.Web.UI.Page
                                 (case when ud.AadharImgStatus is not null then ud.AadharImage else null end)AadharImage, 
                                 (case when ud.AadharImgStatus is not null then ud.AadharImageBack else null end)AadharImageBack, 
                                 (case when ud.AadharImgStatus=0 then 'Pending' when ud.AadharImgStatus=1 then 'Approved' when ud.AadharImgStatus=2 then 'Rejected' end)AadharImgStatuss,  
-                                epin.planId,plm.PlanName as packageName,ud.SponserId,isnull(ud1.userName,'Company')sponserName,ud.PanNumber,sm.stateName,ud.Pincode,ud.epinGenerationStatus,CASE WHEN isnull(ud.GSTimage,'')='' THEN 'img/default.png' ELSE '../ProductImage/'+ud.GSTimage END AS GSTimage,ud.gstnumber,isnull(ud.IsGSTDeductedOfUnverified,0) as IsGSTDeductedOfUnverifie,
+                                pkg.planId,pkg.packageName,ud.SponserId,isnull(ud1.userName,'Company')sponserName,ud.PanNumber,sm.stateName,ud.Pincode,ud.epinGenerationStatus,CASE WHEN isnull(ud.GSTimage,'')='' THEN 'img/default.png' ELSE '../ProductImage/'+ud.GSTimage END AS GSTimage,ud.gstnumber,isnull(ud.IsGSTDeductedOfUnverified,0) as IsGSTDeductedOfUnverifie,
 (case when ud.IsGstApplicable=0 then 'Pending' when ud.IsGstApplicable=1 then 'Approved' when ud.IsGstApplicable=2 then 'Rejected' end)IsGstApplicable 
                                 FROM userdetail ud LEFT JOIN citymaster cm ON ud.Cityid=cm.CityId 
                                 LEFT JOIN statemaster sm on sm.stateId=cm.stateId 
-                                left join Logindetail ld on ud.userid=ld.username left join EPinMaster epin on epin.UsedUserId=ud.userID 
-                                left join PlanMaster plm on plm.id=epin.planId left join userdetail ud1 on ud.sponserId=ud1.userId 
+                                OUTER APPLY (SELECT TOP 1 password, status AS activeStatus FROM Logindetail WHERE username = ud.userid) ld
+                                OUTER APPLY (
+                                    SELECT TOP 1 epin.planId, plm.PlanName AS packageName
+                                    FROM EPinMaster epin
+                                    LEFT JOIN PlanMaster plm ON plm.id = epin.planId
+                                    WHERE epin.UsedUserId = ud.userID
+                                    ORDER BY epin.planId DESC
+                                ) pkg
+                                LEFT JOIN userdetail ud1 ON ud.sponserId = ud1.userId
                                 where 1=1 ";
 
         if (objUser.FromDate != DateTime.MinValue && objUser.ToDate != DateTime.MinValue)
@@ -422,7 +431,7 @@ public partial class admin_UserReport : System.Web.UI.Page
         }
         if (!string.IsNullOrEmpty(objUser.plan_Id) && objUser.plan_Id != "0")
         {
-            str_query += "  and epin.planId = '" + objUser.plan_Id + "' ";
+            str_query += "  and EXISTS (SELECT 1 FROM EPinMaster epin WHERE epin.UsedUserId = ud.userID AND epin.planId = '" + objUser.plan_Id + "') ";
         }
         if (!string.IsNullOrEmpty(objUser.SponserId) && objUser.SponserId != "0")
         {
