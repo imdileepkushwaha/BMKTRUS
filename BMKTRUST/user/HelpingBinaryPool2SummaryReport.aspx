@@ -259,7 +259,7 @@
                                 <span class="cap">कुल सदस्य</span>
                             </div>
                         </div>
-                        <div class="lvl-card">
+                        <div class="lvl-card" style="display:none">
                             <span class="ico"><iconify-icon icon="solar:layers-minimalistic-bold"></iconify-icon></span>
                             <div>
                                 <span class="val"><asp:Literal ID="litRequired" runat="server" Text="0"></asp:Literal></span>
@@ -295,17 +295,17 @@
                                 <Columns>
                                     <asp:TemplateField HeaderText="Level">
                                         <ItemTemplate>
-                                            <span class="lvl-name">Level <%# Eval("SrNo") %></span>
+                                            <span class="lvl-name"><%# Eval("LevelLabel") %></span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Completed">
                                         <ItemTemplate>
-                                            <span class="cnt"><%# Eval("MemberCount") %></span>
+                                            <span class="cnt"><%# Convert.ToBoolean(Eval("IsYourRow")) ? "Your" : Convert.ToString(Eval("MemberCount")) %></span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Required">
                                         <ItemTemplate>
-                                            <span class="req"><%# Eval("Required") %></span>
+                                            <span class="req"><%# Convert.ToBoolean(Eval("IsYourRow")) ? "Eligible" : Convert.ToString(Eval("Required")) %></span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Progress">

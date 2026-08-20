@@ -183,6 +183,18 @@
                             </ul>
                         </li>
 
+                        <li class="header">CLOSING</li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-calendar-check-o"></i> <span>Closing</span>
+                                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="CalculateHelpingLevelClosing.aspx"><i class="fa fa-angle-right"></i> Level Closing</a></li>
+                                <li><a href="CalculateHelpingGrowthClosing.aspx"><i class="fa fa-angle-right"></i> Growth Closing</a></li>
+                            </ul>
+                        </li>
+
                         <li class="header">ACCOUNTS</li>
                         <li class="treeview">
                             <a href="#">
@@ -203,6 +215,16 @@
                             <ul class="treeview-menu">
                                 <li><a href="DepositRequestReport.aspx"><i class="fa fa-angle-right"></i> Deposit Request Report</a></li>
                                 <li><a href="WithdrawlRequestReport.aspx"><i class="fa fa-angle-right"></i> Withdrawl Request Report</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-heart"></i> <span>Donation</span>
+                                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="DonationRequestReport.aspx"><i class="fa fa-angle-right"></i> Donation Request Report</a></li>
                             </ul>
                         </li>
 

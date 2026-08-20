@@ -60,4 +60,13 @@ public partial class user_HelpingGrowthBonusReport : System.Web.UI.Page
     {
         Response.Redirect("Dashboard.aspx");
     }
+
+    // Display only: DB LevelNo 3→1, 5→2, 7→3, 9→4, 11→5, 13→6, 15→7
+    protected string FormatDisplayLevel(object levelNo)
+    {
+        int n;
+        if (!int.TryParse(Convert.ToString(levelNo), out n) || n < 3)
+            return Convert.ToString(levelNo);
+        return ((n - 1) / 2).ToString();
+    }
 }

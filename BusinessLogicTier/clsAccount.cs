@@ -942,12 +942,18 @@ namespace BusinessLogicTier
 
         public DataTable getHelpingLevelIncome(clsAccount objaccount)
         {
-            // Level Bonus Report — Level 1 excluded
+            // Level Bonus Report — All = Level 1 excluded; specific LevelNo (1-15) filters that level
             string str_query = @"SELECT I.id, I.HelpingId, I.UserId, ISNULL(U.UserName,'') AS UserName,
 I.LevelNo, I.Income, Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
 FROM HelpingLevelIncomeDetail I WITH (nolock)
 LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
-WHERE ISNULL(I.LevelNo, 0) <> 1 ";
+WHERE 1=1 ";
+
+            int filterLevel;
+            if (int.TryParse(objaccount.LevelNo, out filterLevel) && filterLevel >= 1 && filterLevel <= 15)
+                str_query += " AND I.LevelNo = " + filterLevel + " ";
+            else
+                str_query += " AND ISNULL(I.LevelNo, 0) <> 1 ";
 
             if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
             {
@@ -984,7 +990,7 @@ WHERE ISNULL(I.LevelNo, 0) <> 1 ";
 I.LevelNo, I.Income, Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
 FROM HelpingLevelIncomeDetailPool2 I WITH (nolock)
 LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
-WHERE ISNULL(I.LevelNo, 0) <> 1 ";
+WHERE ISNULL(I.Income, 0) >0 and ISNULL(I.LevelNo, 0) <> 1  ";
 
             if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
             {
@@ -4165,5 +4171,156 @@ WHERE 1=1 ";
         public string NoOfEpin { get; set; }
 
         public string planid { get; set; }
+
+        public const decimal DonationAmount = 50000M;
+        public const int MinActiveDonationChildren = 2;
+
+        static string SqlEsc(string value)
+        {
+            return (value ?? "").Replace("'", "''");
+        }
+
+        public int CountDonationActiveChildren(string userId)
+        {
+            string str_query = @"SELECT COUNT(*) FROM UserDetail WITH (NOLOCK)
+WHERE ParentUserId = '" + SqlEsc(userId) + "' AND Status = 1";
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try { dt = ObjData.RunDataTable(str_query); }
+            catch { dt = null; }
+            ObjData.EndConnection();
+            if (dt == null || dt.Rows.Count == 0) return 0;
+            int n;
+            return int.TryParse(Convert.ToString(dt.Rows[0][0]), out n) ? n : 0;
+        }
+
+        public bool HasPendingDonation(string userId)
+        {
+            string str_query = @"SELECT COUNT(*) FROM DonationRequest WITH (NOLOCK)
+WHERE UserId = '" + SqlEsc(userId) + "' AND Status = 'Pending'";
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try { dt = ObjData.RunDataTable(str_query); }
+            catch { dt = null; }
+            ObjData.EndConnection();
+            if (dt == null || dt.Rows.Count == 0) return false;
+            int n;
+            return int.TryParse(Convert.ToString(dt.Rows[0][0]), out n) && n > 0;
+        }
+
+        public string InsertDonationRequest(string userId, int bankId, string transactionId, string img)
+        {
+            if (CountDonationActiveChildren(userId) < MinActiveDonationChildren)
+                return "not_eligible";
+            if (HasPendingDonation(userId))
+                return "pending";
+
+            string str_query = @"INSERT INTO DonationRequest
+(UserId, Amount, DepositBankID, OnlineTransactionId, Img, Status, MentionBy, MentionDate)
+VALUES ('" + SqlEsc(userId) + "', " + DonationAmount.ToString("0.00") + ", " + bankId +
+                ", '" + SqlEsc(transactionId) + "', '" + SqlEsc(img) + "', 'Pending', '" + SqlEsc(userId) + "', GETDATE())";
+            ObjData.StartConnection();
+            try
+            {
+                int n = ObjData.RunInsUpDelQueryNew(str_query);
+                ObjData.EndConnection();
+                return n > 0 ? "t" : "0";
+            }
+            catch
+            {
+                ObjData.EndConnection();
+                return "0";
+            }
+        }
+
+        public DataTable getDonationRequestByUser(string userId)
+        {
+            string str_query = @"SELECT D.id, D.UserId, D.Amount, D.OnlineTransactionId, D.Img, D.Status,
+ISNULL(D.RejectReason,'') AS RejectReason, D.MentionDate, D.ApproveBy, D.ApproveDate,
+ISNULL(CA.AccountNo,'') AS AccountNo, ISNULL(CA.BankName,'') AS BankName,
+ISNULL(CA.AccountHolderName,'') AS AccountHolderName
+FROM DonationRequest D WITH (NOLOCK)
+LEFT JOIN CompanyAccountDetail CA WITH (NOLOCK) ON CA.id = D.DepositBankID
+WHERE D.UserId = '" + SqlEsc(userId) + @"'
+ORDER BY D.id DESC";
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try { dt = ObjData.RunDataTable(str_query); }
+            catch { dt = null; }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        public DataTable getDonationRequestAdmin(clsAccount objaccount)
+        {
+            string str_query = @"SELECT D.id, D.UserId, ISNULL(U.UserName,'') AS UserName, ISNULL(U.Mobile,'') AS Mobile,
+D.Amount, D.OnlineTransactionId, D.Img, D.Status, ISNULL(D.RejectReason,'') AS RejectReason,
+D.MentionBy, D.MentionDate, D.ApproveBy, D.ApproveDate,
+ISNULL(CA.AccountNo,'') AS AccountNo, ISNULL(CA.BankName,'') AS BankName,
+ISNULL(CA.AccountHolderName,'') AS AccountHolderName,
+CASE WHEN ISNULL(D.Img,'') = '' THEN '../ProductImage/images.png' ELSE '../ProductImage/' + D.Img END AS Image
+FROM DonationRequest D WITH (NOLOCK)
+LEFT JOIN UserDetail U WITH (NOLOCK) ON U.UserId = D.UserId
+LEFT JOIN CompanyAccountDetail CA WITH (NOLOCK) ON CA.id = D.DepositBankID
+WHERE 1=1 ";
+
+            if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
+            {
+                str_query += " AND CAST(D.MentionDate AS date) >= CAST('" + objaccount.FromDate.ToString("yyyy-MM-dd") + "' AS date) AND CAST(D.MentionDate AS date) <= CAST('" + objaccount.ToDate.ToString("yyyy-MM-dd") + "' AS date) ";
+            }
+            if (!string.IsNullOrEmpty(objaccount.UserId))
+                str_query += " AND D.UserId = '" + SqlEsc(objaccount.UserId) + "' ";
+            if (!string.IsNullOrEmpty(objaccount.WithdrawlRequestStatus) && objaccount.WithdrawlRequestStatus != "0")
+                str_query += " AND D.Status = '" + SqlEsc(objaccount.WithdrawlRequestStatus) + "' ";
+
+            str_query += " ORDER BY D.id DESC";
+
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try { dt = ObjData.RunDataTable(str_query); }
+            catch { dt = null; }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        public string Approve_DonationRequest(string id, string adminId)
+        {
+            string str_query = @"UPDATE DonationRequest SET Status = 'Approved', ApproveBy = '" + SqlEsc(adminId) + @"',
+ApproveDate = GETDATE(), RejectReason = NULL
+WHERE id = " + SqlEsc(id) + " AND Status = 'Pending'";
+            ObjData.StartConnection();
+            try
+            {
+                int n = ObjData.RunInsUpDelQueryNew(str_query);
+                ObjData.EndConnection();
+                return n > 0 ? "t" : "0";
+            }
+            catch
+            {
+                ObjData.EndConnection();
+                return "0";
+            }
+        }
+
+        public string Reject_DonationRequest(string id, string adminId, string reason)
+        {
+            if (string.IsNullOrWhiteSpace(reason))
+                return "reason";
+            string str_query = @"UPDATE DonationRequest SET Status = 'Rejected', ApproveBy = '" + SqlEsc(adminId) + @"',
+ApproveDate = GETDATE(), RejectReason = '" + SqlEsc(reason.Trim()) + @"'
+WHERE id = " + SqlEsc(id) + " AND Status = 'Pending'";
+            ObjData.StartConnection();
+            try
+            {
+                int n = ObjData.RunInsUpDelQueryNew(str_query);
+                ObjData.EndConnection();
+                return n > 0 ? "t" : "0";
+            }
+            catch
+            {
+                ObjData.EndConnection();
+                return "0";
+            }
+        }
     }
 }

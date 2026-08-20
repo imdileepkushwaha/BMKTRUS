@@ -9,10 +9,7 @@ using DataTier;
 public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
 {
     Data ObjData = new Data();
-
-    // Matrix is binary (2 children per node), so level capacity = 2^level.
-    // Depth mirrors HelpingBinaryTree2X2 so both pages report the same pool size.
-    const int MatrixDepth = 4;
+    const int MaxLevel = 15;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -29,13 +26,13 @@ public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
         }
     }
 
-    DataTable GetHelpingBinaryPool2(string userId)
+    DataTable RunProc(string procName, string userId)
     {
         DataTable dt = new DataTable();
         ObjData.StartConnection();
         try
         {
-            dt = ObjData.RunDataTableProcedure("sp_getHelpingBinaryPool2", new[] {
+            dt = ObjData.RunDataTableProcedure(procName, new[] {
                 new SqlParameter("@userid", userId)
             });
         }
@@ -56,6 +53,23 @@ public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
         return int.TryParse(Convert.ToString(value), out n) ? n : 0;
     }
 
+    long ToLong(object value)
+    {
+        long n;
+        return long.TryParse(Convert.ToString(value), out n) ? n : 0;
+    }
+
+    object Col(DataRow row, params string[] names)
+    {
+        if (row == null || row.Table == null) return null;
+        foreach (string name in names)
+        {
+            if (row.Table.Columns.Contains(name))
+                return row[name];
+        }
+        return null;
+    }
+
     void LoadReport(string userId)
     {
         divMembers.Visible = false;
@@ -65,31 +79,29 @@ public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
         gvMembers.DataBind();
         lblSelectedLevel.Text = "";
 
-        DataTable dt = GetHelpingBinaryPool2(userId);
-        ViewState["Pool2Data"] = dt;
+        DataTable dtSummary = RunProc("sp_getHelpingBinarySummary", userId);
+        DataTable dtTree = RunProc("sp_getHelpingBinary", userId);
+        ViewState["BinaryData"] = dtTree;
 
-        if (dt.Rows.Count == 0 || !dt.Columns.Contains("userlevel"))
+        if (dtSummary.Rows.Count == 0 ||
+            (!dtSummary.Columns.Contains("LevelNo") && !dtSummary.Columns.Contains("levelno")))
         {
             gvLevels.DataSource = null;
             gvLevels.DataBind();
-            ApplySummary(0, CapacityUpTo(MatrixDepth), 0, MatrixDepth);
-            Message.Show("No 2X2 downline found for this User Id.");
+            ApplySummary(0, 0, 0, MaxLevel);
+            Message.Show("No level summary found for this User Id.");
             return;
         }
 
-        // Only Level 1..MatrixDepth (4) — ignore deeper downline for this report
-        var counts = dt.AsEnumerable()
-            .Select(r => ToInt(r["userlevel"]))
-            .Where(lvl => lvl >= 1 && lvl <= MatrixDepth)
-            .GroupBy(lvl => lvl)
-            .ToDictionary(g => g.Key, g => g.Count());
-
-        var levels = Enumerable.Range(1, MatrixDepth)
-            .Select(level =>
+        var levels = dtSummary.AsEnumerable()
+            .Select(r =>
             {
-                int completed = counts.ContainsKey(level) ? counts[level] : 0;
-                long required = 1L << level; // L1=2, L2=4, L3=8, L4=16
-                int percent = (int)Math.Round(completed * 100.0 / required);
+                int level = ToInt(Col(r, "LevelNo", "levelno"));
+                int completed = ToInt(Col(r, "Team", "team"));
+                long required = ToLong(Col(r, "Target", "target"));
+                if (required < 0) required = 0;
+
+                int percent = required > 0 ? (int)Math.Round(completed * 100.0 / required) : 0;
                 if (percent > 100) percent = 100;
                 if (percent < 0) percent = 0;
 
@@ -102,24 +114,27 @@ public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
                     BarClass = percent >= 100 ? "full" : (completed > 0 ? "part" : "none")
                 };
             })
+            .Where(x => x.LevelNo >= 1 && x.LevelNo <= MaxLevel)
+            .OrderBy(x => x.LevelNo)
             .ToList();
+
+        if (levels.Count == 0)
+        {
+            gvLevels.DataSource = null;
+            gvLevels.DataBind();
+            ApplySummary(0, 0, 0, MaxLevel);
+            Message.Show("No level summary found for this User Id.");
+            return;
+        }
 
         ApplySummary(
             levels.Sum(x => x.MemberCount),
             levels.Sum(x => x.Required),
-            levels.Count(x => x.MemberCount >= x.Required),
-            MatrixDepth);
+            levels.Count(x => x.Required > 0 && x.MemberCount >= x.Required),
+            levels.Count);
 
         gvLevels.DataSource = levels;
         gvLevels.DataBind();
-    }
-
-    static long CapacityUpTo(int depth)
-    {
-        long capacity = 0;
-        for (int level = 1; level <= depth; level++)
-            capacity += 1L << level;
-        return capacity;
     }
 
     void ApplySummary(int total, long required, int completedLevels, int levelCount)
@@ -143,27 +158,34 @@ public partial class user_HelpingBinaryLevelWiseReport2X2 : System.Web.UI.Page
 
     void BindLevelMembers()
     {
-        DataTable dt = ViewState["Pool2Data"] as DataTable;
-        if (dt == null || dt.Rows.Count == 0 || ViewState["SelectedLevel"] == null)
+        if (ViewState["SelectedLevel"] == null)
         {
             divMembers.Visible = false;
             return;
         }
 
         int levelNo = ToInt(ViewState["SelectedLevel"]);
-
-        DataTable members = dt.Clone();
-        foreach (DataRow row in dt.Rows)
+        DataTable dt = ViewState["BinaryData"] as DataTable;
+        if (dt == null || dt.Rows.Count == 0)
         {
-            if (ToInt(row["userlevel"]) == levelNo)
-                members.ImportRow(row);
+            string userId = (txtuserid.Text ?? "").Trim();
+            dt = RunProc("sp_getHelpingBinary", userId);
+            ViewState["BinaryData"] = dt;
         }
 
-        // Keep only userid + UserName columns for clean bind if extras exist
+        DataTable members = dt.Clone();
+        if (dt.Columns.Contains("userlevel"))
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                if (ToInt(row["userlevel"]) == levelNo)
+                    members.ImportRow(row);
+            }
+        }
+
         if (!members.Columns.Contains("userid") && members.Columns.Contains("UserId"))
             members.Columns["UserId"].ColumnName = "userid";
 
-        // Deleting the last page's rows would otherwise leave the grid on an out-of-range page
         int lastPage = members.Rows.Count == 0 ? 0 : (members.Rows.Count - 1) / gvMembers.PageSize;
         if (gvMembers.PageIndex > lastPage)
             gvMembers.PageIndex = lastPage;

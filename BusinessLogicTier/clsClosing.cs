@@ -2159,5 +2159,47 @@ namespace BusinessLogicTier
              return res;
          }
 
+        /// <summary>
+        /// Helping closings:
+        /// LEVEL  → sp_GenerateHelpingLevelIncome (@FromDate, @ToDate)
+        /// GROWTH → sp_GenerateHelpingLevelIncomePool2 (@FromDate, @ToDate)
+        /// Returns 1 = success, 0 = failed
+        /// </summary>
+        public int GenerateHelpingClosing(string type, DateTime fromDate, DateTime toDate)
+        {
+            int h = 0;
+            string proc = "";
+            switch ((type ?? "").Trim().ToUpperInvariant())
+            {
+                case "LEVEL":
+                    proc = "sp_GenerateHelpingLevelIncome";
+                    break;
+                case "GROWTH":
+                    proc = "sp_GenerateHelpingLevelIncomePool2";
+                    break;
+                default:
+                    return 0;
+            }
+
+            ObjData.StartConnection();
+            try
+            {
+                ObjData.RunDataTableProcedure(proc, new[] {
+                    new SqlParameter("@FromDate", fromDate),
+                    new SqlParameter("@ToDate", toDate)
+                });
+                h = 1;
+            }
+            catch (Exception)
+            {
+                h = 0;
+            }
+            finally
+            {
+                ObjData.EndConnection();
+            }
+            return h;
+        }
+
     }
 }

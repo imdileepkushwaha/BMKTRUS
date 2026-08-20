@@ -488,7 +488,7 @@
                                 <p class="t-value">&#8377; <asp:Literal ID="litGrowthBonus" runat="server" Text="0.00" /></p>
                             </div>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" style="display:none">
                             <div class="bmk-team-tile saffron">
                                 <div class="t-icon"><i class="ri-vip-crown-line"></i></div>
                                 <span class="t-label">Royalty Bonus</span>
@@ -619,7 +619,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6" style="display:none">
                             <div class="bmk-stat">
                                 <span class="bmk-stat-icon saffron"><iconify-icon icon="solar:crown-bold"></iconify-icon></span>
                                 <div>
