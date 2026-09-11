@@ -261,7 +261,7 @@
                                 <span class="cap">कुल सदस्य</span>
                             </div>
                         </div>
-                        <div class="lvl-card">
+                        <div class="lvl-card" style="display: none;">
                             <span class="ico"><iconify-icon icon="solar:layers-minimalistic-bold"></iconify-icon></span>
                             <div>
                                 <span class="val"><asp:Literal ID="litRequired" runat="server" Text="0"></asp:Literal></span>
