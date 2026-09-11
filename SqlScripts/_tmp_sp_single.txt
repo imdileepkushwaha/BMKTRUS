@@ -1,0 +1,163 @@
+-- *** SqlDbx Personal Edition ***
+-- !!! Not licensed for commercial use beyound 90 days evaluation period !!!
+-- For version limitations please check http://www.sqldbx.com/personal_edition.htm
+-- Number of queries executed: 8783, number of rows retrieved: 605220
+
+CREATE PROC sp_GenerateHelpingLevelIncomeSingle
+    @FromDate DATETIME,
+    @ToDate DATETIME
+AS
+SET NOCOUNT ON
+
+DECLARE @ClosingDate DATETIME = ISNULL(@ToDate, GETDATE())
+DECLARE @userid NVARCHAR(100), @HelpingId INT
+
+DECLARE cur_closing2 CURSOR STATIC FOR
+SELECT id, Userid FROM HelpingBinaryDetail WITH (NOLOCK) ORDER BY id
+
+OPEN cur_closing2
+BEGIN
+    FETCH NEXT FROM cur_closing2 INTO @HelpingId, @userid
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE @tempteam TABLE (levelno INT, totalteam INT)
+
+        ;WITH MyCTE AS (
+            SELECT id, userid, ParentId, 0 AS userlevel
+            FROM HelpingBinaryDetail WITH (NOLOCK)
+            WHERE id = @HelpingId
+            UNION ALL
+            SELECT HelpingBinaryDetail.id, HelpingBinaryDetail.userid, HelpingBinaryDetail.ParentId, MyCTE.userlevel + 1
+            FROM HelpingBinaryDetail WITH (NOLOCK)
+            INNER JOIN MyCTE ON HelpingBinaryDetail.ParentId = MyCTE.id
+            WHERE HelpingBinaryDetail.id != @HelpingId
+        )
+        INSERT INTO @tempteam (levelno, totalteam)
+        SELECT MyCTE.userlevel, COUNT(mycte.id) AS totaluser
+        FROM MyCTE
+        WHERE MyCTE.userlevel >= 1 AND MyCTE.userlevel <= 15
+        GROUP BY MyCTE.userlevel
+        ORDER BY MyCTE.userlevel
+        OPTION (MAXRECURSION 0)
+
+        DECLARE @levelno INT, @target INT, @finalamount DECIMAL(18,2), @maxlevel INT, @team INT
+        DECLARE @parentid INT, @sponserid NVARCHAR(100), @sponsercount INT, @StandingPositionHelping NVARCHAR(100)
+
+        SET @maxlevel = (SELECT MAX(levelno) FROM HelpingLevelDetail WITH (NOLOCK))
+        SET @levelno = 1
+        WHILE (@levelno <= @maxlevel)
+        BEGIN
+            SET @target = ISNULL((SELECT target FROM HelpingLevelDetail WITH (NOLOCK) WHERE LevelNo = @levelno), 0)
+            SET @finalamount = ISNULL((SELECT finalamount FROM HelpingLevelDetail WHERE levelno = @levelno), 0)
+            SET @team = ISNULL((SELECT totalteam FROM @tempteam WHERE levelno = @levelno), 0)
+
+            IF (@team = @target)
+            BEGIN
+                IF (NOT EXISTS (
+                    SELECT helpingid FROM HelpingLevelIncomeDetail WITH (NOLOCK)
+                    WHERE helpingid = @HelpingId AND levelno = @levelno
+                ))
+                BEGIN
+                    INSERT INTO HelpingLevelIncomeDetail (HelpingId, UserId, LevelNo, Income, MentionBy, MentionDate)
+                    VALUES (@HelpingId, @userid, @levelno, @finalamount, 'admin', @ClosingDate)
+
+                    --=============== Re entry ========================
+                    IF (@levelno = @maxlevel)
+                    BEGIN
+                        IF (@userid != 'BM000001')
+                        BEGIN
+                            SET @sponserid = ISNULL((SELECT sponserid FROM UserDetail WITH (NOLOCK) WHERE UserId = @userid), '0')
+                            SET @parentid = (SELECT TOP 1 id FROM HelpingBinaryDetail WITH (NOLOCK) WHERE UserId = @sponserid ORDER BY id)
+                            SET @sponsercount = (SELECT COUNT(id) FROM HelpingBinaryDetail WITH (NOLOCK) WHERE parentid = @parentid)
+                            IF (@sponsercount >= 2)
+                            BEGIN
+                                ;WITH MyCTE AS (
+                                    SELECT id, userid, ParentId, 0 AS userlevel
+                                    FROM HelpingBinaryDetail WITH (NOLOCK)
+                                    WHERE id = @parentid
+                                    UNION ALL
+                                    SELECT HelpingBinaryDetail.id, HelpingBinaryDetail.userid,
+                                           HelpingBinaryDetail.ParentId, MyCTE.userlevel + 1
+                                    FROM HelpingBinaryDetail WITH (NOLOCK)
+                                    INNER JOIN MyCTE ON HelpingBinaryDetail.ParentId = MyCTE.id
+                                    WHERE HelpingBinaryDetail.id != @parentid
+                                )
+                                SELECT TOP 1 @parentid = MyCTE.id
+                                FROM MyCTE
+                                WHERE (SELECT COUNT(id) FROM HelpingBinaryDetail ud WITH (NOLOCK) WHERE ud.ParentId = MyCTE.id) < 2
+                                ORDER BY MyCTE.userlevel, MyCTE.id
+                                OPTION (MAXRECURSION 0)
+                            END
+
+                            SET @StandingPositionHelping = (SELECT COUNT(userid) FROM HelpingBinaryDetail WITH (NOLOCK) WHERE ParentId = @parentid) + 1
+
+                            INSERT INTO HelpingBinaryDetail (UserId, ParentId, StandingPosition, MentionBy, MentionDate, EntryType, EpinNo)
+                            VALUES (@userid, @parentid, @StandingPositionHelping, 'admin', @ClosingDate, 'Re-Entry', NULL)
+                        END
+                    END
+                END
+            END
+
+            --========================== Pool 2 Entry (Level 1) =====================
+            -- Runs even if Level-1 income already exists (backfill missing Pool2 rows)
+            IF (@levelno = 1
+                AND EXISTS (
+                    SELECT helpingid FROM HelpingLevelIncomeDetail WITH (NOLOCK)
+                    WHERE helpingid = @HelpingId AND levelno = 1
+                )
+                AND NOT EXISTS (
+                    SELECT 1 FROM HelpingBinaryDetailPool2 WITH (NOLOCK)
+                    WHERE HelpingBinaryId = @HelpingId OR UserId = @userid
+                ))
+            BEGIN
+                IF (NOT EXISTS (SELECT userid FROM HelpingBinaryDetailPool2 WITH (NOLOCK)))
+                BEGIN
+                    SET @parentid = 0
+                    INSERT INTO HelpingBinaryDetailPool2 (HelpingBinaryId, UserId, ParentId, StandingPosition, MentionBy, MentionDate, EntryType)
+                    VALUES (@HelpingId, @userid, @parentid, 0, 'admin', @ClosingDate, 'First')
+                END
+                ELSE
+                BEGIN
+                    SET @parentid = (SELECT TOP 1 id FROM HelpingBinaryDetailPool2 WITH (NOLOCK) ORDER BY id)
+                    SET @sponsercount = (SELECT COUNT(id) FROM HelpingBinaryDetailPool2 WITH (NOLOCK) WHERE parentid = @parentid)
+                    IF (@sponsercount >= 2)
+                    BEGIN
+                        ;WITH MyCTE AS (
+                            SELECT id, userid, ParentId, 0 AS userlevel
+                            FROM HelpingBinaryDetailPool2 WITH (NOLOCK)
+                            WHERE id = @parentid
+                            UNION ALL
+                            SELECT HelpingBinaryDetailPool2.id, HelpingBinaryDetailPool2.userid,
+                                   HelpingBinaryDetailPool2.ParentId, MyCTE.userlevel + 1
+                            FROM HelpingBinaryDetailPool2 WITH (NOLOCK)
+                            INNER JOIN MyCTE ON HelpingBinaryDetailPool2.ParentId = MyCTE.id
+                            WHERE HelpingBinaryDetailPool2.id != @parentid
+                        )
+                        SELECT TOP 1 @parentid = MyCTE.id
+                        FROM MyCTE
+                        WHERE (SELECT COUNT(id) FROM HelpingBinaryDetailPool2 ud WITH (NOLOCK) WHERE ud.ParentId = MyCTE.id) < 2
+                        ORDER BY MyCTE.userlevel, MyCTE.id
+                        OPTION (MAXRECURSION 0)
+                    END
+
+                    SET @StandingPositionHelping = (SELECT COUNT(userid) FROM HelpingBinaryDetailPool2 WITH (NOLOCK) WHERE ParentId = @parentid) + 1
+
+                    INSERT INTO HelpingBinaryDetailPool2 (HelpingBinaryId, UserId, ParentId, StandingPosition, MentionBy, MentionDate, EntryType)
+                    VALUES (@HelpingId, @userid, @parentid, @StandingPositionHelping, 'admin', @ClosingDate, 'First')
+                END
+            END
+
+            SET @levelno = @levelno + 1
+        END
+
+        DELETE FROM @tempteam
+        FETCH NEXT FROM cur_closing2 INTO @HelpingId, @userid
+    END
+END
+CLOSE cur_closing2
+DEALLOCATE cur_closing2
+SET NOCOUNT OFF
+
+SELECT 't'
+
+(1 rows affected)

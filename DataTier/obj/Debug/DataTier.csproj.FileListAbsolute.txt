@@ -434,6 +434,7 @@ C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\DataTier\obj\Debug\DataTie
 C:\Data\Work\Deepak\Bharat Manaw Kalyan Trust\BMKTRUS\DataTier\obj\Debug\DataTier.pdb
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\bin\Debug\DataTier.dll
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\bin\Debug\DataTier.pdb
-D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Debug\DataTier.csprojResolveAssemblyReference.cache
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Debug\DataTier.dll
 D:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Debug\DataTier.pdb
+d:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Debug\DataTier.csproj.CoreCompileInputs.cache
+d:\Web\leveldemoneww\BMKTRUST\BMKTRUS\DataTier\obj\Debug\DataTier.csproj.AssemblyReference.cache

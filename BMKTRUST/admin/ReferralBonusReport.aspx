@@ -98,12 +98,12 @@
                                                     <asp:Label ID="lblIncome" runat="server" Text='<%# Eval("directincome", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Admin Charge">
+                                            <asp:TemplateField HeaderText="Admin Charge (5%)">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblAdmin" runat="server" Text='<%# Eval("admincharge", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="TDS">
+                                            <asp:TemplateField HeaderText="TDS (5%)">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblTds" runat="server" Text='<%# Eval("tdscharge", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>

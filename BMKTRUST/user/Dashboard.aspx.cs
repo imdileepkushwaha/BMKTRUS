@@ -223,12 +223,14 @@ public partial class user_Dashboard : System.Web.UI.Page
         if (litAwardReward != null)
             litAwardReward.Text = GetPool2AwardName(userId);
 
-        // Anudan Rashi = amount this member has given (UserTopup / plan), fallback selfincome
+        // My donation = SUM of admin-approved DonationRequest only (Pending/Rejected stay 0)
+        string myDonation = GetApprovedDonationAmount(userId).ToString("0.00");
+        litSelfDonation.Text = FormatAmount(myDonation);
+        if (litAnudanRashi != null)
+            litAnudanRashi.Text = FormatAmount(myDonation);
+
         string selfIncomeFallback = Convert.ToString(dt.Rows[0]["selfincome"]);
         string anudan = GetAnudanRashi(userId, selfIncomeFallback).ToString("0.00");
-        litSelfDonation.Text = FormatAmount(anudan);
-        if (litAnudanRashi != null)
-            litAnudanRashi.Text = FormatAmount(anudan);
         lblselfincome.Text = anudan;
 
         BindLevelProgress(userId);
@@ -252,6 +254,39 @@ public partial class user_Dashboard : System.Web.UI.Page
         if (decimal.TryParse(value, out amt))
             return amt.ToString("0.00");
         return "0.00";
+    }
+
+    /// <summary>
+    /// Approved donation total for dashboard "My donation". Pending/Rejected are 0.
+    /// </summary>
+    decimal GetApprovedDonationAmount(string userId)
+    {
+        decimal amount = 0;
+        if (string.IsNullOrWhiteSpace(userId))
+            return 0;
+
+        Data ObjData = new Data();
+        try
+        {
+            ObjData.StartConnection();
+            DataTable dt = ObjData.RunDataTableParam(
+                @"SELECT ISNULL(SUM(Amount),0) AS Amt
+FROM DonationRequest WITH (NOLOCK)
+WHERE UserId = @UserId AND Status = 'Approved'",
+                new[] { new SqlParameter("@UserId", userId.Trim()) });
+
+            if (dt != null && dt.Rows.Count > 0)
+                decimal.TryParse(Convert.ToString(dt.Rows[0]["Amt"]), out amount);
+        }
+        catch
+        {
+            amount = 0;
+        }
+        finally
+        {
+            ObjData.EndConnection();
+        }
+        return amount;
     }
 
     /// <summary>

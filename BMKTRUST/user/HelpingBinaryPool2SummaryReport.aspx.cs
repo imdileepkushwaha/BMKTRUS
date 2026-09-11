@@ -10,9 +10,10 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
 {
     Data ObjData = new Data();
 
-    // Show only income levels up to DB LevelNo 15 → max 8 rows (Sr 1..8)
+    // Row 1 = Your/Eligible (no level), then Level 1..7 (up to DB LevelNo 15)
     const int MaxDbLevelNo = 15;
-    const int MaxSrRows = 8;
+    const int MaxSrRows = 8;       // 1 Your + 7 levels
+    const int MaxDisplayLevels = 7;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -62,6 +63,16 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
         return long.TryParse(Convert.ToString(value), out n) ? n : 0;
     }
 
+    // Total downline in HelpingBinaryDetailPool2 (exclude self at userlevel 0)
+    int CountPool2Members(DataTable dtPool)
+    {
+        if (dtPool == null || dtPool.Rows.Count == 0)
+            return 0;
+        if (dtPool.Columns.Contains("userlevel"))
+            return dtPool.AsEnumerable().Count(r => ToInt(r["userlevel"]) > 0);
+        return dtPool.Rows.Count;
+    }
+
     void LoadReport(string userId)
     {
         divMembers.Visible = false;
@@ -74,12 +85,16 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
         lblSelectedLevel.Text = "";
 
         DataTable dtSummary = RunPool2Proc("sp_getHelpingBinaryPool2Summary", userId);
+        // कुल सदस्य = HelpingBinaryDetailPool2 downline count (via sp_getHelpingBinaryPool2)
+        DataTable dtPool = RunPool2Proc("sp_getHelpingBinaryPool2", userId);
+        ViewState["Pool2Data"] = dtPool;
+        int totalMembers = CountPool2Members(dtPool);
 
         if (dtSummary.Rows.Count == 0 || !dtSummary.Columns.Contains("LevelNo"))
         {
             gvLevels.DataSource = null;
             gvLevels.DataBind();
-            ApplySummary(0, 0, 0, 0);
+            ApplySummary(totalMembers, 0, 0, 0);
             Message.Show("No 2X2 level summary found for this User Id.");
             return;
         }
@@ -91,7 +106,8 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
             .Select((r, index) =>
             {
                 int dbLevelNo = ToInt(r["LevelNo"]);
-                int srNo = index + 1; // display Level as 1..8
+                bool isYourRow = index == 0; // first row: Your / Eligible (no level label)
+                int srNo = isYourRow ? 0 : index; // then Level 1..7
                 int completed = ToInt(r["Team"]);
                 long required = ToLong(r["Target"]);
                 if (required <= 0) required = 1;
@@ -103,7 +119,8 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
                 return new
                 {
                     SrNo = srNo,
-                    LevelNo = srNo,          // shown in Level column
+                    IsYourRow = isYourRow,
+                    LevelLabel = isYourRow ? "" : ("Level " + srNo),
                     DbLevelNo = dbLevelNo,   // used for View Members filter
                     MemberCount = completed,
                     Required = required,
@@ -113,11 +130,12 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
             })
             .ToList();
 
+        var incomeLevels = levels.Where(x => !x.IsYourRow).ToList();
         ApplySummary(
-            levels.Sum(x => x.MemberCount),
-            levels.Sum(x => x.Required),
-            levels.Count(x => x.MemberCount >= x.Required),
-            MaxSrRows);
+            totalMembers,
+            incomeLevels.Sum(x => x.Required),
+            incomeLevels.Count(x => x.MemberCount >= x.Required),
+            MaxDisplayLevels);
 
         gvLevels.DataSource = levels;
         gvLevels.DataBind();
@@ -156,7 +174,12 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
             userId = (txtuserid.Text ?? "").Trim();
 
         int levelNo = ToInt(ViewState["SelectedLevel"]);
-        DataTable dt = RunPool2Proc("sp_getHelpingBinaryPool2", userId);
+        DataTable dt = ViewState["Pool2Data"] as DataTable;
+        if (dt == null || dt.Rows.Count == 0)
+        {
+            dt = RunPool2Proc("sp_getHelpingBinaryPool2", userId);
+            ViewState["Pool2Data"] = dt;
+        }
 
         DataTable members = dt.Clone();
         if (dt.Columns.Contains("userlevel"))
@@ -175,13 +198,14 @@ public partial class user_HelpingBinaryPool2SummaryReport : System.Web.UI.Page
         if (gvMembers.PageIndex > lastPage)
             gvMembers.PageIndex = lastPage;
 
-        // Map DB level (1,3,5...) back to display Sr (1..8) for the label
+        // SrNo 0 = Your row; SrNo 1..7 = Level label
         int displaySr = 0;
         if (ViewState["SelectedSr"] != null)
             displaySr = ToInt(ViewState["SelectedSr"]);
 
         divMembers.Visible = true;
-        lblSelectedLevel.Text = "Level " + (displaySr > 0 ? displaySr : levelNo) + " · " + members.Rows.Count + " members";
+        string levelText = displaySr > 0 ? ("Level " + displaySr) : "Your";
+        lblSelectedLevel.Text = levelText + " · " + members.Rows.Count + " members";
         gvMembers.DataSource = members;
         gvMembers.DataBind();
     }

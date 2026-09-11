@@ -45,9 +45,9 @@ public partial class user_UserDirectAssociates : System.Web.UI.Page
         //LblInactiveleft.Text = SLdeactiveusers.Length.ToString();
         //LblInActiveRight.Text = SRdeactiveusers.Length.ToString();
         DataTable LeftDirectt = getUserleftDirect(objclsUser);
-        DataTable RightDirectt = getUserrightDirect(objclsUser);
-        LblLeftDirect.Text = LeftDirectt.Rows[0][0].ToString();
-        LblRightDirect.Text = RightDirectt.Rows[0][0].ToString();
+        LblLeftDirect.Text = (LeftDirectt != null && LeftDirectt.Rows.Count > 0)
+            ? LeftDirectt.Rows[0][0].ToString()
+            : "0";
         //string Fromdate = string.Empty;
         //string Todatedate = string.Empty;
 
@@ -67,7 +67,7 @@ public partial class user_UserDirectAssociates : System.Web.UI.Page
 
     public DataTable getUserleftDirect(clsUser objUser)
     {
-        string str_query = "SELECT count(u.sponserid)  FROM UserDetail u WHERE u.SponserId='" + objUser.UserId + "' AND u.StandingPosition='1'"; 
+        string str_query = "SELECT COUNT(*) FROM UserDetail u WHERE u.SponserId='" + objUser.UserId.Replace("'", "''") + "' AND u.Status=1"; 
         DataTable dt = null;
         ObjData.StartConnection();
         try
@@ -83,32 +83,46 @@ public partial class user_UserDirectAssociates : System.Web.UI.Page
     }
     void FillAssociatesDetails()
     {
-        DataTable dt = new DataTable();
         objclsUser.UserId = Session["userid"].ToString();
-        objclsUser.StandingPosition = "1";
+
         string Rowno = "";
         if (ddlRecordFilter.SelectedValue == "10")
-        {
             Rowno = " top 10 ";
-        }
-        if (ddlRecordFilter.SelectedValue == "25")
-        {
+        else if (ddlRecordFilter.SelectedValue == "25")
             Rowno = " top 25 ";
-        }
-        if (ddlRecordFilter.SelectedValue == "50")
-        {
+        else if (ddlRecordFilter.SelectedValue == "50")
             Rowno = " top 50 ";
-        }
-        if (ddlRecordFilter.SelectedValue == "100")
-        {
+        else if (ddlRecordFilter.SelectedValue == "100")
             Rowno = " top 100 ";
-        }
-        if (ddlRecordFilter.SelectedValue == "500")
-        {
+        else if (ddlRecordFilter.SelectedValue == "500")
             Rowno = " top 500 ";
+
+        string userId = objclsUser.UserId.Replace("'", "''");
+        string str_query = @"SELECT " + Rowno + @" ud.UserId, ud.UserName,
+            ISNULL(plm.PlanName, '') AS PackageName,
+            ud.RegDate AS RegDate,
+            CASE WHEN ud.Status = '1' THEN 'Paid' ELSE 'Unpaid' END AS [Status]
+            FROM UserDetail ud
+            LEFT JOIN PlanMaster plm ON plm.id = ud.slabid
+            WHERE ud.SponserId = '" + userId + @"'
+              AND ud.Status = 1
+            ORDER BY ud.RegDate DESC";
+
+        DataTable dt = null;
+        ObjData.StartConnection();
+        try
+        {
+            dt = ObjData.RunDataTable(str_query);
         }
-        objclsUser.Pincode = Rowno;
-        dt = objclsUser.getAssociatesDetailNewlatest(objclsUser);
+        catch (Exception)
+        {
+            dt = new DataTable();
+        }
+        finally
+        {
+            ObjData.EndConnection();
+        }
+
         grdBank.DataSource = dt;
         grdBank.DataBind();
     }

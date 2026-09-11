@@ -83,10 +83,8 @@
                                                     <asp:Label ID="lblHelpingId" runat="server" Text='<%# Eval("HelpingId") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Level No">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblLevelNo" runat="server" Text='<%# Eval("LevelNo") %>'></asp:Label>
-                                                </ItemTemplate>
+                                             <asp:TemplateField HeaderText="Level Number">
+                                                <ItemTemplate><%# FormatDisplayLevel(Eval("LevelNo")) %></ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Income">
                                                 <ItemTemplate>

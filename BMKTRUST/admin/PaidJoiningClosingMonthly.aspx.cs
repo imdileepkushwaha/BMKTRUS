@@ -36,11 +36,29 @@ public partial class JoiningClosingReportMonthly : System.Web.UI.Page
 
             Label lblstatus = (Label)e.Row.FindControl("lblstatus");
             CheckBox chk = (CheckBox)e.Row.FindControl("chk");
-            if (lblstatus.Text == "PAID")
+            TextBox txtTxn = (TextBox)e.Row.FindControl("TxtTransaction");
+            Label lblTransaction = (Label)e.Row.FindControl("lblTransaction");
+            bool isPaid = lblstatus != null && string.Equals(lblstatus.Text, "PAID", StringComparison.OrdinalIgnoreCase);
+            if (isPaid)
             {
-                chk.Checked = false;
-                chk.Enabled = false;
-
+                if (chk != null)
+                {
+                    chk.Checked = false;
+                    chk.Enabled = false;
+                }
+                if (lblstatus != null)
+                    lblstatus.CssClass = "wp-badge wp-badge-paid";
+                e.Row.CssClass = (e.Row.CssClass + " wp-row-paid").Trim();
+                if (txtTxn != null)
+                    txtTxn.Visible = false;
+                if (lblTransaction != null)
+                    lblTransaction.Visible = true;
+            }
+            else
+            {
+                if (lblstatus != null)
+                    lblstatus.CssClass = "wp-badge wp-badge-unpaid";
+                e.Row.CssClass = (e.Row.CssClass + " wp-row-unpaid").Trim();
             }
         }
     }
@@ -55,15 +73,20 @@ public partial class JoiningClosingReportMonthly : System.Web.UI.Page
         for (int i = 0; i < GridView1.Rows.Count; i++)
         {
             CheckBox chk = (CheckBox)GridView1.Rows[i].FindControl("chk");
-            Label lblPaybleAmount = (Label)GridView1.Rows[i].FindControl("lblmathingBv");
+            Label lblPaybleAmount = (Label)GridView1.Rows[i].FindControl("lblPaybleAmount");
             Label lblId = (Label)GridView1.Rows[i].FindControl("lblId");
             Label lbluserid = (Label)GridView1.Rows[i].FindControl("lbluserid");
             Label LabMobile = (Label)GridView1.Rows[i].FindControl("LabMobile");
             TextBox TxtTransaction = (TextBox)GridView1.Rows[i].FindControl("TxtTransaction");
             
 
-            if (chk.Checked == true)
+            if (chk != null && chk.Checked && chk.Enabled)
             {
+                if (TxtTransaction == null || (TxtTransaction.Text ?? "").Trim() == "")
+                {
+                    Message.Show("Please enter Transaction ID for selected rows.");
+                    return;
+                }
                 IdList.Add(lblId.Text);
                 UserList.Add(lbluserid.Text);
                 AmountList.Add(lblPaybleAmount.Text);
@@ -85,7 +108,7 @@ public partial class JoiningClosingReportMonthly : System.Web.UI.Page
             if (c == 1)
             {
                 loaddata();
-                Message.Show("Payout Transferred Successfully");
+                Message.Show("Payout paid. Amount debited from wallet.");
             }
             else
             {
@@ -118,17 +141,22 @@ public partial class JoiningClosingReportMonthly : System.Web.UI.Page
            Fromdate = str[0].ToString();
            Todatedate = str[1].ToString();
         }
-        DataTable Dt = objCL.getMonthleyJoiningClosingReportDue(Fromdate, Todatedate, TxtUserId.Text);
+        DataTable Dt = objCL.getMonthleyJoiningClosingReportDue(Fromdate, Todatedate, TxtUserId.Text, ddstatus.SelectedValue);
         GridView1.DataSource = Dt;
         GridView1.DataBind();
-        if (Dt != null && Dt.Rows.Count > 0)
+        bool hasUnpaid = false;
+        if (Dt != null)
         {
-            btnpay.Visible = true;
+            foreach (DataRow row in Dt.Rows)
+            {
+                if (row["Status"] != DBNull.Value && Convert.ToInt32(row["Status"]) == 0)
+                {
+                    hasUnpaid = true;
+                    break;
+                }
+            }
         }
-        else
-        {
-            btnpay.Visible = false;
-        }
+        btnpay.Visible = hasUnpaid;
         
     }
     protected void chckchanged(object sender, EventArgs e)
@@ -140,15 +168,9 @@ public partial class JoiningClosingReportMonthly : System.Web.UI.Page
         {
 
             CheckBox chckrw = (CheckBox)row.FindControl("chk");
-
-            if (chckheader.Checked == true)
-            {
-                chckrw.Checked = true;
-            }
-            else
-            {
-                chckrw.Checked = false;
-            }
+            if (chckrw == null || !chckrw.Enabled)
+                continue;
+            chckrw.Checked = chckheader.Checked;
 
         }
 

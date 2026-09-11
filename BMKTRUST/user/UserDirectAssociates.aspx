@@ -237,7 +237,7 @@
                                         <asp:ListItem>50</asp:ListItem>
                                         <asp:ListItem>100</asp:ListItem>
                                         <asp:ListItem>500</asp:ListItem>
-                                        <asp:ListItem>All</asp:ListItem>
+                                        <asp:ListItem Selected="True">All</asp:ListItem>
                                     </asp:DropDownList>
                                     records
                                 </span>
@@ -264,8 +264,8 @@
                                     </asp:TemplateField>
                                     <asp:BoundField DataField="UserId" HeaderText="User ID" />
                                     <asp:BoundField DataField="UserName" HeaderText="User Name" />
-                                    <asp:BoundField DataField="PackageName" HeaderText="Package" />
-                                    <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
+                                    <asp:BoundField DataField="PackageName" HeaderText="Donations" />
+                                 <%-- <asp:BoundField DataField="Mobile" HeaderText="Mobile" / Visible="false">--%>
                                     <asp:BoundField DataField="RegDate" HeaderText="D. O. J." />
                                     <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>

@@ -29,23 +29,29 @@
                             </div>
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>From date</label>
                                             <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>To date</label>
                                             <asp:TextBox ID="txttodate" CssClass="form-control form_date" runat="server"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Level</label>
+                                            <asp:DropDownList ID="ddlLevel" CssClass="form-control" runat="server"></asp:DropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>User ID</label>
                                             <asp:TextBox ID="txtuserid" CssClass="form-control" runat="server" Enabled="false"></asp:TextBox>
-                                            <span class="adm-field-hint">Only your income is shown (Level 1 excluded)</span>
+                                            <span class="adm-field-hint">Only your income is shown (All = Level 1 excluded)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -63,10 +69,12 @@
                             <div class="box-body">
                                 <div class="table-responsive">
                                     <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover dataTable"
-                                        Width="100%" AutoGenerateColumns="False" EmptyDataText="No records found." GridLines="None">
+                                        Width="100%" AutoGenerateColumns="False" EmptyDataText="No records found." GridLines="None"
+                                        ShowFooter="true" OnRowDataBound="GridView1_RowDataBound">
                                         <Columns>
                                             <asp:TemplateField HeaderText="#">
                                                 <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
+                                                <FooterTemplate>Total</FooterTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="User Id">
                                                 <ItemTemplate>
@@ -88,10 +96,53 @@
                                                     <asp:Label ID="lblLevelNo" runat="server" Text='<%# Eval("LevelNo") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Income">
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    Income
+                                                    <div><asp:Label ID="lblHeaderIncomeSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblIncome" runat="server" Text='<%# Eval("Income", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterIncomeSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    Admin Charge (5%)
+                                                    <div><asp:Label ID="lblHeaderAdminSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblAdmin" runat="server" Text='<%# Eval("admincharge", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterAdminSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    TDS (5%)
+                                                    <div><asp:Label ID="lblHeaderTdsSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblTds" runat="server" Text='<%# Eval("tdscharge", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterTdsSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    Payable
+                                                    <div><asp:Label ID="lblHeaderPayableSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblPayable" runat="server" Text='<%# Eval("paybleamount", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterPayableSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Date">
                                                 <ItemTemplate>

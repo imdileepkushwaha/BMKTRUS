@@ -748,14 +748,16 @@ namespace BusinessLogicTier
 
 
 
-            string str_query = @"select " + objUser.Pincode + @" ud.sponserId,ud.UserId,ud.UserName,convert(nvarchar(50),ud.DateofBirth,106) as DateofBirth,ud.Gender,ud.Email,ud.Mobile,ud.Address, 
-                                ud.RegDate as RegDate,case when ud.StandingPosition='1' then 'Left' else 'Right' end as StandingPosition, 
-                                case when ud.Status='1' then 'Paid' else 'Unpaid' end as [Status],ud.ParentUserID,pd.username as parentname, 
+            string str_query = @"select " + objUser.Pincode + @" ud.sponserId,ud.UserId,ud.UserName,convert(nvarchar(50),ud.DateofBirth,106) as DateofBirth,ud.Gender,ud.Email,ud.Mobile,ud.Address,
+                                ud.RegDate as RegDate,case when ud.StandingPosition='1' then 'Left' else 'Right' end as StandingPosition,
+                                case when ud.Status='1' then 'Paid' else 'Unpaid' end as [Status],ud.ParentUserID,pd.username as parentname,
                                 ud.slabid planId,plm.PlanName as packageName,cm.CityName,sm.stateName,plm.planamount
-                                from UserDetail ud join UserDetail pd on ud.parentuserId=pd.UserId 
-                                LEFT JOIN citymaster cm ON ud.Cityid=cm.CityId inner join statemaster sm on sm.stateId=cm.stateId 
-                                left join PlanMaster plm on plm.id=ud.slabid
-                                where  ud.sponserId='" + objUser.UserId + "'  ";
+                                from UserDetail ud
+                                LEFT JOIN UserDetail pd on ud.parentuserId=pd.UserId
+                                LEFT JOIN citymaster cm ON ud.Cityid=cm.CityId
+                                LEFT JOIN statemaster sm on sm.stateId=cm.stateId
+                                LEFT JOIN PlanMaster plm on plm.id=ud.slabid
+                                where ud.sponserId='" + objUser.UserId.Replace("'", "''") + "'  ";
 
             if (objUser.StandingPosition != "0")
             {

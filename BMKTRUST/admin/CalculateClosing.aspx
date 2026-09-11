@@ -1,17 +1,15 @@
-﻿<%@ Page Title="Generate Closing" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="CalculateClosing.aspx.cs" Inherits="CalculateClosing" %>
+﻿<%@ Page Title="Weekly Closing" Language="C#" MasterPageFile="adminmaster.master" AutoEventWireup="true" CodeFile="CalculateClosing.aspx.cs" Inherits="CalculateClosing" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
       
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contentPageHeading" runat="Server">
      <section class="content-header">
-      <h1>
-      Generate Joining Closing 
-      </h1>
+      <h1>Weekly Closing (7 Days)</h1>
       <ol class="breadcrumb">
      <li><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Closing</a></li>
-        <li class="active">Generate Joining Closing</li>
+        <li class="active">Weekly Closing</li>
       </ol>
     </section>    
 </asp:Content>
@@ -31,7 +29,7 @@
 
              <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Generate Joining Closing</h3>
+              <h3 class="box-title">Generate Weekly Closing (7 Days)</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -51,11 +49,12 @@
                        
                 </div>                 
                </div>
+               <p class="text-muted" style="margin-top:10px;">7-day closing: From Date se 6 din baad To Date set hota hai. Process: <strong>CreateWeeklyclosingpayout</strong> (Level Income + Direct Income → WeeklyClosing). Same week dubara chalane par leftover / nayi income add ho jati hai.</p>
               </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                   <asp:Button ID="btnSubmit" OnClientClick="return validate();" CssClass="btn btn-primary" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
+                   <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Create Weekly Closing" OnClick="btnSubmit_Click" />
                                         <asp:Button ID="btnCancel" CssClass="btn btn-danger" runat="server" Text="Cancel" />
                
               </div>

@@ -7,6 +7,10 @@ using System.Web.UI.WebControls;
 public partial class user_ReferralBonusReport : System.Web.UI.Page
 {
     clsAccount objaccount = new clsAccount();
+    decimal incomeTotal = 0;
+    decimal adminTotal = 0;
+    decimal tdsTotal = 0;
+    decimal payableTotal = 0;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -52,8 +56,51 @@ public partial class user_ReferralBonusReport : System.Web.UI.Page
         txtuserid.Text = objaccount.UserId;
 
         DataTable dt = objaccount.getReferralBonus(objaccount);
+        incomeTotal = SumCol(dt, "directincome");
+        adminTotal = SumCol(dt, "admincharge");
+        tdsTotal = SumCol(dt, "tdscharge");
+        payableTotal = SumCol(dt, "paybleamount");
         GridView1.DataSource = dt;
         GridView1.DataBind();
+    }
+
+    static decimal SumCol(DataTable dt, string col)
+    {
+        if (dt == null || dt.Rows.Count == 0 || !dt.Columns.Contains(col))
+            return 0;
+        decimal total = 0;
+        foreach (DataRow row in dt.Rows)
+        {
+            if (row[col] != DBNull.Value)
+                total += Convert.ToDecimal(row[col]);
+        }
+        return total;
+    }
+
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.Header)
+        {
+            SetLbl(e.Row, "lblHeaderIncomeSum", incomeTotal);
+            SetLbl(e.Row, "lblHeaderAdminSum", adminTotal);
+            SetLbl(e.Row, "lblHeaderTdsSum", tdsTotal);
+            SetLbl(e.Row, "lblHeaderPayableSum", payableTotal);
+        }
+        else if (e.Row.RowType == DataControlRowType.Footer)
+        {
+            SetLbl(e.Row, "lblFooterIncomeSum", incomeTotal);
+            SetLbl(e.Row, "lblFooterAdminSum", adminTotal);
+            SetLbl(e.Row, "lblFooterTdsSum", tdsTotal);
+            SetLbl(e.Row, "lblFooterPayableSum", payableTotal);
+            e.Row.Font.Bold = true;
+        }
+    }
+
+    static void SetLbl(GridViewRow row, string id, decimal value)
+    {
+        Label lbl = row.FindControl(id) as Label;
+        if (lbl != null)
+            lbl.Text = value.ToString("0.00");
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)

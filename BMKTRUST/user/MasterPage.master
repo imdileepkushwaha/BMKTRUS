@@ -180,9 +180,7 @@
                         <li>
                             <a href="HelpingBinaryMatrix.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Level Tree</a>
                         </li>
-                        <li>
-                            <a href="HelpingBinaryMatrix2X2.aspx"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>Level Growth Tree</a>
-                        </li>
+                        
 
                         <li>
                             <a href="HelpingBinaryLevelWiseReport2X2.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Level  Report</a>
@@ -306,6 +304,18 @@
                     </ul>
                 </li>
 
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
+                        <iconify-icon icon="solar:hand-money-outline" class="menu-icon"></iconify-icon>
+                        <span>Donation</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="DonationRequestAdd.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>Donation Request</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="dropdown" >
                     <a href="javascript:void(0)">
                         <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
@@ -322,7 +332,7 @@
                             <a href="ReferralBonusReport.aspx"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Referral Bonus Report</a>
                         </li>
                         <li>
-                            <a href="MonthlyGrowthIncomeReport.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Monthly Growth Income</a>
+                            <a href="#"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Award and Reward</a>
                         </li>
                     </ul>
                 </li>
@@ -338,6 +348,9 @@
           </li>--%>
                         <li>
                             <a href="TransactionReport.aspx"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Transaction Report</a>
+                        </li>
+                        <li>
+                            <a href="IncomePayoutReport.aspx"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i>Payout Report</a>
                         </li>
                       <%--  <li>
                             <a href="AwardUserReport.aspx"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>Level Wise SV Report</a>
