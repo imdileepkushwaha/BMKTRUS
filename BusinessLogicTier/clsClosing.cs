@@ -63,22 +63,29 @@ namespace BusinessLogicTier
              tr = cn.BeginTransaction(IsolationLevel.Serializable);
              try
              {
-                 string str = "Proc_TransferPayout_Binary";
+                 string str = "CreateWeeklyclosingpayout";
 
                  for (int i = 0; i < arrId.Count; i++)
                  {
+                     if (TList[i] == null || TList[i].ToString().Trim() == "")
+                     {
+                         c = 0;
+                         tr.Rollback();
+                         break;
+                     }
 
                      SqlParameter[] sqm = new SqlParameter[]
                 {
+                 new SqlParameter("@Mode", "PAY"),
                  new SqlParameter("@Amount", arrAmount[i].ToString()),
                  new SqlParameter("@UserId", arrUser[i].ToString()),
                  new SqlParameter("@id", arrId[i].ToString()),
-                   new SqlParameter("@paymentTransactionId", TList[i].ToString())
-
+                 new SqlParameter("@paymentTransactionId", TList[i].ToString().Trim())
                 };
                      DataTable dt = ObjData.RunDataTableProcedureTRans(str, tr, sqm);
+                     string payRes = (dt != null && dt.Rows.Count > 0) ? dt.Rows[0][0].ToString() : "-1";
 
-                     if (dt.Rows[0][0].ToString() == "-1")
+                     if (payRes != "t")
                      {
                          c = 0;
                          tr.Rollback();
@@ -126,11 +133,11 @@ namespace BusinessLogicTier
              }
              return c;
          }
-   public DataTable getMonthleyJoiningClosingReportDue(string FromDate, string Todate, string UserId)
+   public DataTable getMonthleyJoiningClosingReportDue(string FromDate, string Todate, string UserId, string status)
          {
              {
                  string str_query = "";
-                 str_query = "  SELECT w.directincome,W.AwardIncome,w.SelfPurchaseIncomee,w.matchingincomee, W.directorincomee,w.leadershipincomee, W.golddirectorincomee, W.crowndirectorIncomee, W.platinumdirectorIncomee, W.diamonddirectorIncomee, w.totalincome,U.PhonePay,U.UPINo,U.BhimNo,W.TotalIncome,W.id,Convert(CHAR,W.Fromdate,103) AS Fromdate,Convert(CHAR,W.ToDate,103) AS Todate,W.UserID,W.Status,CASE WHEN W.Status=0 THEN 'DUE' ELSE 'PAID' END AS Status1,U.UserName,W.TransactionID,Convert(CHAR,GenerateDate,103) AS GenerateDate,Convert(CHAR,PaymentDate,103) AS PaymentDate,W.tds,W.tdsper,W.admincharge,W.paybleamount,W.Weekno,U.Mobile,U.accountno,U.ifsccode,U.AccountHolderName FROM WeeklyClosing W with(nolock) INNER JOIN Userdetail U with(nolock) ON W.UserID=U.UserId where 1=1 and W.Status=0";
+                 str_query = "  SELECT isnull(w.directincome,0) as DirectIncome, isnull(w.Levelincome,0) as Levelincome, W.AwardIncome,w.SelfPurchaseIncomee,w.matchingincomee, W.directorincomee,w.leadershipincomee, W.golddirectorincomee, W.crowndirectorIncomee, W.platinumdirectorIncomee, W.diamonddirectorIncomee, w.totalincome,U.PhonePay,U.UPINo,U.BhimNo,W.TotalIncome,W.id,Convert(CHAR,W.Fromdate,103) AS Fromdate,Convert(CHAR,W.ToDate,103) AS Todate,W.UserID,W.Status,CASE WHEN W.Status=0 THEN 'UNPAID' ELSE 'PAID' END AS Status1,U.UserName,W.TransactionID,Convert(CHAR,GenerateDate,103) AS GenerateDate,Convert(CHAR,PaymentDate,103) AS PaymentDate,W.tds,W.tdsper,W.admincharge,W.paybleamount,W.Weekno,U.Mobile,U.accountno,U.ifsccode,U.AccountHolderName FROM WeeklyClosing W with(nolock) INNER JOIN Userdetail U with(nolock) ON W.UserID=U.UserId where 1=1 ";
 
 
                  if (FromDate != string.Empty)
@@ -144,6 +151,13 @@ namespace BusinessLogicTier
                  if (UserId != string.Empty)
                  {
                      str_query += " and W.userid='" + UserId + "'";
+                 }
+                 if (!string.IsNullOrEmpty(status) && status != "All")
+                 {
+                     if (status == "1" || status == "Paid" || status == "PAID")
+                         str_query += " and W.Status=1 ";
+                     else
+                         str_query += " and W.Status=0 ";
                  }
                  str_query += " order by W.Weekno";
                  DataTable ds = null;
@@ -996,18 +1010,33 @@ namespace BusinessLogicTier
              }
              return h;
          }
+         static bool TryParseClosingDate(string value, out DateTime date)
+         {
+             date = DateTime.MinValue;
+             if (string.IsNullOrWhiteSpace(value))
+                 return false;
+             string[] formats = { "dd/MMM/yyyy", "dd/MM/yyyy", "d/M/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd" };
+             if (DateTime.TryParseExact(value.Trim(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                 return true;
+             // Indian dd/MM: swap day/month then parse
+             string[] parts = value.Trim().Split('/', '-');
+             if (parts.Length >= 3)
+             {
+                 string swapped = parts[1] + "/" + parts[0] + "/" + parts[2];
+                 if (DateTime.TryParse(swapped, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                     return true;
+             }
+             return DateTime.TryParse(value, CultureInfo.GetCultureInfo("en-GB"), DateTimeStyles.None, out date);
+         }
+
          public int ClaculateClosingJoining(clsClosing objCl, string fromdate, string todate)
          {
-
              int h = 0;
-             string res = "";
-             Decimal PreviousBv = 0;
-             Decimal MatchinBv = 0;
-             Decimal LeftBv = 0;
-             Decimal RightBv = 0;
-             int LeftUser = 0;
-             int RightUser = 0;
-             int weekno = 0;
+             DateTime fromDt;
+             if (!TryParseClosingDate(fromdate, out fromDt))
+                 return 0;
+             DateTime toDt = fromDt.Date.AddDays(6);
+
              SqlConnection cn;
              SqlTransaction tr = null;
              DataSet ds = new DataSet();
@@ -1015,23 +1044,33 @@ namespace BusinessLogicTier
              tr = cn.BeginTransaction(IsolationLevel.Serializable);
              try
              {
-
-                 res = "select * from WeeklyClosingMaster where Cast(Todate as date)>='" + fromdate + "'";
-                 DataSet Ds = ObjData.RunSelectQueryTrans(res, tr);
-                 if (Ds.Tables[0].Rows.Count == 0)
-                 {
-
-                     string s2 = "ActivationIncentive";
-                     SqlParameter[] parameter = {              
-                    new SqlParameter("@Todate",todate),                   
-                };
-                     res = ObjData.RunInsUpDelQueryTransProcScalar(s2, tr, parameter);
-
-                 }
+                 SqlParameter[] parameter = {
+                    new SqlParameter("@FromDate", fromDt.Date),
+                    new SqlParameter("@ToDate", toDt.Date),
+                    new SqlParameter("@Mode", "CREATE")
+                 };
+                 DataTable dtRes = ObjData.RunDataTableProcedureTRans("CreateWeeklyclosingpayout", tr, parameter);
+                 string res = (dtRes != null && dtRes.Rows.Count > 0) ? dtRes.Rows[0][0].ToString() : "0";
                  if (res == "t")
                  {
                      tr.Commit();
                      h = 1;
+                 }
+                 else if (res == "exists")
+                 {
+                     // Master already exists and no new unpaid row; keep any backfill from the SP
+                     tr.Commit();
+                     h = 2;
+                 }
+                 else if (res == "empty")
+                 {
+                     tr.Rollback();
+                     h = 3;
+                 }
+                 else
+                 {
+                     tr.Rollback();
+                     h = 0;
                  }
 
 
@@ -2161,8 +2200,9 @@ namespace BusinessLogicTier
 
         /// <summary>
         /// Helping closings:
-        /// LEVEL  → sp_GenerateHelpingLevelIncome (@FromDate, @ToDate)
-        /// GROWTH → sp_GenerateHelpingLevelIncomePool2 (@FromDate, @ToDate)
+        /// LEVEL         → sp_GenerateHelpingLevelIncome (@FromDate, @ToDate)
+        /// GROWTH        → sp_GenerateHelpingLevelIncomePool2 (@FromDate, @ToDate)
+        /// GROWTHSINGLE  → sp_GenerateHelpingLevelIncomePool2Single (@FromDate, @ToDate)
         /// Returns 1 = success, 0 = failed
         /// </summary>
         public int GenerateHelpingClosing(string type, DateTime fromDate, DateTime toDate)
@@ -2176,6 +2216,9 @@ namespace BusinessLogicTier
                     break;
                 case "GROWTH":
                     proc = "sp_GenerateHelpingLevelIncomePool2";
+                    break;
+                case "GROWTHSINGLE":
+                    proc = "sp_GenerateHelpingLevelIncomePool2Single";
                     break;
                 default:
                     return 0;
@@ -2199,6 +2242,164 @@ namespace BusinessLogicTier
                 ObjData.EndConnection();
             }
             return h;
+        }
+
+        public DataTable getGrowthMonthlyClosingDates()
+        {
+            string str_query = "SELECT DISTINCT FromDate, ToDate, '' AS ClosingDate FROM GrowthMonthlyClosingMaster WITH (NOLOCK) ORDER BY FromDate DESC";
+            DataTable ds = null;
+            ObjData.StartConnection();
+            try
+            {
+                ds = ObjData.RunDataTable(str_query);
+                if (ds != null && ds.Rows.Count > 0)
+                {
+                    foreach (DataRow Dr in ds.Rows)
+                    {
+                        Dr["ClosingDate"] = Convert.ToDateTime(Dr["FromDate"]).ToString("dd/MMM/yyyy")
+                            + "=" + Convert.ToDateTime(Dr["ToDate"]).ToString("dd/MMM/yyyy");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ds = null;
+            }
+            ObjData.EndConnection();
+            return ds;
+        }
+
+        public void EnsureGrowthMonthlyPayout(DateTime fromDate, DateTime toDate)
+        {
+            ObjData.StartConnection();
+            try
+            {
+                ObjData.RunDataTableProcedure("sp_CreateGrowthMonthlyPayout", new[] {
+                    new SqlParameter("@Mode", "CREATE"),
+                    new SqlParameter("@FromDate", fromDate),
+                    new SqlParameter("@ToDate", toDate)
+                });
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                ObjData.EndConnection();
+            }
+        }
+
+        public DataTable getGrowthMonthlyPayoutReport(string fromDate, string toDate, string userId, string status)
+        {
+            string str_query = @"SELECT W.id,
+Convert(CHAR, W.FromDate, 103) AS Fromdate,
+Convert(CHAR, W.ToDate, 103) AS Todate,
+W.UserId, U.UserName, U.Mobile, U.accountno, U.ifsccode, U.AccountHolderName,
+ISNULL(U.PhonePay,'') AS PhonePay, ISNULL(U.UPINo,'') AS UPINo, ISNULL(U.BhimNo,'') AS BhimNo,
+ISNULL(W.GrowthIncome,0) AS GrowthIncome,
+ISNULL(W.TotalIncome,0) AS TotalIncome,
+ISNULL(W.AdminCharge,0) AS AdminCharge,
+ISNULL(W.TDS,0) AS TDS,
+ISNULL(W.PaybleAmount,0) AS PaybleAmount,
+W.Status,
+CASE WHEN W.Status=0 THEN 'UNPAID' ELSE 'PAID' END AS Status1,
+ISNULL(W.TransactionID,'') AS TransactionID,
+Convert(CHAR, W.GenerateDate, 103) AS GenerateDate,
+Convert(CHAR, W.PaymentDate, 103) AS PaymentDate
+FROM GrowthMonthlyClosing W WITH (NOLOCK)
+INNER JOIN UserDetail U WITH (NOLOCK) ON W.UserId = U.UserId
+WHERE 1=1 ";
+
+            if (!string.IsNullOrEmpty(fromDate))
+                str_query += " AND CAST(W.FromDate AS date)='" + fromDate.Replace("'", "''") + "'";
+            if (!string.IsNullOrEmpty(toDate))
+                str_query += " AND CAST(W.ToDate AS date)='" + toDate.Replace("'", "''") + "'";
+            if (!string.IsNullOrEmpty(userId))
+                str_query += " AND W.UserId='" + userId.Replace("'", "''") + "'";
+            if (!string.IsNullOrEmpty(status) && status != "All")
+            {
+                if (status == "1" || status == "Paid" || status == "PAID")
+                    str_query += " AND W.Status=1 ";
+                else
+                    str_query += " AND W.Status=0 ";
+            }
+            str_query += " ORDER BY W.id";
+
+            DataTable ds = null;
+            ObjData.StartConnection();
+            try
+            {
+                ds = ObjData.RunDataTable(str_query);
+            }
+            catch (Exception)
+            {
+                ds = null;
+            }
+            ObjData.EndConnection();
+            return ds;
+        }
+
+        public int TransferGrowthMonthlyPayout(ArrayList arrId, ArrayList arrUser, ArrayList arrAmount, ArrayList arrmobile, ArrayList TList)
+        {
+            int c = 0;
+            int arrcount = 0;
+            SqlConnection cn;
+            SqlTransaction tr = null;
+            cn = ObjData.StartConnectionInTransaction();
+            tr = cn.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                for (int i = 0; i < arrId.Count; i++)
+                {
+                    if (TList[i] == null || TList[i].ToString().Trim() == "")
+                    {
+                        c = 0;
+                        tr.Rollback();
+                        break;
+                    }
+
+                    SqlParameter[] sqm = new SqlParameter[]
+                    {
+                        new SqlParameter("@Mode", "PAY"),
+                        new SqlParameter("@Amount", arrAmount[i].ToString()),
+                        new SqlParameter("@UserId", arrUser[i].ToString()),
+                        new SqlParameter("@id", arrId[i].ToString()),
+                        new SqlParameter("@paymentTransactionId", TList[i].ToString().Trim())
+                    };
+                    DataTable dt = ObjData.RunDataTableProcedureTRans("sp_CreateGrowthMonthlyPayout", tr, sqm);
+                    string payRes = (dt != null && dt.Rows.Count > 0) ? dt.Rows[0][0].ToString() : "-1";
+                    if (payRes != "t")
+                    {
+                        c = 0;
+                        tr.Rollback();
+                        break;
+                    }
+                    arrcount = arrcount + 1;
+                }
+
+                if (arrcount == arrId.Count)
+                {
+                    c = 1;
+                    tr.Commit();
+                }
+                else
+                {
+                    c = 0;
+                    if (tr.Connection != null)
+                        tr.Rollback();
+                }
+            }
+            catch (Exception)
+            {
+                c = 0;
+                try { tr.Rollback(); } catch (Exception) { }
+            }
+            finally
+            {
+                ObjData.EndConnection();
+                tr.Dispose();
+            }
+            return c;
         }
 
     }

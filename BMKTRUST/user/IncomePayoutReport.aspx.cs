@@ -1,41 +1,26 @@
 using BusinessLogicTier;
 using System;
 using System.Data;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class user_HelpingLevelIncomeReport : System.Web.UI.Page
+public partial class user_IncomePayoutReport : System.Web.UI.Page
 {
     clsAccount objaccount = new clsAccount();
+    decimal helpingTotal = 0;
+    decimal directTotal = 0;
     decimal incomeTotal = 0;
-    decimal adminTotal = 0;
-    decimal tdsTotal = 0;
-    decimal payableTotal = 0;
+    decimal paidTotal = 0;
+    decimal pendingTotal = 0;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
             if (Session["userid"] != null)
-            {
-                BindLevelFilter();
-                txtuserid.Text = Session["userid"].ToString();
-                txtuserid.Enabled = false;
                 loaduser();
-            }
             else
-            {
                 Response.Redirect("logout.aspx");
-            }
         }
-    }
-
-    void BindLevelFilter()
-    {
-        ddlLevel.Items.Clear();
-        ddlLevel.Items.Add(new ListItem("All Levels", ""));
-        for (int i = 1; i <= 15; i++)
-            ddlLevel.Items.Add(new ListItem("Level " + i, i.ToString()));
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
@@ -62,29 +47,16 @@ public partial class user_HelpingLevelIncomeReport : System.Web.UI.Page
             objaccount.ToDate = DateTime.MinValue;
 
         objaccount.UserId = Session["userid"].ToString();
-        txtuserid.Text = objaccount.UserId;
-        objaccount.LevelNo = ddlLevel.SelectedValue;
+        objaccount.WithdrawlRequestStatus = ddstatus.SelectedValue;
 
-        DataTable dt = objaccount.getHelpingLevelIncome(objaccount);
-        dt = FilterByLevel(dt, ddlLevel.SelectedValue);
-        incomeTotal = SumCol(dt, "Income");
-        adminTotal = SumCol(dt, "admincharge");
-        tdsTotal = SumCol(dt, "tdscharge");
-        payableTotal = SumCol(dt, "paybleamount");
+        DataTable dt = objaccount.getIncomePayoutReport(objaccount);
+        helpingTotal = SumCol(dt, "HelpingIncome");
+        directTotal = SumCol(dt, "DirectIncome");
+        incomeTotal = SumCol(dt, "TotalIncome");
+        paidTotal = SumCol(dt, "PaidAmount");
+        pendingTotal = SumCol(dt, "PendingAmount");
         GridView1.DataSource = dt;
         GridView1.DataBind();
-    }
-
-    static DataTable FilterByLevel(DataTable dt, string levelValue)
-    {
-        int filterLevel;
-        if (dt == null || !dt.Columns.Contains("LevelNo") ||
-            !int.TryParse(levelValue, out filterLevel))
-            return dt;
-
-        DataView dv = dt.DefaultView;
-        dv.RowFilter = "LevelNo = " + filterLevel;
-        return dv.ToTable();
     }
 
     static decimal SumCol(DataTable dt, string col)
@@ -102,19 +74,19 @@ public partial class user_HelpingLevelIncomeReport : System.Web.UI.Page
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType == DataControlRowType.Header)
+        if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            SetLbl(e.Row, "lblHeaderIncomeSum", incomeTotal);
-            SetLbl(e.Row, "lblHeaderAdminSum", adminTotal);
-            SetLbl(e.Row, "lblHeaderTdsSum", tdsTotal);
-            SetLbl(e.Row, "lblHeaderPayableSum", payableTotal);
+            Label lblstatus = e.Row.FindControl("lblstatus") as Label;
+            if (lblstatus != null)
+                lblstatus.CssClass = lblstatus.Text == "Pending" ? "label label-warning" : "label label-success";
         }
         else if (e.Row.RowType == DataControlRowType.Footer)
         {
-            SetLbl(e.Row, "lblFooterIncomeSum", incomeTotal);
-            SetLbl(e.Row, "lblFooterAdminSum", adminTotal);
-            SetLbl(e.Row, "lblFooterTdsSum", tdsTotal);
-            SetLbl(e.Row, "lblFooterPayableSum", payableTotal);
+            SetLbl(e.Row, "lblFooterHelping", helpingTotal);
+            SetLbl(e.Row, "lblFooterDirect", directTotal);
+            SetLbl(e.Row, "lblFooterTotal", incomeTotal);
+            SetLbl(e.Row, "lblFooterPaid", paidTotal);
+            SetLbl(e.Row, "lblFooterPending", pendingTotal);
             e.Row.Font.Bold = true;
         }
     }

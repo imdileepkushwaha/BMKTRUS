@@ -10,6 +10,9 @@ public partial class admin_HelpingLevelIncomeReport : System.Web.UI.Page
 {
     clsAccount objaccount = new clsAccount();
     decimal incomeTotal = 0;
+    decimal adminTotal = 0;
+    decimal tdsTotal = 0;
+    decimal payableTotal = 0;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -54,7 +57,10 @@ public partial class admin_HelpingLevelIncomeReport : System.Web.UI.Page
         objaccount.LevelNo = ddlLevel.SelectedValue;
         DataTable dt = objaccount.getHelpingLevelIncome(objaccount);
         dt = FilterByLevel(dt, ddlLevel.SelectedValue);
-        incomeTotal = SumIncome(dt);
+        incomeTotal = SumCol(dt, "Income");
+        adminTotal = SumCol(dt, "admincharge");
+        tdsTotal = SumCol(dt, "tdscharge");
+        payableTotal = SumCol(dt, "paybleamount");
         GridView1.DataSource = dt;
         GridView1.DataBind();
     }
@@ -71,35 +77,43 @@ public partial class admin_HelpingLevelIncomeReport : System.Web.UI.Page
         return dv.ToTable();
     }
 
-    static decimal SumIncome(DataTable dt)
+    static decimal SumCol(DataTable dt, string col)
     {
-        if (dt == null || dt.Rows.Count == 0 || !dt.Columns.Contains("Income"))
+        if (dt == null || dt.Rows.Count == 0 || !dt.Columns.Contains(col))
             return 0;
         decimal total = 0;
         foreach (DataRow row in dt.Rows)
         {
-            if (row["Income"] != DBNull.Value)
-                total += Convert.ToDecimal(row["Income"]);
+            if (row[col] != DBNull.Value)
+                total += Convert.ToDecimal(row[col]);
         }
         return total;
     }
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        string totalText = incomeTotal.ToString("0.00");
         if (e.Row.RowType == DataControlRowType.Header)
         {
-            Label lbl = e.Row.FindControl("lblHeaderIncomeSum") as Label;
-            if (lbl != null)
-                lbl.Text = totalText;
+            SetLbl(e.Row, "lblHeaderIncomeSum", incomeTotal);
+            SetLbl(e.Row, "lblHeaderAdminSum", adminTotal);
+            SetLbl(e.Row, "lblHeaderTdsSum", tdsTotal);
+            SetLbl(e.Row, "lblHeaderPayableSum", payableTotal);
         }
         else if (e.Row.RowType == DataControlRowType.Footer)
         {
-            Label lbl = e.Row.FindControl("lblFooterIncomeSum") as Label;
-            if (lbl != null)
-                lbl.Text = totalText;
+            SetLbl(e.Row, "lblFooterIncomeSum", incomeTotal);
+            SetLbl(e.Row, "lblFooterAdminSum", adminTotal);
+            SetLbl(e.Row, "lblFooterTdsSum", tdsTotal);
+            SetLbl(e.Row, "lblFooterPayableSum", payableTotal);
             e.Row.Font.Bold = true;
         }
+    }
+
+    static void SetLbl(GridViewRow row, string id, decimal value)
+    {
+        Label lbl = row.FindControl(id) as Label;
+        if (lbl != null)
+            lbl.Text = value.ToString("0.00");
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)

@@ -14,6 +14,7 @@ public partial class admin_EPinAdd : System.Web.UI.Page
 {
     clsEPin objEPin = new clsEPin();
     clsUser objUser = new clsUser();
+    clsplan objplan = new clsplan();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["userid"] != null)
@@ -21,8 +22,8 @@ public partial class admin_EPinAdd : System.Web.UI.Page
             if (!IsPostBack)
             {
                 txtuserid.Text = Session["userid"].ToString();
-                loadusername();
                 loadAmountepin();
+                loadusername();
             }
         }
         else
@@ -50,23 +51,54 @@ public partial class admin_EPinAdd : System.Web.UI.Page
     }
     void loadAmountepin()
     {
-        DataTable dt = new DataTable();
-        objEPin.GenerateUserId = txtuserid.Text;
-        dt = objEPin.getEPinForPinTransfer(objEPin);
-        ddplan.DataSource = dt;
-        ddplan.DataTextField = "Planname";
-        ddplan.DataValueField = "Planamount";
-        ddplan.DataBind();
-        ListItem li = new ListItem("Select Plan", "0");
-        ddplan.Items.Insert(0, li);
-    }   
+        DataTable dt = objplan.getPlanAll();
+        DataTable dtDonation = dt != null ? dt.Clone() : new DataTable();
+        if (dt != null)
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                string planName = Convert.ToString(row["PlanName"]);
+                decimal amount = 0;
+                decimal.TryParse(Convert.ToString(row["Planamount"]), out amount);
+                bool isDonation = planName.IndexOf("Donation", StringComparison.OrdinalIgnoreCase) >= 0;
+                bool is1500 = amount == 1500m
+                    || planName.IndexOf("1,500", StringComparison.OrdinalIgnoreCase) >= 0
+                    || planName.IndexOf("1500", StringComparison.OrdinalIgnoreCase) >= 0;
+                if (isDonation && is1500)
+                    dtDonation.ImportRow(row);
+            }
+        }
+
+        ddplan.Items.Clear();
+        if (dtDonation.Columns.Contains("PlanName"))
+        {
+            ddplan.DataSource = dtDonation;
+            ddplan.DataTextField = "PlanName";
+            ddplan.DataValueField = "Planamount";
+            ddplan.DataBind();
+        }
+        ddplan.Items.Insert(0, new ListItem("Select Plan", "0"));
+        ddplan.ClearSelection();
+        ddplan.SelectedIndex = 0;
+        txtavailablepins.Text = "0";
+    }
     void loadavailableepin()
     {
-        DataTable dt = new DataTable();
-        objEPin.Amount = Convert.ToDecimal(ddplan.SelectedValue);
+        decimal amount;
+        if (ddplan.SelectedValue == "0" || string.IsNullOrEmpty(ddplan.SelectedValue)
+            || !decimal.TryParse(ddplan.SelectedValue, out amount) || amount <= 0)
+        {
+            txtavailablepins.Text = "0";
+            return;
+        }
+
+        objEPin.Amount = amount;
         objEPin.GenerateUserId = txtuserid.Text;
-        dt = objEPin.getTotalAvailableEPinnew(objEPin);
-        txtavailablepins.Text = dt.Rows[0][0].ToString();
+        DataTable dt = objEPin.getTotalAvailableEPinnew(objEPin);
+        if (dt != null && dt.Rows.Count > 0)
+            txtavailablepins.Text = dt.Rows[0][0].ToString();
+        else
+            txtavailablepins.Text = "0";
     }
     void loadtransferusername()
     {

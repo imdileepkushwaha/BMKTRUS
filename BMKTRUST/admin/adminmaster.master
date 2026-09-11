@@ -190,8 +190,10 @@
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="CalculateHelpingLevelClosing.aspx"><i class="fa fa-angle-right"></i> Level Closing</a></li>
-                                <li><a href="CalculateHelpingGrowthClosing.aspx"><i class="fa fa-angle-right"></i> Growth Closing</a></li>
+                                <li><a href="CalculateClosing.aspx"><i class="fa fa-angle-right"></i> Weekly Closing</a></li>
+                                <li><a href="PaidJoiningClosingMonthly.aspx"><i class="fa fa-angle-right"></i> Weekly Payout</a></li>
+                                <li><a href="CalculateHelpingGrowthClosingMonthly.aspx"><i class="fa fa-angle-right"></i> Growth Monthly Closing</a></li>
+                                <li><a href="PaidGrowthClosingMonthly.aspx"><i class="fa fa-angle-right"></i> Growth Monthly Payout</a></li>
                             </ul>
                         </li>
 

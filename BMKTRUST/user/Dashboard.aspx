@@ -288,7 +288,7 @@
                     <div class="bmk-personal-tile">
                         <span class="bmk-personal-ico anudan"><iconify-icon icon="solar:hand-heart-bold"></iconify-icon></span>
                         <div>
-                            <span class="label">Anudan Rashi</span>
+                            <span class="label">My donation</span>
                             <span class="value">&#8377; <asp:Literal ID="litAnudanRashi" runat="server" Text="0.00" /></span>
                         </div>
                     </div>
@@ -456,7 +456,7 @@
                         <div class="col-6 col-md-4">
                             <div class="bmk-team-tile gold">
                                 <div class="t-icon"><i class="ri-hand-heart-line"></i></div>
-                                <span class="t-label">Anudan Rashi</span>
+                                <span class="t-label">My donation</span>
                                 <p class="t-value">&#8377; <asp:Literal ID="litSelfDonation" runat="server" Text="0.00" /></p>
                             </div>
                         </div>

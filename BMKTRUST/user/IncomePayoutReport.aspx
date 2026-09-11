@@ -1,4 +1,4 @@
-<%@ Page Title="Level Bonus Report" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="HelpingLevelIncomeReport.aspx.cs" Inherits="user_HelpingLevelIncomeReport" %>
+<%@ Page Title="Payout Report" Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="IncomePayoutReport.aspx.cs" Inherits="user_IncomePayoutReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../site/css/profile.css" rel="stylesheet" />
@@ -8,9 +8,9 @@
     <div class="bmk-panel">
         <div class="bmk-profile-hero">
             <div class="bmk-profile-hero-text">
-                <span class="eyebrow">My Income</span>
-                <h1>Level Bonus Report</h1>
-                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; My Income &nbsp;/&nbsp; Level Bonus Report</p>
+                <span class="eyebrow">Reports</span>
+                <h1>Payout Report</h1>
+                <p class="bmk-crumb"><a href="Dashboard.aspx">Dashboard</a> &nbsp;/&nbsp; Reports &nbsp;/&nbsp; Payout Report</p>
             </div>
         </div>
     </div>
@@ -29,29 +29,26 @@
                             </div>
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>From date</label>
                                             <asp:TextBox ID="txtfromdate" CssClass="form-control form_date" runat="server"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>To date</label>
                                             <asp:TextBox ID="txttodate" CssClass="form-control form_date" runat="server"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Level</label>
-                                            <asp:DropDownList ID="ddlLevel" CssClass="form-control" runat="server"></asp:DropDownList>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>User ID</label>
-                                            <asp:TextBox ID="txtuserid" CssClass="form-control" runat="server" Enabled="false"></asp:TextBox>
-                                            <span class="adm-field-hint">Only your income is shown (All = Level 1 excluded)</span>
+                                            <label>Status</label>
+                                            <asp:DropDownList ID="ddstatus" CssClass="form-control" runat="server">
+                                                <asp:ListItem Value="All" Selected="True">All</asp:ListItem>
+                                                <asp:ListItem Value="Pending">Pending</asp:ListItem>
+                                                <asp:ListItem Value="Approved">Approved</asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +61,7 @@
 
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Income Details</h3>
+                                <h3 class="box-title">Payout Details</h3>
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -76,77 +73,64 @@
                                                 <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
                                                 <FooterTemplate>Total</FooterTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="User Id">
+                                            <asp:TemplateField HeaderText="Week">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lbluserid" runat="server" Text='<%# Eval("UserId") %>'></asp:Label>
+                                                    <asp:Label ID="lblDate" runat="server" Text='<%# Eval("PayoutDateText") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Username">
+                                            <asp:TemplateField HeaderText="Level Bonus">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblusername" runat="server" Text='<%# Eval("UserName") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Helping Id">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblHelpingId" runat="server" Text='<%# Eval("HelpingId") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Level No">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblLevelNo" runat="server" Text='<%# Eval("LevelNo") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField>
-                                                <HeaderTemplate>
-                                                    Income
-                                                    <div><asp:Label ID="lblHeaderIncomeSum" runat="server"></asp:Label></div>
-                                                </HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblIncome" runat="server" Text='<%# Eval("Income", "{0:0.00}") %>'></asp:Label>
+                                                    <asp:Label ID="lblHelping" runat="server" Text='<%# Eval("HelpingIncome", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                                 <FooterTemplate>
-                                                    <asp:Label ID="lblFooterIncomeSum" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblFooterHelping" runat="server"></asp:Label>
                                                 </FooterTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField>
-                                                <HeaderTemplate>
-                                                    Admin Charge (5%)
-                                                    <div><asp:Label ID="lblHeaderAdminSum" runat="server"></asp:Label></div>
-                                                </HeaderTemplate>
+                                            <asp:TemplateField HeaderText="Referral Bonus">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblAdmin" runat="server" Text='<%# Eval("admincharge", "{0:0.00}") %>'></asp:Label>
+                                                    <asp:Label ID="lblDirect" runat="server" Text='<%# Eval("DirectIncome", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                                 <FooterTemplate>
-                                                    <asp:Label ID="lblFooterAdminSum" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblFooterDirect" runat="server"></asp:Label>
                                                 </FooterTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField>
-                                                <HeaderTemplate>
-                                                    TDS (5%)
-                                                    <div><asp:Label ID="lblHeaderTdsSum" runat="server"></asp:Label></div>
-                                                </HeaderTemplate>
+                                            <asp:TemplateField HeaderText="Total">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblTds" runat="server" Text='<%# Eval("tdscharge", "{0:0.00}") %>'></asp:Label>
+                                                    <asp:Label ID="lblTotal" runat="server" Text='<%# Eval("TotalIncome", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                                 <FooterTemplate>
-                                                    <asp:Label ID="lblFooterTdsSum" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblFooterTotal" runat="server"></asp:Label>
                                                 </FooterTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField>
-                                                <HeaderTemplate>
-                                                    Payable
-                                                    <div><asp:Label ID="lblHeaderPayableSum" runat="server"></asp:Label></div>
-                                                </HeaderTemplate>
+                                            <asp:TemplateField HeaderText="Paid">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblPayable" runat="server" Text='<%# Eval("paybleamount", "{0:0.00}") %>'></asp:Label>
+                                                    <asp:Label ID="lblPaid" runat="server" Text='<%# Eval("PaidAmount", "{0:0.00}") %>'></asp:Label>
                                                 </ItemTemplate>
                                                 <FooterTemplate>
-                                                    <asp:Label ID="lblFooterPayableSum" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblFooterPaid" runat="server"></asp:Label>
                                                 </FooterTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Date">
+                                            <asp:TemplateField HeaderText="Pending">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblDate" runat="server" Text='<%# Eval("MentionDate") %>'></asp:Label>
+                                                    <asp:Label ID="lblPending" runat="server" Text='<%# Eval("PendingAmount", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterPending" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Status">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblstatus" runat="server" Text='<%# Eval("Status") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Transaction Id">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lbltransactionid" runat="server" Text='<%# Eval("OnlineTransactionId") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Approve Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblapprovedate" runat="server" Text='<%# Eval("ApproveDate") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -162,22 +146,15 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="contentScript" runat="Server">
-     <script type="text/javascript">
-         $('.form_date').datepicker({
-             format: 'dd/mm/yyyy',
-         }).on('changeDate', function (ev) {
-             $(this).datepicker('hide');
-         });
-     </script>
-       <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript">
         Sys.Application.add_load(LoadHandler);
         function LoadHandler() {
             $('.form_date').datepicker({
-                format: 'dd/mm/yyyy',
+                format: 'dd/mm/yyyy'
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
         }
-     </script>
+    </script>
 </asp:Content>

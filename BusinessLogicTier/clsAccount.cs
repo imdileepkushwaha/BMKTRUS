@@ -944,7 +944,13 @@ namespace BusinessLogicTier
         {
             // Level Bonus Report — All = Level 1 excluded; specific LevelNo (1-15) filters that level
             string str_query = @"SELECT I.id, I.HelpingId, I.UserId, ISNULL(U.UserName,'') AS UserName,
-I.LevelNo, I.Income, Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
+I.LevelNo, I.Income,
+CAST(ROUND(ISNULL(I.Income,0) * 0.05, 2) AS DECIMAL(18,2)) AS admincharge,
+CAST(ROUND(ISNULL(I.Income,0) * 0.05, 2) AS DECIMAL(18,2)) AS tdscharge,
+CAST(ISNULL(I.Income,0)
+    - ROUND(ISNULL(I.Income,0) * 0.05, 2)
+    - ROUND(ISNULL(I.Income,0) * 0.05, 2) AS DECIMAL(18,2)) AS paybleamount,
+Convert(VARCHAR(50), I.MentionDate, 103) AS MentionDate, ISNULL(I.MentionBy,'') AS MentionBy
 FROM HelpingLevelIncomeDetail I WITH (nolock)
 LEFT JOIN UserDetail U WITH (nolock) ON I.UserId = U.UserId
 WHERE 1=1 ";
@@ -1024,8 +1030,13 @@ WHERE ISNULL(I.Income, 0) >0 and ISNULL(I.LevelNo, 0) <> 1  ";
         public DataTable getReferralBonus(clsAccount objaccount)
         {
             string str_query = @"SELECT dt.id, dt.userid, ISNULL(U.UserName,'') AS UserName, dt.fromuserid,
-ISNULL(FU.UserName,'') AS FromUserName, dt.directincome, dt.adminper, dt.admincharge,
-dt.tdsper, dt.tdscharge, dt.paybleamount, Convert(VARCHAR(50), dt.entrydate, 103) AS entrydate
+ISNULL(FU.UserName,'') AS FromUserName, dt.directincome,
+CAST(ROUND(ISNULL(dt.directincome,0) * 0.05, 2) AS DECIMAL(18,2)) AS admincharge,
+CAST(ROUND(ISNULL(dt.directincome,0) * 0.05, 2) AS DECIMAL(18,2)) AS tdscharge,
+CAST(ISNULL(dt.directincome,0)
+    - ROUND(ISNULL(dt.directincome,0) * 0.05, 2)
+    - ROUND(ISNULL(dt.directincome,0) * 0.05, 2) AS DECIMAL(18,2)) AS paybleamount,
+Convert(VARCHAR(50), dt.entrydate, 103) AS entrydate
 FROM directincometb dt WITH (nolock)
 LEFT JOIN UserDetail U WITH (nolock) ON dt.userid = U.UserId
 LEFT JOIN UserDetail FU WITH (nolock) ON dt.fromuserid = FU.UserId
@@ -1055,6 +1066,328 @@ WHERE 1=1 ";
             }
             ObjData.EndConnection();
             return dt;
+        }
+
+        /// <summary>
+        /// Weekly payout: Helping Level Income + Direct Income, per user per Mon–Sun week.
+        /// Includes TransactionDetail credits plus unposted HelpingLevelIncomeDetail / directincometb rows.
+        /// WithdrawlRequestStatus: Pending / Approved / empty for all.
+        /// </summary>
+        public DataTable getIncomePayoutReport(clsAccount objaccount)
+        {
+            string str_query = @"
+;WITH RawInc AS (
+  SELECT
+    LTRIM(RTRIM(td.userid)) AS userid,
+    CAST(td.mentiondate AS date) AS IncDate,
+    CASE WHEN td.transactiontype = N'Helping Level Income' THEN ISNULL(td.cramount,0) ELSE 0 END AS HelpingIncome,
+    CASE WHEN td.transactiontype = N'Direct Income' THEN ISNULL(td.cramount,0) ELSE 0 END AS DirectIncome
+  FROM TransactionDetail td WITH (NOLOCK)
+  WHERE td.transactiontype IN (N'Helping Level Income', N'Direct Income')
+    AND ISNULL(td.cramount,0) > 0
+
+  UNION ALL
+
+  SELECT
+    LTRIM(RTRIM(i.UserId)),
+    CAST(ISNULL(i.MentionDate, GETDATE()) AS date),
+    CAST(ISNULL(i.Income,0)
+      - ROUND(ISNULL(i.Income,0) * 0.05, 2)
+      - ROUND(ISNULL(i.Income,0) * 0.05, 2) AS DECIMAL(18,2)),
+    CAST(0 AS DECIMAL(18,2))
+  FROM HelpingLevelIncomeDetail i WITH (NOLOCK)
+  WHERE ISNULL(i.Income,0) > 0
+    AND NOT EXISTS (
+      SELECT 1 FROM TransactionDetail t WITH (NOLOCK)
+      WHERE t.transactiontype = N'Helping Level Income'
+        AND t.Remark LIKE N'%IncId=' + CAST(i.id AS NVARCHAR(20)) + N';%'
+    )
+
+  UNION ALL
+
+  SELECT
+    LTRIM(RTRIM(d.userid)),
+    CAST(ISNULL(d.entrydate, GETDATE()) AS date),
+    CAST(0 AS DECIMAL(18,2)),
+    CAST(ISNULL(d.directincome,0)
+      - ROUND(ISNULL(d.directincome,0) * 0.05, 2)
+      - ROUND(ISNULL(d.directincome,0) * 0.05, 2) AS DECIMAL(18,2))
+  FROM directincometb d WITH (NOLOCK)
+  WHERE ISNULL(d.directincome,0) > 0
+    AND NOT EXISTS (
+      SELECT 1 FROM TransactionDetail t WITH (NOLOCK)
+      WHERE t.transactiontype = N'Direct Income'
+        AND t.Remark LIKE N'%RefId=' + CAST(d.id AS NVARCHAR(20)) + N';%'
+    )
+),
+Inc AS (
+  SELECT
+    userid,
+    DATEADD(DAY, -((DATEPART(WEEKDAY, IncDate) + @@DATEFIRST - 2) % 7), IncDate) AS WeekStart,
+    CAST(SUM(HelpingIncome) AS DECIMAL(18,2)) AS HelpingIncome,
+    CAST(SUM(DirectIncome) AS DECIMAL(18,2)) AS DirectIncome,
+    CAST(SUM(HelpingIncome + DirectIncome) AS DECIMAL(18,2)) AS TotalIncome
+  FROM RawInc
+  GROUP BY userid,
+    DATEADD(DAY, -((DATEPART(WEEKDAY, IncDate) + @@DATEFIRST - 2) % 7), IncDate)
+)
+SELECT
+  i.userid,
+  ISNULL(NULLIF(LTRIM(RTRIM(ud.UserName)),''), ISNULL(ud.AccountHolderName,'')) AS UserName,
+  ISNULL(ud.Mobile,'') AS Mobile,
+  ISNULL(ud.AccountHolderName,'') AS AccountHolderName,
+  ISNULL(bm.BankName, ISNULL(CONVERT(VARCHAR(100), ud.BankName),'')) AS BankName,
+  ISNULL(ud.AccountNo,'') AS AccountNo,
+  ISNULL(ud.IFSCCode,'') AS IFSCCode,
+  ISNULL(ud.phonepay,'') AS PhonePay,
+  ISNULL(ud.bhimno,'') AS BhimNo,
+  ISNULL(ud.upino,'') AS UPINo,
+  i.WeekStart AS PayoutDate,
+  CONVERT(varchar(8), i.WeekStart, 112) AS PayoutDateKey,
+  CONVERT(varchar(10), i.WeekStart, 103) + N' - ' + CONVERT(varchar(10), DATEADD(DAY, 6, i.WeekStart), 103) AS PayoutDateText,
+  i.HelpingIncome,
+  i.DirectIncome,
+  i.TotalIncome,
+  CAST(ISNULL(p.PaidAmount,0) AS DECIMAL(18,2)) AS PaidAmount,
+  CAST(i.TotalIncome - ISNULL(p.PaidAmount,0) AS DECIMAL(18,2)) AS PendingAmount,
+  CASE WHEN i.TotalIncome - ISNULL(p.PaidAmount,0) > 0 THEN 'Pending' ELSE 'Approved' END AS Status,
+  ISNULL(lp.OnlineTxnId,'') AS OnlineTransactionId,
+  CASE WHEN lp.ApproveDate IS NULL THEN '' ELSE CONVERT(varchar(10), lp.ApproveDate, 103) END AS ApproveDate
+FROM Inc i
+LEFT JOIN UserDetail ud WITH (NOLOCK) ON LTRIM(RTRIM(ud.UserId)) = LTRIM(RTRIM(i.userid))
+LEFT JOIN BankMaster bm WITH (NOLOCK) ON CONVERT(VARCHAR(50), ud.BankName) = CONVERT(VARCHAR(50), bm.BankId)
+OUTER APPLY (
+  SELECT SUM(ISNULL(t.dramount,0)) AS PaidAmount
+  FROM TransactionDetail t WITH (NOLOCK)
+  WHERE LTRIM(RTRIM(t.userid)) = i.userid
+    AND t.transactiontype = N'Income Payout'
+    AND (
+      t.Remark LIKE N'%PayoutWeek=' + CONVERT(varchar(8), i.WeekStart, 112) + N';%'
+      OR (
+        CHARINDEX('PayoutDate=', t.Remark) > 0
+        AND SUBSTRING(t.Remark, CHARINDEX('PayoutDate=', t.Remark) + 11, 8) LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+        AND CONVERT(date, SUBSTRING(t.Remark, CHARINDEX('PayoutDate=', t.Remark) + 11, 8), 112)
+            BETWEEN i.WeekStart AND DATEADD(DAY, 6, i.WeekStart)
+      )
+    )
+) p
+OUTER APPLY (
+  SELECT TOP 1 t.mentiondate AS ApproveDate,
+    CASE
+      WHEN CHARINDEX('OnlineTxnId=', t.Remark) > 0 THEN
+        SUBSTRING(
+          t.Remark,
+          CHARINDEX('OnlineTxnId=', t.Remark) + 12,
+          CASE
+            WHEN CHARINDEX(';', t.Remark, CHARINDEX('OnlineTxnId=', t.Remark) + 12) > 0
+            THEN CHARINDEX(';', t.Remark, CHARINDEX('OnlineTxnId=', t.Remark) + 12) - (CHARINDEX('OnlineTxnId=', t.Remark) + 12)
+            ELSE 50
+          END
+        )
+      ELSE ''
+    END AS OnlineTxnId
+  FROM TransactionDetail t WITH (NOLOCK)
+  WHERE LTRIM(RTRIM(t.userid)) = i.userid
+    AND t.transactiontype = N'Income Payout'
+    AND (
+      t.Remark LIKE N'%PayoutWeek=' + CONVERT(varchar(8), i.WeekStart, 112) + N';%'
+      OR (
+        CHARINDEX('PayoutDate=', t.Remark) > 0
+        AND SUBSTRING(t.Remark, CHARINDEX('PayoutDate=', t.Remark) + 11, 8) LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+        AND CONVERT(date, SUBSTRING(t.Remark, CHARINDEX('PayoutDate=', t.Remark) + 11, 8), 112)
+            BETWEEN i.WeekStart AND DATEADD(DAY, 6, i.WeekStart)
+      )
+    )
+  ORDER BY t.transactionid DESC
+) lp
+WHERE i.TotalIncome > 0 ";
+
+            if (objaccount.FromDate != DateTime.MinValue && objaccount.ToDate != DateTime.MinValue)
+            {
+                str_query += " AND DATEADD(DAY, 6, i.WeekStart) >= CAST('" + objaccount.FromDate.ToString("yyyy-MM-dd") + "' AS date) AND i.WeekStart <= CAST('" + objaccount.ToDate.ToString("yyyy-MM-dd") + "' AS date) ";
+            }
+
+            if (!string.IsNullOrEmpty(objaccount.UserId))
+            {
+                str_query += " AND LTRIM(RTRIM(i.userid)) = LTRIM(RTRIM('" + objaccount.UserId.Replace("'", "''") + "')) ";
+            }
+
+            if (!string.IsNullOrEmpty(objaccount.WithdrawlRequestStatus)
+                && objaccount.WithdrawlRequestStatus != "0"
+                && objaccount.WithdrawlRequestStatus != "All")
+            {
+                str_query += " AND CASE WHEN i.TotalIncome - ISNULL(p.PaidAmount,0) > 0 THEN 'Pending' ELSE 'Approved' END = '"
+                    + objaccount.WithdrawlRequestStatus.Replace("'", "''") + "' ";
+            }
+
+            str_query += " ORDER BY i.WeekStart DESC, i.userid";
+
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try
+            {
+                dt = ObjData.RunDataTable(str_query);
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            ObjData.EndConnection();
+            return dt;
+        }
+
+        /// <summary>
+        /// Debit pending weekly income (Helping + Direct) as Income Payout in TransactionDetail.
+        /// Uses ClosingDate as Monday (week start). Returns t / paid / f / 0.
+        /// </summary>
+        public string ApproveIncomePayout(clsAccount objAccount)
+        {
+            string res = "0";
+            if (objAccount == null || string.IsNullOrEmpty(objAccount.UserId) || objAccount.ClosingDate == DateTime.MinValue)
+                return "f";
+
+            string uid = objAccount.UserId.Replace("'", "''").Trim();
+            string pkey = objAccount.ClosingDate.ToString("yyyyMMdd");
+            string dt = objAccount.ClosingDate.ToString("yyyy-MM-dd");
+            string txnId = (objAccount.OnlineTransactionId ?? "").Replace("'", "''").Trim();
+            string mentionBy = (objAccount.MentionBy ?? "admin").Replace("'", "''");
+            if (txnId == "")
+                return "notxn";
+
+            SqlConnection cn;
+            SqlTransaction tr = null;
+            cn = ObjData.StartConnectionInTransaction();
+            tr = cn.BeginTransaction(IsolationLevel.Serializable);
+
+            try
+            {
+                string s2 = @"
+SET NOCOUNT ON
+DECLARE @weekStart DATE = CAST('" + dt + @"' AS date)
+DECLARE @weekEnd DATE = DATEADD(DAY, 6, @weekStart)
+DECLARE @helping DECIMAL(18,2) = 0
+DECLARE @direct DECIMAL(18,2) = 0
+DECLARE @paid DECIMAL(18,2) = 0
+DECLARE @pending DECIMAL(18,2) = 0
+DECLARE @id INT
+DECLARE @TxnBase INT = ISNULL((SELECT MAX(transactionid) FROM TransactionDetail WITH (UPDLOCK, HOLDLOCK)), 0)
+
+;WITH Missing AS (
+  SELECT
+    CAST(ISNULL(i.Income,0)
+      - ROUND(ISNULL(i.Income,0) * 0.05, 2)
+      - ROUND(ISNULL(i.Income,0) * 0.05, 2) AS DECIMAL(18,2)) AS Amt,
+    i.UserId AS Uid,
+    CAST(N'Helping Level Income' AS NVARCHAR(100)) AS TType,
+    N'Helping Level Income (Admin 5% + TDS 5%) Level '
+      + CAST(i.LevelNo AS NVARCHAR(10))
+      + N' HelpingId=' + CAST(i.HelpingId AS NVARCHAR(20))
+      + N' JuniorId=' + CAST(ISNULL(i.JuniorId, 0) AS NVARCHAR(20))
+      + N' IncId=' + CAST(i.id AS NVARCHAR(20)) + N';' AS Rmk,
+    ISNULL(i.MentionDate, GETDATE()) AS MDate,
+    i.id AS SortId,
+    1 AS SortGrp
+  FROM HelpingLevelIncomeDetail i
+  WHERE LTRIM(RTRIM(i.UserId)) = '" + uid + @"'
+    AND ISNULL(i.Income,0) > 0
+    AND CAST(ISNULL(i.MentionDate, GETDATE()) AS date) BETWEEN @weekStart AND @weekEnd
+    AND NOT EXISTS (
+      SELECT 1 FROM TransactionDetail t
+      WHERE t.transactiontype = N'Helping Level Income'
+        AND t.Remark LIKE N'%IncId=' + CAST(i.id AS NVARCHAR(20)) + N';%'
+    )
+  UNION ALL
+  SELECT
+    CAST(ISNULL(d.directincome,0)
+      - ROUND(ISNULL(d.directincome,0) * 0.05, 2)
+      - ROUND(ISNULL(d.directincome,0) * 0.05, 2) AS DECIMAL(18,2)),
+    d.userid,
+    N'Direct Income',
+    N'Direct Income (Admin 5% + TDS 5%) From '
+      + ISNULL(d.fromuserid, N'')
+      + N' RefId=' + CAST(d.id AS NVARCHAR(20)) + N';',
+    ISNULL(d.entrydate, GETDATE()),
+    d.id,
+    2
+  FROM directincometb d
+  WHERE LTRIM(RTRIM(d.userid)) = '" + uid + @"'
+    AND ISNULL(d.directincome,0) > 0
+    AND CAST(ISNULL(d.entrydate, GETDATE()) AS date) BETWEEN @weekStart AND @weekEnd
+    AND NOT EXISTS (
+      SELECT 1 FROM TransactionDetail t
+      WHERE t.transactiontype = N'Direct Income'
+        AND t.Remark LIKE N'%RefId=' + CAST(d.id AS NVARCHAR(20)) + N';%'
+    )
+)
+INSERT INTO TransactionDetail (transactionid, cramount, dramount, userid, transactiontype, remark, mentionby, mentiondate)
+SELECT @TxnBase + ROW_NUMBER() OVER (ORDER BY SortGrp, SortId), Amt, 0, Uid, TType, Rmk, 'admin', MDate
+FROM Missing
+WHERE Amt > 0
+
+SELECT @helping = ISNULL(SUM(ISNULL(cramount,0)),0)
+FROM TransactionDetail WITH (UPDLOCK)
+WHERE LTRIM(RTRIM(userid)) = '" + uid + @"'
+  AND transactiontype = N'Helping Level Income'
+  AND CAST(mentiondate AS date) >= @weekStart
+  AND CAST(mentiondate AS date) <= @weekEnd
+
+SELECT @direct = ISNULL(SUM(ISNULL(cramount,0)),0)
+FROM TransactionDetail WITH (UPDLOCK)
+WHERE LTRIM(RTRIM(userid)) = '" + uid + @"'
+  AND transactiontype = N'Direct Income'
+  AND CAST(mentiondate AS date) >= @weekStart
+  AND CAST(mentiondate AS date) <= @weekEnd
+
+SELECT @paid = ISNULL(SUM(ISNULL(dramount,0)),0)
+FROM TransactionDetail WITH (UPDLOCK)
+WHERE LTRIM(RTRIM(userid)) = '" + uid + @"'
+  AND transactiontype = N'Income Payout'
+  AND (
+    Remark LIKE N'%PayoutWeek=" + pkey + @";%'
+    OR (
+      CHARINDEX('PayoutDate=', Remark) > 0
+      AND SUBSTRING(Remark, CHARINDEX('PayoutDate=', Remark) + 11, 8) LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+      AND CONVERT(date, SUBSTRING(Remark, CHARINDEX('PayoutDate=', Remark) + 11, 8), 112)
+          BETWEEN @weekStart AND @weekEnd
+    )
+  )
+
+SET @pending = @helping + @direct - @paid
+
+IF @pending > 0
+BEGIN
+  SET @id = (SELECT ISNULL(MAX(transactionid),0)+1 FROM TransactionDetail WITH (UPDLOCK, HOLDLOCK))
+  INSERT INTO TransactionDetail (transactionid, cramount, dramount, userid, transactiontype, remark, mentionby, mentiondate)
+  VALUES (
+    @id, 0, @pending, '" + uid + @"', N'Income Payout',
+    N'Income Payout PayoutWeek=" + pkey + @"; PayoutDate=" + pkey + @"; OnlineTxnId=" + txnId + @"; Helping=' + CONVERT(VARCHAR(30), @helping) + N' Direct=' + CONVERT(VARCHAR(30), @direct) + N';',
+    '" + mentionBy + @"', GETDATE()
+  )
+  SELECT 't' AS Result, @pending AS Amount
+END
+ELSE
+  SELECT 'paid' AS Result, CAST(0 AS DECIMAL(18,2)) AS Amount
+";
+
+                DataTable dtRes = ObjData.RunSelectQueryTTrans(s2, tr);
+                if (dtRes != null && dtRes.Rows.Count > 0)
+                    res = dtRes.Rows[0]["Result"].ToString();
+                else
+                    res = "0";
+
+                tr.Commit();
+            }
+            catch (Exception ex)
+            {
+                res = "0";
+                try { tr.Rollback(); } catch { }
+            }
+            finally
+            {
+                ObjData.EndConnection();
+                tr.Dispose();
+            }
+            return res;
         }
 
         /// <summary>
@@ -4231,6 +4564,21 @@ VALUES ('" + SqlEsc(userId) + "', " + DonationAmount.ToString("0.00") + ", " + b
                 ObjData.EndConnection();
                 return "0";
             }
+        }
+
+        public decimal GetApprovedDonationAmount(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId)) return 0;
+            string str_query = @"SELECT ISNULL(SUM(Amount),0) FROM DonationRequest WITH (NOLOCK)
+WHERE UserId = '" + SqlEsc(userId) + "' AND Status = 'Approved'";
+            DataTable dt = null;
+            ObjData.StartConnection();
+            try { dt = ObjData.RunDataTable(str_query); }
+            catch { dt = null; }
+            ObjData.EndConnection();
+            if (dt == null || dt.Rows.Count == 0) return 0;
+            decimal amt;
+            return decimal.TryParse(Convert.ToString(dt.Rows[0][0]), out amt) ? amt : 0;
         }
 
         public DataTable getDonationRequestByUser(string userId)

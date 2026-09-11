@@ -114,6 +114,42 @@
                                                     <asp:Label ID="lblFooterIncomeSum" runat="server"></asp:Label>
                                                 </FooterTemplate>
                                             </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    Admin Charge (5%)
+                                                    <div><asp:Label ID="lblHeaderAdminSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblAdmin" runat="server" Text='<%# Eval("admincharge", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterAdminSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    TDS (5%)
+                                                    <div><asp:Label ID="lblHeaderTdsSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblTds" runat="server" Text='<%# Eval("tdscharge", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterTdsSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    Payable
+                                                    <div><asp:Label ID="lblHeaderPayableSum" runat="server"></asp:Label></div>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblPayable" runat="server" Text='<%# Eval("paybleamount", "{0:0.00}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    <asp:Label ID="lblFooterPayableSum" runat="server"></asp:Label>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Date">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblDate" runat="server" Text='<%# Eval("MentionDate") %>'></asp:Label>

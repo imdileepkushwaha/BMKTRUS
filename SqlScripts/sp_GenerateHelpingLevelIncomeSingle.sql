@@ -6,6 +6,10 @@
 --  4) Us level ka Target complete hone tak hi (ROW_NUMBER <= Target)
 --  5) Pool2 entry: Level-1 Target complete hone par
 --  6) Re-entry: max level ka Target isi run me complete hone par
+--  7) Income SOURCE (JuniorId): sirf UserDetail.SlabID = 1
+--     (SlabID = 2 / 0 plan-amount ID kisi ko income nahi deti)
+--  9) TransactionDetail: payable credit after 5% admin + 5% TDS
+--     (existing unmatched HelpingLevelIncomeDetail rows bhi backfill)
 
 IF OBJECT_ID('dbo.sp_GenerateHelpingLevelIncomeSingle', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_GenerateHelpingLevelIncomeSingle;
@@ -20,10 +24,16 @@ SET NOCOUNT ON
 DECLARE @ClosingDate DATETIME = ISNULL(@ToDate, GETDATE())
 DECLARE @maxlevel INT = ISNULL((SELECT MAX(LevelNo) FROM HelpingLevelDetail WITH (NOLOCK)), 15)
 DECLARE @inserted TABLE (HelpingId INT, LevelNo INT)
+DECLARE @DonationUsers TABLE (UserId NVARCHAR(100) PRIMARY KEY)
+
+INSERT INTO @DonationUsers (UserId)
+SELECT DISTINCT LTRIM(RTRIM(ud.UserId))
+FROM UserDetail ud WITH (NOLOCK)
+WHERE ISNULL(ud.SlabID, 0) = 1
 
 ;WITH roots AS (
-    SELECT id AS HelpingId, Userid AS RootUserId
-    FROM HelpingBinaryDetail WITH (NOLOCK)
+    SELECT h.id AS HelpingId, h.Userid AS RootUserId
+    FROM HelpingBinaryDetail h WITH (NOLOCK)
 ),
 MyCTE AS (
     SELECT r.HelpingId, r.RootUserId, h.id, h.userid, h.Parentid, 0 AS userlevel
@@ -49,6 +59,9 @@ ranked AS (
         ROW_NUMBER() OVER (PARTITION BY c.HelpingId, c.userlevel ORDER BY c.id) AS rn
     FROM MyCTE c
     INNER JOIN HelpingLevelDetail hl WITH (NOLOCK) ON hl.LevelNo = c.userlevel
+    INNER JOIN UserDetail jud WITH (NOLOCK)
+        ON LTRIM(RTRIM(jud.UserId)) = LTRIM(RTRIM(c.userid))
+       AND ISNULL(jud.SlabID, 0) = 1
     WHERE c.userlevel >= 1 AND c.userlevel <= 15
 )
 INSERT INTO HelpingLevelIncomeDetail (
@@ -89,7 +102,9 @@ DECLARE @StandingPositionHelping NVARCHAR(100)
 DECLARE @team INT, @target INT, @paidcount INT
 
 DECLARE cur_closing2 CURSOR LOCAL FAST_FORWARD FOR
-SELECT id, Userid FROM HelpingBinaryDetail WITH (NOLOCK) ORDER BY id
+SELECT h.id, h.Userid
+FROM HelpingBinaryDetail h WITH (NOLOCK)
+ORDER BY h.id
 
 OPEN cur_closing2
 FETCH NEXT FROM cur_closing2 INTO @HelpingId, @userid
@@ -112,8 +127,9 @@ BEGIN
         WHERE HelpingBinaryDetail.id <> @HelpingId
     )
     SELECT @team = COUNT(*)
-    FROM MyCTE
-    WHERE userlevel = 1
+    FROM MyCTE c
+    INNER JOIN @DonationUsers du ON du.UserId = LTRIM(RTRIM(c.userid))
+    WHERE c.userlevel = 1
     OPTION (MAXRECURSION 0)
 
     SET @team = ISNULL(@team, 0)
@@ -208,6 +224,38 @@ BEGIN
 END
 CLOSE cur_closing2
 DEALLOCATE cur_closing2
+
+-- TransactionDetail: credit payable after 5% admin + 5% TDS (also backfills existing income)
+DECLARE @AdminPer DECIMAL(18,2) = 5
+DECLARE @TdsPer DECIMAL(18,2) = 5
+DECLARE @TxnBase INT = ISNULL((SELECT MAX(transactionid) FROM TransactionDetail WITH (UPDLOCK, HOLDLOCK)), 0)
+
+INSERT INTO TransactionDetail (
+    transactionid, cramount, dramount, userid, transactiontype, remark, mentionby, mentiondate
+)
+SELECT
+    @TxnBase + ROW_NUMBER() OVER (ORDER BY i.id),
+    CAST(ISNULL(i.Income, 0)
+        - ROUND(ISNULL(i.Income, 0) * @AdminPer / 100.0, 2)
+        - ROUND(ISNULL(i.Income, 0) * @TdsPer / 100.0, 2) AS DECIMAL(18,2)),
+    0,
+    i.UserId,
+    N'Helping Level Income',
+    N'Helping Level Income (Admin 5% + TDS 5%) Level '
+        + CAST(i.LevelNo AS NVARCHAR(10))
+        + N' HelpingId=' + CAST(i.HelpingId AS NVARCHAR(20))
+        + N' JuniorId=' + CAST(ISNULL(i.JuniorId, 0) AS NVARCHAR(20))
+        + N' IncId=' + CAST(i.id AS NVARCHAR(20)) + N';',
+    'admin',
+    ISNULL(i.MentionDate, @ClosingDate)
+FROM HelpingLevelIncomeDetail i WITH (NOLOCK)
+WHERE ISNULL(i.Income, 0) > 0
+  AND NOT EXISTS (
+      SELECT 1
+      FROM TransactionDetail t WITH (NOLOCK)
+      WHERE t.TransactionType = N'Helping Level Income'
+        AND t.Remark LIKE N'%IncId=' + CAST(i.id AS NVARCHAR(20)) + N';%'
+  )
 
 SET NOCOUNT OFF
 SELECT 't'
